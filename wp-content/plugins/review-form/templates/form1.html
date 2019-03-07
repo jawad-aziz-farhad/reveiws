@@ -1,0 +1,87 @@
+<?php
+$url = esc_url( $_SERVER['REQUEST_URI']);
+
+$categories = array("Round Bike", "Mountain Bike" , "Cruiser", "Hybrid/Comfort Bike" , "Triathlon/Time Trial Bike",
+                    "BMX/Trick Bike", "Commuting Bike" , "Cyclocross Bike", "Track Bike / Fixed Gear", "Tandem",
+                    "Folding Bike", "Kids Bike", "Recumbent", "I'm not sure, help me!");
+$name    = isset($data['name'])  ? $data['name']   : '';
+$email   = isset($data['email']) ? $data['email'] : '';
+$brand   = isset($data['brand']) ? $data['brand'] : '';
+$category= isset($data['category']) ? $data['category'] : '';
+$price   = isset($data['price']) ? $data['price'] : '';
+
+$options = '<option>select category</option>'; 
+foreach($categories as $_category){
+  if($_category == $category)
+    $options .= '<option selected>' . $_category . '</option>';
+  else
+    $options .= '<option>' . $_category . '</option>';
+}
+echo <<< FORM
+<div class="container">
+  <form action="{$url}" method="post">
+    <div class="form-row">
+      <!-- Name -->
+      <div class="form-group col-sm">
+          <label for="inputEmail4">Name</label>
+          <input type="text" class="form-control {$data['errors']['name']['class']}" name="data[name]" id="inputName" placeholder="Name" value="{$name}" />
+          {$data['errors']['name']['message']}
+      </div>
+
+      <!-- Email -->
+      <div class="form-group col-sm">
+        <label for="inputEmail4">Email</label>
+        <input type="email" class="form-control {$data['errors']['email']['class']}" name="data[email]" id="inputEmail" placeholder="Email" value="{$email}" />
+        {$data['errors']['email']['message']}
+      </div>
+      
+    </div>
+
+     <!-- 1st row starts -->
+     <div class="row">
+
+        <!-- Bike Brand -->
+        <div class="col-sm">
+            <div class="form-group">
+              <label for="bikeBrand">Bike Brand</label>
+              <input type="text" class="form-control {$data['errors']['brand']['class']}" id="inputBrand" name="data[brand]" placeholder="Enter bike brand" value="{$brand}" >
+              {$data['errors']['brand']['message']}
+            </div>
+        </div>
+
+        <!-- Bike Model -->
+        <div class="col-sm">
+            <div class="form-group">
+                <label for="bikeModel">Bike Model</label>
+                <input type="text" class="form-control {$data['errors']['model']['class']}" id="inputModel" placeholder="Enter bike model" name="data[model]" value="{$model}">
+                {$data['errors']['model']['message']}
+            </div>
+        </div>
+
+        <!-- Bike Category -->
+        <div class="col-sm">
+            <div class="form-group">
+                <label for="bikeCategory">Category</label>
+                <select class="form-control" id="inputCategory" name="data[category]">
+                    {$options}
+                </select>
+            </div>
+        </div>
+
+        <!-- Bike Price -->
+        <div class="col-sm">
+            <div class="form-group">
+                <label for="bikePrice">Bike Price</label>
+                <input type="number" class="form-control {$data['errors']['price']['class']}" id="inputPrice" placeholder="Enter bike price ($)" name="data[price]" value="{$price}">
+                {$data['errors']['price']['message']}
+            </div>
+        </div>
+
+    </div>
+    <!-- 1st row ends -->
+    <input type="submit" class="btn btn-primary btn-block"/>
+  </form>
+</div>
+FORM;
+
+?>
