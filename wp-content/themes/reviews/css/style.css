@@ -23,26 +23,6 @@
     height: 100%;
     background-size: cover;
 }
-.rating-stars {
-    float:left;
-    text-align: center;
-  }
-/* Idle State of the stars */
-.rating-stars > i.fa  {
-    font-size:1.3em; /* Change the size of the stars */
-    color:#ccc; /* Color on idle state */
-  }
-  
-  /* Hover state of the stars */
-  .rating-stars:not(:checked) > i:hover,
-  .rating-stars:not(:checked) > i:hover ~ i {
-    color: #FFCC36;
-  }
-  
-  /* Selected state of the stars */
-  .rating-stars > i.fa.selected {
-    color:#FF912C;
-  }
 
   #videoHelp {
       display: none;
@@ -74,3 +54,29 @@
 #img-upload{
     width: 100%;
 }
+
+.starrating > input {display: none;}  /* Remove radio buttons */
+
+.starrating > label:before { 
+  content: "\f005"; /* Star */
+  font-size: 1.5em;
+  font-family: FontAwesome;
+  display: inline-block; 
+}
+
+.starrating > label
+{
+  color: #ccc; /* Start color when not clicked */
+}
+.starrating:not(:checked) > label:hover, /* hover current star */
+.starrating:not(:checked) > label:hover ~ label { 
+	color:#ffca08 !important;
+  cursor:pointer;
+} /* hover previous stars in list */
+
+.starrating > input:checked + label:hover, /* hover current star when changing rating */
+.starrating > label:hover ~ input:checked ~ label, /* lighten current selection */
+.starrating > input:checked ~ label:hover ~ label { 
+	color: #ffca08 !important;
+  cursor:pointer;
+} 

@@ -1,0 +1,446 @@
+<?php
+
+$countries = ["Afghanistan","Albania","Algeria","Andorra","Angola","Anguilla","Antigua &amp; Barbuda","Argentina","Armenia","Aruba","Australia","Austria","Azerbaijan","Bahamas"
+		,"Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia &amp; Herzegovina","Botswana","Brazil","British Virgin Islands"
+		,"Brunei","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Cape Verde","Cayman Islands","Chad","Chile","China","Colombia","Congo","Cook Islands","Costa Rica"
+		,"Cote D Ivoire","Croatia","Cruise Ship","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea"
+		,"Estonia","Ethiopia","Falkland Islands","Faroe Islands","Fiji","Finland","France","French Polynesia","French West Indies","Gabon","Gambia","Georgia","Germany","Ghana"
+		,"Gibraltar","Greece","Greenland","Grenada","Guam","Guatemala","Guernsey","Guinea","Guinea Bissau","Guyana","Haiti","Honduras","Hong Kong","Hungary","Iceland","India"
+		,"Indonesia","Iran","Iraq","Ireland","Isle of Man","Israel","Italy","Jamaica","Japan","Jersey","Jordan","Kazakhstan","Kenya","Kuwait","Kyrgyz Republic","Laos","Latvia"
+		,"Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Macau","Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Mauritania"
+		,"Mauritius","Mexico","Moldova","Monaco","Mongolia","Montenegro","Montserrat","Morocco","Mozambique","Namibia","Nepal","Netherlands","Netherlands Antilles","New Caledonia"
+		,"New Zealand","Nicaragua","Niger","Nigeria","Norway","Oman","Pakistan","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal"
+		,"Puerto Rico","Qatar","Reunion","Romania","Russia","Rwanda","Saint Pierre &amp; Miquelon","Samoa","San Marino","Satellite","Saudi Arabia","Senegal","Serbia","Seychelles"
+		,"Sierra Leone","Singapore","Slovakia","Slovenia","South Africa","South Korea","Spain","Sri Lanka","St Kitts &amp; Nevis","St Lucia","St Vincent","St. Lucia","Sudan"
+		,"Suriname","Swaziland","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor L'Este","Togo","Tonga","Trinidad &amp; Tobago","Tunisia"
+		,"Turkey","Turkmenistan","Turks &amp; Caicos","Uganda","Ukraine","United Arab Emirates","United Kingdom","Uruguay","Uzbekistan","Venezuela","Vietnam","Virgin Islands (US)"
+        ,"Yemen","Zambia","Zimbabwe"];
+        
+$categories = array("Round Bike", "Mountain Bike" , "Cruiser", "Hybrid/Comfort Bike" , "Triathlon/Time Trial Bike",
+                    "BMX/Trick Bike", "Commuting Bike" , "Cyclocross Bike", "Track Bike / Fixed Gear", "Tandem",
+                    "Folding Bike", "Kids Bike", "Recumbent", "I'm not sure, help me!");
+$options = '<option>select category</option>'; 
+
+foreach($categories as $_category){
+    $options .= '<option>' . $_category . '</option>';
+}
+
+$country_options = '<option>select country</option>'; 
+foreach($countries as $country){
+    $country_options .= '<option>' . $country . '</option>';
+  }
+
+$url = esc_url( $_SERVER['REQUEST_URI']);
+$placeholder = 'http://localhost:8888/treadly_reviews/wp-content/uploads/2019/03/placeholder-image.png';
+echo <<< FORM
+<div class="container mt-3">
+  <form role="form" method="post" id="reviewForm">
+     <!-- 1st row starts -->
+     <div class="row">
+
+        <!-- Bike Brand -->
+        <div class="col-sm">
+            <div class="form-group">
+                <label for="bikeBrand">Bike Brand</label>
+                <input type="text" class="form-control is-invalid" id="bikeBrand" aria-describedby="brandHelp" placeholder="Enter bike brand" required>
+                <small id="brandHelp" class="invalid-feedback">Bike brand is required.</small>
+            </div>
+        </div>
+
+        <!-- Bike Model -->
+        <div class="col-sm">
+            <div class="form-group">
+                <label for="bikeModel">Bike Model</label>
+                <input type="text" class="form-control is-invalid" id="bikeModel" aria-describedby="modelHelp" placeholder="Enter bike model" required>
+                <small id="modelHelp" class="invalid-feedback">Bike model is required.</small>
+            </div>
+        </div>
+
+        <!-- Bike Category -->
+        <div class="col-sm">
+            <div class="form-group">
+                <label for="bikeCategory">Category</label>
+                <select class="form-control is-invalid" aria-describedby="categoryHelp" id="bikeCategory" type="select" required>
+                    {$options}
+                </select>
+                <small id="categoryHelp" class="invalid-feedback">Bike category is required.</small>
+            </div>
+        </div>
+
+        <!-- Bike Price -->
+        <div class="col-sm">
+            <div class="form-group">
+                <label for="bikePrice">Bike Price</label>
+                <input type="number" class="form-control is-invalid" id="bikePrice" aria-describedby="priceHelp" placeholder="Enter bike price ($)" required>
+                <small id="priceHelp" class="invalid-feedback">Bike price is required.</small>
+            </div>
+        </div>
+
+    </div>
+    <!-- 1st row ends -->
+
+
+    <!-- 2nd row starts -->
+    <div class="row">
+        <div class="col-sm">
+            <label for="customRange1">Was it right bike for you ?</label>                
+        </div>
+        <div class="w-100">
+        <div class="col-sm">
+         <input type="range" class="custom-range w-100 is-invalid" id="customRange1" min="0" max="10" required>
+        </div>
+    </div>
+    <!-- 2nd row starts -->
+
+    <!-- 3rd row starts -->
+    <div class="row w-100 mt-3 pl-2">
+        
+        <div class="col-sm">
+            <div class="form-group">
+                <label for="positiveFeedback1">1st Positive</label>
+                <input type="text" class="form-control" id="positiveFeedback1" aria-describedby="feedback1" placeholder="Enter 1st positive feedback">
+                <small id="feedback1" class="form-text text-muted">tell us what you have found positive in this bike.</small>
+            </div>
+        </div>
+
+        <div class="col-sm">
+            <div class="form-group">
+                <label for="positiveFeedback2">2nd Positive</label>
+                <input type="text" class="form-control" id="positiveFeedback2" aria-describedby="feedback2" placeholder="Enter 2nd positive feedback">
+                <small id="feedback2" class="form-text text-muted">tell us what you have found positive in this bike.</small>
+            </div>
+        </div>
+
+        <div class="col-sm">
+            <div class="form-group">
+                <label for="positiveFeedback3">3rd Positive</label>
+                <input type="text" class="form-control" id="positiveFeedback3" aria-describedby="feedback3" placeholder="Enter 3rd positive feedback">
+                <small id="feedback3" class="form-text text-muted">tell us what you have found positive in this bike.</small>
+            </div>
+        </div>
+
+    </div>
+     <!-- 3rd row ends -->
+
+     <!-- 4th row starts -->
+    <div class="row w-100 mt-3 pl-2">
+        
+        <div class="col-sm">
+            <div class="form-group">
+                <label for="positiveFeedback1">1st Negative</label>
+                <input type="text" class="form-control" id="positiveFeedback1" aria-describedby="feedback1" placeholder="Enter 1st negative feedback">
+                <small id="feedback1" class="form-text text-muted">tell us what you have found negative in this bike.</small>
+            </div>
+        </div>
+
+        <div class="col-sm">
+            <div class="form-group">
+                <label for="positiveFeedback2">2nd Negative</label>
+                <input type="text" class="form-control" id="positiveFeedback2" aria-describedby="feedback2" placeholder="Enter 2nd negative feedback">
+                <small id="feedback2" class="form-text text-muted">tell us what you have found negative in this bike.</small>
+            </div>
+        </div>
+
+        <div class="col-sm">
+            <div class="form-group">
+                <label for="positiveFeedback3">3rd Negative</label>
+                <input type="text" class="form-control" id="positiveFeedback3" aria-describedby="feedback3" placeholder="Enter 3rd negative feedback">
+                <small id="feedback3" class="form-text text-muted">tell us what you have found negative in this bike.</small>
+            </div>
+        </div>
+
+    </div>
+     <!-- 4th row ends -->
+
+    <!-- 5th row starts -->
+    <div class="row w-100 mt-3 pl-2">
+        <div class="col-sm">
+            <label for="customRange1">Rate this bike against these categories:</label>                
+        </div>            
+    </div>
+    <!-- 5th row ends -->
+
+    <!-- 6th row starts -->
+    <div class="row w-100 m-2">
+
+        <div class="col-sm text-center border-bottom border-dark mr-1">
+          <label for="positiveFeedback3">Value for money:</label>
+        </div>
+        
+        <div class="col-sm starrating risingstar d-flex justify-content-center flex-row-reverse border-bottom border-dark ml-1">
+            <input type="radio" id="money_star5" name="money_rating" value="5" /><label for="star5" title="5 star">5</label>
+            <input type="radio" id="money_star4" name="money_rating" value="4" /><label for="star4" title="4 star">4</label>
+            <input type="radio" id="money_star3" name="money_rating" value="3" /><label for="star3" title="3 star">3</label>
+            <input type="radio" id="money_star2" name="money_rating" value="2" /><label for="star2" title="2 star">2</label>
+            <input type="radio" id="money_star1" name="money_rating" value="1" /><label for="star1" title="1 star">1</label>
+        </div>       
+
+    </div>
+    <!-- 6th row ends -->
+
+    <!-- 7th row starts -->
+    <div class="row w-100 m-2">
+        <div class="col-sm text-center border-bottom border-dark mr-1">
+          <label for="positiveFeedback3">Frame:</label>
+        </div>
+        
+        <div class="col-sm starrating risingstar d-flex justify-content-center flex-row-reverse border-bottom border-dark ml-1">
+            <input type="radio" id="frame_star5" name="frame_rating" value="5" /><label for="star5" title="5 star">5</label>
+            <input type="radio" id="frame_star4" name="frame_rating" value="4" /><label for="star4" title="4 star">4</label>
+            <input type="radio" id="frame_star3" name="frame_rating" value="3" /><label for="star3" title="3 star">3</label>
+            <input type="radio" id="frame_star2" name="frame_rating" value="2" /><label for="star2" title="2 star">2</label>
+            <input type="radio" id="frame_star1" name="frame_rating" value="1" /><label for="star1" title="1 star">1</label>
+        </div>
+
+    </div>
+    <!-- 7th row ends -->
+
+    <!-- 8th row starts -->
+    <div class="row w-100 m-2">
+        <div class="col-sm text-center border-bottom border-dark mr-1">
+          <label for="positiveFeedback3">Comfort:</label>
+        </div>
+        
+        <div class="col-sm starrating risingstar d-flex justify-content-center flex-row-reverse border-bottom border-dark ml-1">
+            <input type="radio" id="comfort_star5" name="comfort_rating" value="5" /><label for="star5" title="5 star">5</label>
+            <input type="radio" id="comfort_star4" name="comfort_rating" value="4" /><label for="star4" title="4 star">4</label>
+            <input type="radio" id="comfort_star3" name="comfort_rating" value="3" /><label for="star3" title="3 star">3</label>
+            <input type="radio" id="comfort_star2" name="comfort_rating" value="2" /><label for="star2" title="2 star">2</label>
+            <input type="radio" id="comfort_star1" name="comfort_rating" value="1" /><label for="star1" title="1 star">1</label>
+        </div>
+
+    </div>
+    <!-- 8th row ends -->
+
+    <!-- 9th row starts -->
+    <div class="row w-100 m-2">
+        <div class="col-sm text-center border-bottom border-dark mr-1">
+          <label for="positiveFeedback3">Design:</label>
+        </div>
+        
+        <div class="col-sm starrating risingstar d-flex justify-content-center flex-row-reverse border-bottom border-dark ml-1">
+            <input type="radio" id="design_star5" name="design_rating" value="5" /><label for="star5" title="5 star">5</label>
+            <input type="radio" id="design_star4" name="design_rating" value="4" /><label for="star4" title="4 star">4</label>
+            <input type="radio" id="design_star3" name="design_rating" value="3" /><label for="star3" title="3 star">3</label>
+            <input type="radio" id="design_star2" name="design_rating" value="2" /><label for="star2" title="2 star">2</label>
+            <input type="radio" id="design_star1" name="design_rating" value="1" /><label for="star1" title="1 star">1</label>
+        </div>
+
+    </div>
+    <!-- 9th row ends -->
+
+    <!-- 10th row starts -->
+    <div class="row w-100 m-2">
+        <div class="col-sm text-center border-bottom border-dark mr-1">
+          <label for="positiveFeedback3">Gearing:</label>
+        </div>
+        
+        <div class="col-sm starrating risingstar d-flex justify-content-center flex-row-reverse border-bottom border-dark ml-1">
+            <input type="radio" id="gears_star5" name="gears_rating" value="5" /><label for="star5" title="5 star">5</label>
+            <input type="radio" id="gears_star4" name="gears_rating" value="4" /><label for="star4" title="4 star">4</label>
+            <input type="radio" id="gears_star3" name="gears_rating" value="3" /><label for="star3" title="3 star">3</label>
+            <input type="radio" id="gears_star2" name="gears_rating" value="2" /><label for="star2" title="2 star">2</label>
+            <input type="radio" id="gears_star1" name="gears_rating" value="1" /><label for="star1" title="1 star">1</label>
+        </div>
+
+    </div>
+    <!-- 10th row ends -->
+
+    <!-- 11th row starts -->
+    <div class="row w-100 m-2">
+        <div class="col-sm text-center border-bottom border-dark mr-1">
+          <label for="positiveFeedback3">Breaks:</label>
+        </div>
+        
+        <div class="col-sm starrating risingstar d-flex justify-content-center flex-row-reverse border-bottom border-dark ml-1">
+            <input type="radio" id="breaks_star5" name="breaks_rating" value="5" /><label for="star5" title="5 star">5</label>
+            <input type="radio" id="breaks_star4" name="breaks_rating" value="4" /><label for="star4" title="4 star">4</label>
+            <input type="radio" id="breaks_star3" name="breaks_rating" value="3" /><label for="star3" title="3 star">3</label>
+            <input type="radio" id="breaks_star2" name="breaks_rating" value="2" /><label for="star2" title="2 star">2</label>
+            <input type="radio" id="breaks_star1" name="breaks_rating" value="1" /><label for="star1" title="1 star">1</label>
+        </div>
+
+    </div>
+    <!-- 11th row ends -->
+
+    <!-- 12th row starts -->
+    <div class="row w-100 m-2">
+        <div class="col-sm text-center border-bottom border-dark mr-1">
+          <label for="positiveFeedback3">Steering:</label>
+        </div>
+        
+        <div class="col-sm starrating risingstar d-flex justify-content-center flex-row-reverse border-bottom border-dark ml-1">
+            <input type="steering_radio" id="steering_star5" name="rating" value="5" /><label for="star5" title="5 star">5</label>
+            <input type="steering_radio" id="steering_star4" name="rating" value="4" /><label for="star4" title="4 star">4</label>
+            <input type="steering_radio" id="steering_star3" name="rating" value="3" /><label for="star3" title="3 star">3</label>
+            <input type="steering_radio" id="steering_star2" name="rating" value="2" /><label for="star2" title="2 star">2</label>
+            <input type="steering_radio" id="steering_star1" name="rating" value="1" /><label for="star1" title="1 star">1</label>
+        </div>
+
+    </div>
+    <!-- 12th row ends -->
+
+    <!-- 13th row starts -->
+    <div class="row w-100 m-2">
+        <div class="col-sm text-center border-bottom border-dark mr-1">
+          <label for="positiveFeedback3">Wheels:</label>
+        </div>
+        
+        <div class="col-sm starrating risingstar d-flex justify-content-center flex-row-reverse border-bottom border-dark ml-1">
+            <input type="radio" id="wheels_star5" name="wheels_rating" value="5" /><label for="star5" title="5 star">5</label>
+            <input type="radio" id="wheels_star4" name="wheels_rating" value="4" /><label for="star4" title="4 star">4</label>
+            <input type="radio" id="wheels_star3" name="wheels_rating" value="3" /><label for="star3" title="3 star">3</label>
+            <input type="radio" id="wheels_star2" name="wheels_rating" value="2" /><label for="star2" title="2 star">2</label>
+            <input type="radio" id="wheels_star1" name="wheels_rating" value="1" /><label for="star1" title="1 star">1</label>
+        </div>
+
+    </div>
+    <!-- 13th row ends -->
+
+    <!-- 14th row starts -->
+    <div class="row w-100 m-2">
+        <div class="col-sm text-center border-bottom border-dark mr-1">
+          <label for="positiveFeedback3">Saddle:</label>
+        </div>
+        
+        <div class="col-sm starrating risingstar d-flex justify-content-center flex-row-reverse border-bottom border-dark ml-1">
+            <input type="radio" id="saddle_star5" name="saddle_rating" value="5" /><label for="star5" title="5 star">5</label>
+            <input type="radio" id="saddle_star4" name="saddle_rating" value="4" /><label for="star4" title="4 star">4</label>
+            <input type="radio" id="saddle_star3" name="saddle_rating" value="3" /><label for="star3" title="3 star">3</label>
+            <input type="radio" id="saddle_star2" name="saddle_rating" value="2" /><label for="star2" title="2 star">2</label>
+            <input type="radio" id="saddle_star1" name="saddle_rating" value="1" /><label for="star1" title="1 star">1</label>
+        </div>
+
+    </div>
+    <!-- 14th row ends -->
+
+    <!-- 15th row starts-->
+    <div class="row w-100 m-1">
+        <div class="col-sm">
+            <div class="form-group">
+                <label for="country">Country</label>
+                <select class="form-control" id="country">
+                    {$country_options}
+                </select>
+            </div>
+        </div>
+    </div>
+    <!-- 15th row ends-->
+
+    <!-- 16th row starts-->
+    <div class="row w-100 m-2">
+        <div class="col-sm">
+            <div class="form-group">
+                <label class="custom-file-label" for="videoFile">Upload video</label>
+                <input type="file" class="custom-file-input" id="reviewVideo" aria-describedby="videoHelp" placeholder="Enter bike brand">
+                
+                <video class="img-fluid mt-1" id="reviewVideo" playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop">
+                    <source src="https://storage.googleapis.com/coverr-main/mp4/Mt_Baker.mp4" type="video/mp4">
+                </video>
+                <small id="videoHelp" class="form-text text-muted">Your review must not be longer than 90 seconds. You must cover the following points in this order:
+                    <span>
+                        <ul>
+                            <li>What I like</li>
+                            <li>What I don't like</li>
+                            <li>Standouts</li>
+                            <li>Who should buy it</li>
+                            <li>Who should avoid it</li>
+                        </ul>
+                    </span>
+                </small>
+            </div>
+
+        </div>
+    </div>
+    <!-- 16th row ends-->
+
+    <!-- 17th row starts -->
+    <div class="row w-100 m-2">
+
+        <div class="col-sm mr-1">
+            <div class="form-group">
+                <label class="custom-file-label" for="Image1">Bike Image</label>
+                <input type="file" class="custom-file-input" id="Image1" imageNum="1" name="bike">
+                <figure class="figure mt-1 text-center">
+                    <img src="{$placeholder}" id='image-1' class="figure-img img-fluid rounded" alt="Suspension">
+                    <figcaption class="figure-caption" id="caption-1">Upload bike image here.</figcaption>
+                </figure>
+            </div>
+        </div>
+    </div>
+    <!-- 17th row ends -->
+
+    <!-- 18th row ends -->
+    <div class="row w-100 m-2">
+        <div class="form-group col-sm mr-1">
+            <label class="custom-file-label" for="Image2">Gears Image</label>
+            <input type="file" class="custom-file-input" id="Image2" imageNum="2" name="gears">
+            <figure class="figure mt-1">
+                <img src="{$placeholder}" id='image-2' class="figure-img img-fluid rounded" alt="Suspension">
+                <figcaption class="figure-caption" id="caption-2">Upload gears image here.</figcaption>
+            </figure>
+        </div>           
+       
+        <div class="form-group col-sm ml-1">
+            <label class="custom-file-label" for="Image3">Tyres Image</label>
+            <input type="file" class="custom-file-input" id="Image3" imageNum="3" name="tyres">
+            <figure class="figure mt-1">
+                <img src="{$placeholder}" id='image-3' class="figure-img img-fluid rounded" alt="Suspension">
+                <figcaption class="figure-caption" id="caption-5">Upload tyres image here.</figcaption>
+            </figure>
+        </div>
+    </div>
+    <!-- 18th row ends -->
+
+    <!-- 19th row ends -->
+    <div class="row w-100 m-2">
+    
+        <div class="form-group col-sm mr-1">
+            <label class="custom-file-label" for="Image4">Handlebar Image</label>
+            <input type="file" class="custom-file-input" id="Image4" imageNum="4" name="handlebar">
+            <figure class="figure mt-1">
+                <img src="{$placeholder}" id='image-4' class="figure-img img-fluid rounded" alt="Suspension">
+                <figcaption class="figure-caption" id="caption-4">Upload handlebar image here.</figcaption>
+            </figure>
+        </div>
+       
+        <div class="form-group col-sm ml-1">
+            <label class="custom-file-label" for="Image5">Suspension Image</label>
+            <input type="file" class="custom-file-input" id="Image5" imageNum="5" name="suspension">
+
+            <figure class="figure mt-1">
+                <img src="{$placeholder}" id='image-5' class="figure-img img-fluid rounded" alt="Suspension">
+                <figcaption class="figure-caption" id="caption-5">Upload suspension image here.</figcaption>
+            </figure>
+        </div> 
+        
+
+    </div>
+    <!-- 19th row ends -->
+
+    <!-- 20th row starts -->
+    <div class="row w-100 m-2">
+    <!-- Name -->
+    <div class="form-group col-sm">
+        <label for="name">Name</label>
+        <input type="text" class="form-control is-invalid" name="name" id="name" aria-describedby="nameHelp" placeholder="Name" value="" required/>
+        <small id="nameHelp" class="invalid-feedback">Name is required.</small>
+    </div>
+
+    <!-- Email -->
+    <div class="form-group col-sm">
+        <label for="email">Email</label>
+        <input type="email" class="form-control is-invalid" name="email" id="email" aria-describedby="emailHelp" placeholder="Email" value="" required/>
+        <small id="emailHelp" class="invalid-feedback">Email is required.</small>
+    </div>
+    
+    </div>
+    <!-- 20th row ends-->
+
+    <button type="submit" class="btn btn-primary btn-block">Submit</button>
+
+  </form>
+</div>
+FORM;
+
+?>
