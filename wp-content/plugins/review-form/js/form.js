@@ -148,20 +148,54 @@
             $btn.prop('orig_label',$btn.text());
             $btn.text('Sending ...');
         });
-        var $payload = {
-            action: 'submitReviewForm',
-            query_vars: reviewForm.query_vars,
-            data: $form.serialize()
-        };
+        
+        var form_data = new FormData();
+
+        var form = $form.serializeArray();
+        $.each(form , function (index, input) {
+            form_data.append(`${input.name}`, `${input.value}`);
+        });
+        
+        var images = ['bike', 'gears', 'tyres', 'handlebar', 'suspension' ];
+        for(var i=0; i<images.length; i++) {
+            var file_data = $('input[name="'+images[i]+'"]')[0].files[0];
+            form_data.append(images[i] , file_data);           
+        }       
+
+        form_data.append('action', 'submitReviewForm');  
+        form_data.append('query_vars', reviewForm.query_vars);  
+
         $.ajax({
             type: "POST",
             url: reviewForm.review_url,
-            data: $payload,
-            success: onFormSubmission,
-            dataType: 'json'
+            data: form_data,
+            processData: false,
+            contentType: false,
+            cache: false,
+            success: onFormSubmission
         });
-
     }
+
+    function formFieldsToObject( fields  ) {
+        var product = {};
+      
+        for( var i = 0; i < fields.length; i++ ) {
+          var field = fields[ i ];
+          if( ! product.hasOwnProperty( field.name ) ) {
+            product[ field.name ] = field.value;
+          }
+          else {
+            if( ! product[ field.name ] instanceof Array ){
+              product[ field.name ] = [ product[ field.name ] ];
+            }
+            else {
+                product[ field.name ] = field.value ;
+            }
+          }
+        }
+      
+        return product;
+      }
     /*
     |------------------------------------------
     |  HANDLING RESPONSE AFTER FORM SUBMISSION

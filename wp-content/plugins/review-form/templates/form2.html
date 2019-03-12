@@ -34,7 +34,7 @@ $url = esc_url( $_SERVER['REQUEST_URI']);
 $placeholder = 'http://localhost:8888/treadly_reviews/wp-content/uploads/2019/03/placeholder-image.png';
 echo <<< FORM
 <div class="container mt-3">
-  <form role="form" method="post" id="reviewForm">
+  <form role="form" method="post" id="reviewForm" >
      <!-- 1st row starts -->
      <div class="row">
 
@@ -42,7 +42,7 @@ echo <<< FORM
         <div class="col-sm">
             <div class="form-group">
                 <label for="bikeBrand">Bike Brand</label>
-                <input type="text" class="form-control is-invalid" id="bikeBrand" aria-describedby="brandHelp" placeholder="Enter bike brand" required>
+                <input type="text" class="form-control is-invalid" id="bikeBrand" aria-describedby="brandHelp" name="brand" placeholder="Enter bike brand" value="Bugati" required>
                 <small id="brandHelp" class="invalid-feedback">Bike brand is required.</small>
             </div>
         </div>
@@ -51,7 +51,7 @@ echo <<< FORM
         <div class="col-sm">
             <div class="form-group">
                 <label for="bikeModel">Bike Model</label>
-                <input type="text" class="form-control is-invalid" id="bikeModel" aria-describedby="modelHelp" placeholder="Enter bike model" required>
+                <input type="text" class="form-control is-invalid" id="bikeModel" aria-describedby="modelHelp" placeholder="Enter bike model" value="Model" required>
                 <small id="modelHelp" class="invalid-feedback">Bike model is required.</small>
             </div>
         </div>
@@ -71,7 +71,7 @@ echo <<< FORM
         <div class="col-sm">
             <div class="form-group">
                 <label for="bikePrice">Bike Price</label>
-                <input type="number" class="form-control is-invalid" id="bikePrice" aria-describedby="priceHelp" placeholder="Enter bike price ($)" required>
+                <input type="number" class="form-control is-invalid" id="bikePrice" aria-describedby="priceHelp" value="5000" placeholder="Enter bike price ($)" required>
                 <small id="priceHelp" class="invalid-feedback">Bike price is required.</small>
             </div>
         </div>
@@ -423,14 +423,14 @@ echo <<< FORM
     <!-- Name -->
     <div class="form-group col-sm">
         <label for="name">Name</label>
-        <input type="text" class="form-control is-invalid" name="name" id="name" aria-describedby="nameHelp" placeholder="Name" value="" required/>
+        <input type="text" class="form-control is-invalid" name="name" id="name" aria-describedby="nameHelp" placeholder="Name" value="Jawad Aziz Farhad" required/>
         <small id="nameHelp" class="invalid-feedback">Name is required.</small>
     </div>
 
     <!-- Email -->
     <div class="form-group col-sm">
         <label for="email">Email</label>
-        <input type="email" class="form-control is-invalid" name="email" id="email" aria-describedby="emailHelp" placeholder="Email" value="" required/>
+        <input type="email" class="form-control is-invalid" name="email" id="email" aria-describedby="emailHelp" placeholder="Email" value="jawad@gmail.com" required/>
         <small id="emailHelp" class="invalid-feedback">Email is required.</small>
     </div>
     

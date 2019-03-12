@@ -24,27 +24,129 @@
                        );
     }
 
-    function submitReviewForm(){
-        // echo json_encode($_POST);
-        // wp_die();
+    function submitReviewForm() {
+        $post = createPost();
 
-        uploadFiles();
+        if($post['success'] === false)
+            handleError();
+        else{
+            $files = uploadFiles();
+            echo json_encode(['files' => $files, 'post' => $post]);
+            wp_die();
+        }
+       
+    }
+
+    function handleError($error){
+        echo json_encode($error);
+        wp_die();
+    }
+
+    function createPost() {
+
+        $data = $_POST;
+
+        // Set the post ID to -1. This sets to no action at moment
+        $post_id = -1;     
+        // Set the Author, Slug, title and content of the new post
+        $author_id = 1;
+        $slug = makeSlug($data['brand'] . ' ' . $data['model']);
+        $title = $data['brand'] . ' , ' . $data['model'] . ' Review ';
+        $content = '';
+
+        // Cheks if doen't exists a post with slug "wordpress-post-created-with-code".
+        $response = array();
+        if( !post_exists_by_slug( $slug ) ) {
+            $post = array(
+                'comment_status'    =>   'open',
+                'ping_status'       =>   'open',
+                'post_author'       =>   $author_id,
+                'post_name'         =>   $slug,
+                'post_title'        =>   $title,
+                'post_content'      =>   $content,
+                'post_status'       =>   'draft',
+                'post_type'         =>   'post'
+            );            
+            // Set the post ID
+            $post_id = wp_insert_post( $post );
+
+            if(!is_wp_error($post_id)){
+                //the post is valid
+                $response = ['post_id' => $post_id , 'success' => true];
+                }else{
+                    //there was an error in the post insertion, 
+                    $response = ['message' => $post_id -> get_error_message() , 'success' => false];
+                }
+        } else {     
+            // Set pos_id to -2 becouse there is a post with this slug.
+            $post_id = -2;
+            $response = ['post_id' => $post_id , 'success' => false, 'slug' => 'Slug already exist.'];         
+        } // end if     
+        
+        return $response;
+    } 
+
+    function makeSlug($string) {
+        //Lower case everything
+        $string = strtolower($string);
+        //Make alphanumeric (removes all other characters)
+        $string = preg_replace("/[^a-z0-9_\s-]/", "", $string);
+        //Clean up multiple dashes or whitespaces
+        $string = preg_replace("/[\s-]+/", " ", $string);
+        //Convert whitespaces and underscore to dash
+        $string = preg_replace("/[\s_]/", "-", $string);
+        return $string;
+    }    
+
+    function post_exists_by_slug( $post_slug ) {
+        $args_posts = array(
+            'post_type'      => 'post',
+            'post_status'    => 'any',
+            'name'           => $post_slug,
+            'posts_per_page' => 1,
+        );
+        $loop_posts = new WP_Query( $args_posts );
+        if ( ! $loop_posts->have_posts() ) {
+            return false;
+        } else {
+            $loop_posts->the_post();
+            return $loop_posts->post->ID;
+        }
     }
 
     function uploadFiles(){
         $images = ['bike', 'gears', 'tyres' , 'handlebar' , 'suspension'];
         $filesResponse = array();
         foreach($images as $image){
-            $response = uploadFile($image);
-            $filesResponse[$image] = $response;
+            $filesResponse[$image] = upload_File($image);
         }
-
-        echo json_encode($filesResponse);
-        wp_die();
-        
+        return $filesResponse;
     }
 
-    function uploadFile($name){
+    function upload_File($name){
+        if ( ! function_exists( 'wp_handle_upload' ) ) {
+            require_once( ABSPATH . 'wp-admin/includes/file.php' );
+        }
+        
+        $uploadedfile = $_FILES[$name];
+        
+        $upload_overrides = array( 'test_form' => false );
+        
+        $movefile = wp_handle_upload( $uploadedfile, $upload_overrides );
+        
+        if ( $movefile && ! isset( $movefile['error'] ) ) {
+            $response['message'] = $name . ' file is successfully uploaded.';
+            $response['error']   = false;
+            $response = $movefile();
+        } else {
+            $response['message'] = $movefile['error'];
+            $response['error']   = false;
+        }
+
+        return $response;
+    }
+    function uploadFile($name) {
+
         $fileTmpPath = $_FILES[$name]['tmp_name'];
         $fileName = $_FILES[$name]['name'];
         $fileSize = $_FILES[$name]['size'];
@@ -56,7 +158,7 @@
         $response = array();
 
         if (in_array($fileExtension, $allowedfileExtensions)) {
-            $uploadFileDir = '../Files/';
+            $uploadFileDir = './files/'; 
             $dest_path = $uploadFileDir . $newFileName;
             
             if(move_uploaded_file($fileTmpPath, $dest_path))
@@ -74,9 +176,7 @@
             $response['message'] = 'Extension not allowed.';
             $response['error']   = false;
         }
-
         $response['file'] = $name;
-
         return $response;
     }
 
@@ -124,6 +224,7 @@
         return $error;
 
     }
+
     function validateForm($data) {
         $data['errors'] = array();
         if (empty($_POST["name"])) {
@@ -153,6 +254,7 @@
 
         return $data;
     }
+    
     function reviewForm(){
         $data = isset($_POST['data']) ? $_POST['data'] : false;
         if($data){
@@ -167,6 +269,7 @@
             showForm($data);
         }
     }
+    
     add_shortcode('review-form', 'showForm');
 
 
