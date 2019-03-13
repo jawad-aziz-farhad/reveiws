@@ -51,7 +51,7 @@ echo <<< FORM
         <div class="col-sm">
             <div class="form-group">
                 <label for="bikeModel">Bike Model</label>
-                <input type="text" class="form-control is-invalid" id="bikeModel" aria-describedby="modelHelp" placeholder="Enter bike model" value="Model" required>
+                <input type="text" class="form-control is-invalid" id="bikeModel" aria-describedby="modelHelp" name="model" placeholder="Enter bike model" value="Model" required>
                 <small id="modelHelp" class="invalid-feedback">Bike model is required.</small>
             </div>
         </div>
@@ -60,7 +60,7 @@ echo <<< FORM
         <div class="col-sm">
             <div class="form-group">
                 <label for="bikeCategory">Category</label>
-                <select class="form-control is-invalid" aria-describedby="categoryHelp" id="bikeCategory" type="select" required>
+                <select class="form-control is-invalid" aria-describedby="categoryHelp" name="category" id="bikeCategory" type="select" required>
                     {$options}
                 </select>
                 <small id="categoryHelp" class="invalid-feedback">Bike category is required.</small>
@@ -71,7 +71,7 @@ echo <<< FORM
         <div class="col-sm">
             <div class="form-group">
                 <label for="bikePrice">Bike Price</label>
-                <input type="number" class="form-control is-invalid" id="bikePrice" aria-describedby="priceHelp" value="5000" placeholder="Enter bike price ($)" required>
+                <input type="number" class="form-control is-invalid" id="bikePrice" aria-describedby="priceHelp" name="price" value="5000" placeholder="Enter bike price ($)" required>
                 <small id="priceHelp" class="invalid-feedback">Bike price is required.</small>
             </div>
         </div>
@@ -87,7 +87,7 @@ echo <<< FORM
         </div>
         <div class="w-100">
         <div class="col-sm">
-         <input type="range" class="custom-range w-100 is-invalid" id="customRange1" min="0" max="10" required>
+         <input type="range" class="custom-range w-100 is-invalid" name="right_wrong" id="customRange1" min="0" max="10" required>
         </div>
     </div>
     <!-- 2nd row starts -->
@@ -98,7 +98,7 @@ echo <<< FORM
         <div class="col-sm">
             <div class="form-group">
                 <label for="positiveFeedback1">1st Positive</label>
-                <input type="text" class="form-control" id="positiveFeedback1" aria-describedby="feedback1" placeholder="Enter 1st positive feedback">
+                <input type="text" class="form-control" id="positiveFeedback1" name="1st_positive_feedback" aria-describedby="feedback1" placeholder="Enter 1st positive feedback">
                 <small id="feedback1" class="form-text text-muted">tell us what you have found positive in this bike.</small>
             </div>
         </div>
@@ -106,7 +106,7 @@ echo <<< FORM
         <div class="col-sm">
             <div class="form-group">
                 <label for="positiveFeedback2">2nd Positive</label>
-                <input type="text" class="form-control" id="positiveFeedback2" aria-describedby="feedback2" placeholder="Enter 2nd positive feedback">
+                <input type="text" class="form-control" id="positiveFeedback2" name="2nd_positive_feedback" aria-describedby="feedback2" placeholder="Enter 2nd positive feedback">
                 <small id="feedback2" class="form-text text-muted">tell us what you have found positive in this bike.</small>
             </div>
         </div>
@@ -114,7 +114,7 @@ echo <<< FORM
         <div class="col-sm">
             <div class="form-group">
                 <label for="positiveFeedback3">3rd Positive</label>
-                <input type="text" class="form-control" id="positiveFeedback3" aria-describedby="feedback3" placeholder="Enter 3rd positive feedback">
+                <input type="text" class="form-control" id="positiveFeedback3" name="3rd_positive_feedback" aria-describedby="feedback3" placeholder="Enter 3rd positive feedback">
                 <small id="feedback3" class="form-text text-muted">tell us what you have found positive in this bike.</small>
             </div>
         </div>
@@ -128,7 +128,7 @@ echo <<< FORM
         <div class="col-sm">
             <div class="form-group">
                 <label for="positiveFeedback1">1st Negative</label>
-                <input type="text" class="form-control" id="positiveFeedback1" aria-describedby="feedback1" placeholder="Enter 1st negative feedback">
+                <input type="text" class="form-control" id="positiveFeedback1" name="1st_negative_feedback" aria-describedby="feedback1" placeholder="Enter 1st negative feedback">
                 <small id="feedback1" class="form-text text-muted">tell us what you have found negative in this bike.</small>
             </div>
         </div>
@@ -136,7 +136,7 @@ echo <<< FORM
         <div class="col-sm">
             <div class="form-group">
                 <label for="positiveFeedback2">2nd Negative</label>
-                <input type="text" class="form-control" id="positiveFeedback2" aria-describedby="feedback2" placeholder="Enter 2nd negative feedback">
+                <input type="text" class="form-control" id="positiveFeedback2" name="2nd_negative_feedback" aria-describedby="feedback2" placeholder="Enter 2nd negative feedback">
                 <small id="feedback2" class="form-text text-muted">tell us what you have found negative in this bike.</small>
             </div>
         </div>
@@ -144,7 +144,7 @@ echo <<< FORM
         <div class="col-sm">
             <div class="form-group">
                 <label for="positiveFeedback3">3rd Negative</label>
-                <input type="text" class="form-control" id="positiveFeedback3" aria-describedby="feedback3" placeholder="Enter 3rd negative feedback">
+                <input type="text" class="form-control" id="positiveFeedback3" name="3rd_negative_feedback" aria-describedby="feedback3" placeholder="Enter 3rd negative feedback">
                 <small id="feedback3" class="form-text text-muted">tell us what you have found negative in this bike.</small>
             </div>
         </div>
@@ -253,11 +253,11 @@ echo <<< FORM
         </div>
         
         <div class="col-sm starrating risingstar d-flex justify-content-center flex-row-reverse border-bottom border-dark ml-1">
-            <input type="radio" id="breaks_star5" name="breaks_rating" value="5" /><label for="star5" title="5 star">5</label>
-            <input type="radio" id="breaks_star4" name="breaks_rating" value="4" /><label for="star4" title="4 star">4</label>
-            <input type="radio" id="breaks_star3" name="breaks_rating" value="3" /><label for="star3" title="3 star">3</label>
-            <input type="radio" id="breaks_star2" name="breaks_rating" value="2" /><label for="star2" title="2 star">2</label>
-            <input type="radio" id="breaks_star1" name="breaks_rating" value="1" /><label for="star1" title="1 star">1</label>
+            <input type="radio" id="breaks_star5" name="brakes_rating" value="5" /><label for="star5" title="5 star">5</label>
+            <input type="radio" id="breaks_star4" name="brakes_rating" value="4" /><label for="star4" title="4 star">4</label>
+            <input type="radio" id="breaks_star3" name="brakes_rating" value="3" /><label for="star3" title="3 star">3</label>
+            <input type="radio" id="breaks_star2" name="brakes_rating" value="2" /><label for="star2" title="2 star">2</label>
+            <input type="radio" id="breaks_star1" name="brakes_rating" value="1" /><label for="star1" title="1 star">1</label>
         </div>
 
     </div>
@@ -270,11 +270,11 @@ echo <<< FORM
         </div>
         
         <div class="col-sm starrating risingstar d-flex justify-content-center flex-row-reverse border-bottom border-dark ml-1">
-            <input type="steering_radio" id="steering_star5" name="rating" value="5" /><label for="star5" title="5 star">5</label>
-            <input type="steering_radio" id="steering_star4" name="rating" value="4" /><label for="star4" title="4 star">4</label>
-            <input type="steering_radio" id="steering_star3" name="rating" value="3" /><label for="star3" title="3 star">3</label>
-            <input type="steering_radio" id="steering_star2" name="rating" value="2" /><label for="star2" title="2 star">2</label>
-            <input type="steering_radio" id="steering_star1" name="rating" value="1" /><label for="star1" title="1 star">1</label>
+            <input type="radio" id="steering_star5" name="rating" value="5" /><label for="star5" title="5 star">5</label>
+            <input type="radio" id="steering_star4" name="rating" value="4" /><label for="star4" title="4 star">4</label>
+            <input type="radio" id="steering_star3" name="rating" value="3" /><label for="star3" title="3 star">3</label>
+            <input type="radio" id="steering_star2" name="rating" value="2" /><label for="star2" title="2 star">2</label>
+            <input type="radio" id="steering_star1" name="rating" value="1" /><label for="star1" title="1 star">1</label>
         </div>
 
     </div>
@@ -319,7 +319,7 @@ echo <<< FORM
         <div class="col-sm">
             <div class="form-group">
                 <label for="country">Country</label>
-                <select class="form-control" id="country">
+                <select class="form-control" id="country" name="country">
                     {$country_options}
                 </select>
             </div>
@@ -330,11 +330,11 @@ echo <<< FORM
     <!-- 16th row starts-->
     <div class="row w-100 m-2">
         <div class="col-sm">
-            <div class="form-group">
+            <div class="form-group" id="videoDiv">
                 <label class="custom-file-label" for="videoFile">Upload video</label>
-                <input type="file" class="custom-file-input" id="reviewVideo" aria-describedby="videoHelp" placeholder="Enter bike brand">
+                <input type="file" class="custom-file-input" id="reviewVideo" name="review_video" aria-describedby="videoHelp" placeholder="Enter bike brand">
                 
-                <video class="img-fluid mt-1" id="reviewVideo" playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop">
+                <video class="img-fluid mt-1" id="videoTag" playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop" controls="controls">
                     <source src="https://storage.googleapis.com/coverr-main/mp4/Mt_Baker.mp4" type="video/mp4">
                 </video>
                 <small id="videoHelp" class="form-text text-muted">Your review must not be longer than 90 seconds. You must cover the following points in this order:
@@ -423,7 +423,7 @@ echo <<< FORM
     <!-- Name -->
     <div class="form-group col-sm">
         <label for="name">Name</label>
-        <input type="text" class="form-control is-invalid" name="name" id="name" aria-describedby="nameHelp" placeholder="Name" value="Jawad Aziz Farhad" required/>
+        <input type="text" class="form-control is-invalid" name="user_name" id="name" aria-describedby="nameHelp" placeholder="Name" value="Jawad Aziz Farhad" required/>
         <small id="nameHelp" class="invalid-feedback">Name is required.</small>
     </div>
 

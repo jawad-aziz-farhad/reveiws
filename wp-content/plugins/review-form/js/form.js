@@ -8,7 +8,7 @@
 
     page.variables = {
         ratings : { money_rating : '', frame_rating : '' , comfort_rating : '' , design_rating : '' , gears_rating : '' , 
-                    breaks_rating : '' , steering_rating : '' , wheels_rating : '' , saddle_rating : '' } 
+                    brakes_rating : '' , steering_rating : '' , wheels_rating : '' , saddle_rating : '' } 
     }
 
     function bindEvents(){
@@ -33,16 +33,17 @@
         var name = $(this).parent().find("input").attr('name');
         page.variables.ratings[name] = $(this).text();
     }
+
+    function isEmail(email) {
+        var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        return regex.test(email);
+    }
     /*
     |------------------------------
     |  CHECKING FIELDS ON KEY PRESS
     |------------------------------
     */
     function checkField() {
-       var isEmail = function isEmail(email) {
-            var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-            return regex.test(email);
-      }
       if($(this).attr('required')) {
 
         var value = $(this).val();
@@ -125,7 +126,19 @@
         let formIsValid = false;
         $form = $('#reviewForm').val();
         $( '.form-control', $form ).each( function() {
-            formIsValid = ($(this).hasClass('is-invalid')) ? true : false;
+            if($(this).attr('required')) {
+
+                if($(this).attr('type') == 'text' && $(this).val().length >= 4 && $(this).hasClass('is-invalid'))
+                    $(this).removeClass('is-invalid').addClass('is-valid');
+                else if($(this).attr('type') == 'email' && isEmail($(this).val()) && $(this).hasClass('is-invalid'))
+                    $(this).removeClass('is-invalid').addClass('is-valid');
+                else if($(this).attr('type') === 'number' && $(this).val() > 0 )
+                    $(this).removeClass('is-invalid').addClass('is-valid');
+                else if($(this).attr('type') === 'select' && ($(this).children("option:selected").val().indexOf('select') == -1))
+                    $(this).removeClass('is-invalid').addClass('is-valid');
+
+                formIsValid = ($(this).hasClass('is-invalid')) ? true : false;
+            }
         });
         $( 'button[type=submit]', $form ).attr( 'disabled', formIsValid );
     }
@@ -138,7 +151,7 @@
     function submitForm(e){
 
         e.preventDefault();
-        
+
         $form = $(this);
 
         $('button[type="submit"]', $form).each(function()
@@ -156,15 +169,17 @@
             form_data.append(`${input.name}`, `${input.value}`);
         });
         
-        var images = ['bike', 'gears', 'tyres', 'handlebar', 'suspension' ];
-        for(var i=0; i<images.length; i++) {
-            var file_data = $('input[name="'+images[i]+'"]')[0].files[0];
-            form_data.append(images[i] , file_data);           
-        }       
-
+        var files = ['bike', 'gears', 'tyres', 'handlebar', 'suspension' , 'review_video'];
+        for(var i=0; i<files.length; i++) {
+            var file_data = $('input[name="'+files[i]+'"]')[0].files[0];
+            form_data.append(files[i] , file_data);           
+        }
         form_data.append('action', 'submitReviewForm');  
         form_data.append('query_vars', reviewForm.query_vars);  
-
+        for ( var rating in page.variables.ratings ) {
+            var val = page.variables.ratings[rating] ? page.variables.ratings[rating] : 0;
+            form_data.append(rating, val);
+        }
         $.ajax({
             type: "POST",
             url: reviewForm.review_url,
@@ -238,14 +253,15 @@
         }
         
         else {            
-            if(!fileName.match(/.(ogg|h264|hls|vp9)$/i)){
+            if(!fileName.match(/.(mp4|ogg|h264|hls|vp9)$/i)){
                 window.alert('Please select a video.');
                 return;
             }
             if (e.target.files && e.target.files[0]) {
                 var reader = new FileReader();		        
                 reader.onload = function (e) {
-                    $('#reviewVideo').attr('src', e.target.result);
+                    $('#videoTag').attr('src', e.target.result);
+                    $('#videoDiv video')[0].load();
                 }
                 reader.readAsDataURL(e.target.files[0]);                
             }

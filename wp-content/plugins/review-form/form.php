@@ -25,13 +25,28 @@
     }
 
     function submitReviewForm() {
+
         $post = createPost();
 
         if($post['success'] === false)
             handleError();
-        else{
-            $files = uploadFiles();
-            echo json_encode(['files' => $files, 'post' => $post]);
+        else{            
+            $fields = acf_get_fields_by_id($post->post_id);
+            $allFields = array();
+            foreach ($fields as $field) {
+                $value = $_POST[$field['name']];
+                if(isset( $value )) {
+                    if($field['key'] === 'category' || $field['key'] === 'country')
+                        $value = array($value);
+                    update_field($field['key'], $value , $post['post_id']);  
+                    $allFields[$field['key']] = $value;
+                }            
+            }
+
+            
+
+            $files = uploadFiles($post);
+            echo json_encode(['files' => $files, 'post' => $post , 'all' => $allFields]);
             wp_die();
         }
        
@@ -44,6 +59,7 @@
 
     function createPost() {
 
+        
         $data = $_POST;
 
         // Set the post ID to -1. This sets to no action at moment
@@ -114,30 +130,34 @@
         }
     }
 
-    function uploadFiles(){
-        $images = ['bike', 'gears', 'tyres' , 'handlebar' , 'suspension'];
+    function uploadFiles($post = '') {
+        $files = ['bike', 'gears', 'tyres' , 'handlebar' , 'suspension' , 'review_video'];
         $filesResponse = array();
-        foreach($images as $image){
-            $filesResponse[$image] = upload_File($image);
+        foreach($files as $file) {
+            if(isset($_FILES[$file]) && !empty($_FILES[$file])){                
+                $filesResponse[$file] = uploadFile($file , $post->post_id);
+                $key = ( $key === 'review_video' ) ? $key : ($file . '_image');
+                update_field($key, $filesResponse[$file]['response']['attachment_id'], $post['post_id']);
+            }
         }
+
         return $filesResponse;
     }
 
-    function upload_File($name){
+    function uploadFile($name, $post_id){
         if ( ! function_exists( 'wp_handle_upload' ) ) {
             require_once( ABSPATH . 'wp-admin/includes/file.php' );
-        }
-        
-        $uploadedfile = $_FILES[$name];
-        
+        }        
+        $uploadedfile = $_FILES[$name];        
         $upload_overrides = array( 'test_form' => false );
         
         $movefile = wp_handle_upload( $uploadedfile, $upload_overrides );
         
         if ( $movefile && ! isset( $movefile['error'] ) ) {
-            $response['message'] = $name . ' file is successfully uploaded.';
-            $response['error']   = false;
-            $response = $movefile();
+            $response['message']  = $name . ' file is successfully uploaded.';
+            $response['error']    = false;
+            $movefile['attachment_id'] = insertAttachment($post_id , $movefile['url']);
+            $response['response'] = $movefile;
         } else {
             $response['message'] = $movefile['error'];
             $response['error']   = false;
@@ -145,40 +165,41 @@
 
         return $response;
     }
-    function uploadFile($name) {
 
-        $fileTmpPath = $_FILES[$name]['tmp_name'];
-        $fileName = $_FILES[$name]['name'];
-        $fileSize = $_FILES[$name]['size'];
-        $fileType = $_FILES[$name]['type'];
-        $fileNameCmps = explode(".", $fileName);
-        $fileExtension = strtolower(end($fileNameCmps));
-        $newFileName = md5(time() . $fileName) . '.' . $fileExtension;
-        $allowedfileExtensions = array('jpg', 'jpeg' ,'gif', 'png');
-        $response = array();
 
-        if (in_array($fileExtension, $allowedfileExtensions)) {
-            $uploadFileDir = './files/'; 
-            $dest_path = $uploadFileDir . $newFileName;
-            
-            if(move_uploaded_file($fileTmpPath, $dest_path))
-            {   
-                $response['message'] = $name . ' file is successfully uploaded.';
-                $response['error']   = false;
-            }
-            else
-            {
-                $response['message'] = $name . ' couldn\'t be uploaded.';
-                $response['error']   = false;
-            }
-        }
-        else {
-            $response['message'] = 'Extension not allowed.';
-            $response['error']   = false;
-        }
-        $response['file'] = $name;
-        return $response;
+    function insertAttachment($postid, $filename){
+        
+        // Check the type of file. We'll use this as the 'post_mime_type'.
+        $filetype = wp_check_filetype( basename( $filename ), null );
+
+        // Get the path to the upload directory.
+        $wp_upload_dir = wp_upload_dir();
+
+        // Prepare an array of post data for the attachment.
+        $attachment = array(
+            'guid'           => $wp_upload_dir['url'] . '/' . basename( $filename ), 
+            'post_mime_type' => $filetype['type'],
+            'post_title'     => preg_replace( '/\.[^.]+$/', '', basename( $filename ) ),
+            'post_content'   => '',
+            'post_status'    => 'inherit',
+            'post_parent'    => $postid
+        );
+
+        // Insert the attachment.
+        $attach_id = wp_insert_attachment( $attachment, $filename, $postid );
+
+        // Make sure that this file is included, as wp_generate_attachment_metadata() depends on it.
+        require_once( ABSPATH . 'wp-admin/includes/image.php' );
+        require_once( ABSPATH . 'wp-admin/includes/file.php' );
+	    require_once( ABSPATH . 'wp-admin/includes/media.php' );
+
+        // Generate the metadata for the attachment, and update the database record.
+        $attach_data = wp_generate_attachment_metadata( $attach_id, $filename );
+        wp_update_attachment_metadata( $attach_id, $attach_data );
+
+        return $attach_id;
     }
+
 
     function showForm($data){
         include('templates/form1.html');
