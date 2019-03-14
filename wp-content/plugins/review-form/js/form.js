@@ -17,8 +17,12 @@
       $('select').on('change', checkField);
       $('label').on('click', giveRating);
       $('#reviewForm').on('submit', submitForm);
+      $('input[type="range"]').on('change', handleRangeSlide);
     }
 
+    function handleRangeSlide(){
+       $("label[for='"+$(this).attr('id')+"'] span").text($(this).val());
+    }
     /*
     |-----------------------
     | GIVING STAR RATING
@@ -90,17 +94,19 @@
     |  SHOWING ERROR MESSAGE TO THE REGARDING FIELD
     |-----------------------------------------------
     */
-    function showErrorMessage($this , $isValid ){
-        $label   = $("label[for='"+$this.attr('id')+"']");
+    function showErrorMessage($this , $isValid ) {
 
+        $label   = $("label[for='"+$this.attr('id')+"']");
+        
         if($this.val().length >=1 && $this.val().length < 5){
             if($this.attr('type') === 'text')
                 $error = 'Min 5 characters required.';
             else
                 $error = 'Email address is invalid.'
         }
-        else
+        else{
             $error = $label.text() + ' is required.';
+        }
 
         $descibedBy = $this.attr('aria-describedby');
 
@@ -126,6 +132,7 @@
         let formIsValid = false;
         $form = $('#reviewForm').val();
         $( '.form-control', $form ).each( function() {
+
             if($(this).attr('required')) {
 
                 if($(this).attr('type') == 'text' && $(this).val().length >= 4 && $(this).hasClass('is-invalid'))
@@ -180,6 +187,7 @@
             var val = page.variables.ratings[rating] ? page.variables.ratings[rating] : 0;
             form_data.append(rating, val);
         }
+        form_data.append('like_level', $('input[type="range"]').val());
         $.ajax({
             type: "POST",
             url: reviewForm.review_url,

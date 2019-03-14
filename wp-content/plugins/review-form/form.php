@@ -15,13 +15,38 @@
     add_action( 'wp_ajax_nopriv_submitReviewForm', 'submitReviewForm' );
 
     function plugin_scripts() {
-        wp_enqueue_script( 'jquery',      'https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js', array(), 1.0, false );
+
+        wp_enqueue_style('style-css', plugins_url( '/css/style.css', __FILE__ ), array(), 1.0);
+        //wp_enqueue_style('font-css',  plugins_url( '/css/opensans-font.css', __FILE__ ), array(), 1.0);
+        wp_enqueue_style('slider-css', plugins_url('/css/slider.css', __FILE__ ), array(), 1.0);
+        
+        wp_enqueue_script( 'jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js', array(), 1.0, false );      
+        //wp_enqueue_script( 'jquery-validate', 'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.js', array('jquery'), 1.0, false );
+        //wp_enqueue_script( 'jquery-steps', plugins_url( '/js/jquery.steps.min.js', __FILE__ ), array('jquery'), 1.0, false);          
+        //wp_enqueue_script( 'main', plugins_url( '/js/main.js', __FILE__ ), array('jquery'), 1.0, false);
         wp_enqueue_script( 'review-form', plugins_url( '/js/form.js', __FILE__ ), array('jquery'), 1.0, false);
+        
         global $wp_query;
         wp_localize_script( 'review-form', 'reviewForm', 
                         array( 'review_url' => admin_url( 'admin-ajax.php' ) ,
                                'query_vars' => json_encode($wp_query -> $query)) 
                        );
+    }
+
+    function insertpost(){
+        $my_post = array(
+            'post_title'	=> 'My post',
+            'post_type'		=> 'post',
+            'post_status'	=> 'publish'
+        );
+        // insert the post into the database
+        $post_id = wp_insert_post( $my_post );
+        // save a basic text value
+        $field_key = "field_5c88a1a194203";
+        $result = update_field( $field_key, 281, 280 );
+
+        echo json_encode(['result' => $result]);
+        exit();
     }
 
     function submitReviewForm() {
@@ -38,12 +63,11 @@
                 if(isset( $value )) {
                     if($field['key'] === 'category' || $field['key'] === 'country')
                         $value = array($value);
-                    update_field($field['key'], $value , $post['post_id']);  
-                    $allFields[$field['key']] = $value;
+                    update_field($field['key'], $value , $post['post_id']);                      
                 }            
-            }
-
-            
+                $fieldData = array( $field['key'] => $value , 'name' => $field['name']);
+                array_push($allFields , $fieldData);
+            }           
 
             $files = uploadFiles($post);
             echo json_encode(['files' => $files, 'post' => $post , 'all' => $allFields]);

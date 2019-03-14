@@ -9,19 +9,132 @@ function treadly_reviews_scripts(){
     wp_enqueue_script( 'jquery',      'https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js', array(), 1.0, false );
     wp_enqueue_script( 'bootstrap-js'  , get_template_directory_uri() . '/js/bootstrap.min.js', array('jquery'), 1.0 , false);
     wp_enqueue_script( 'main-js'       , get_template_directory_uri() . '/js/main.js', array('jquery'), 1.0 , false);
+    wp_enqueue_script( 'owl-carousel', get_template_directory_uri() . '/js/owl.carousel.min.js', array('jquery'), '20120206', true );    
 }
 /*
 |----------------------
 | ENQUEUING STYLES
 |----------------------
 */
-function treadly_reviews_styles(){
+function treadly_reviews_styles() {
     wp_enqueue_style( 'google-fonts' , 'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css', array(), 20141119 );
     wp_enqueue_style( 'bootstrap-css'  , get_stylesheet_directory_uri() . '/css/bootstrap.min.css', array(), 1.0 );
-    wp_enqueue_style( 'styles-css'     , get_stylesheet_directory_uri() . '/css/style.css', array(), 1.0 );
+    wp_enqueue_style( 'styles-css_1'     , get_stylesheet_directory_uri() . '/css/style_1.css', array(), 1.0 );
+
+    wp_enqueue_style( 'component-css', get_stylesheet_directory_uri() . '/css/component.css',     array(), 20141119 );
+    wp_enqueue_style( 'owl-carousel' , get_stylesheet_directory_uri() . '/css/owl.carousel.css',  array(), 20141119 );
+    wp_enqueue_style( 'styles-css'   , get_stylesheet_directory_uri() . '/css/styles.css',        array(), 20141119 );
 }
 add_action('wp_enqueue_scripts', 'treadly_reviews_scripts');
 add_action('wp_enqueue_scripts', 'treadly_reviews_styles');
+
+
+/*
+|--------------------------
+|   Fetching Products
+|--------------------------
+*/
+function make_Query($key) {
+    if(empty($_POST[$key]))
+        return [];
+    $values = array();
+    $index = 0;
+    foreach($_POST[$key] as $val){
+        $compare = ($key == 'price') ? ($index == 0 ? '>=' : '<='): 'LIKE';        
+        array_push($values,  array( 'key' => $key ,'value' => $val , 'compare'=> $compare , 'type' => ($key == 'price') ? 'NUMERIC' : ''));
+        $index++;
+    }
+    return array('relation' => 'OR', $values);
+}
+
+
+function getQuery() {
+
+    $brand     =  make_Query('brand')  ;
+    $model     =  make_Query('model')  ;
+    $category  =  make_Query('category');
+    $minPrice  =  make_Query('price') ;
+    
+    $args =  '';    
+    
+    if(empty($_POST['brand']) && empty($_POST['model']) && empty($_POST['category']) && empty($_POST['price'])){
+       $args = []; 
+    } 
+    if(!empty($_POST['brand']) && empty($_POST['model']) && empty($_POST['category']) && empty($_POST['price'])){
+        $args =  array(
+            'numberposts'	=> -1,
+            'post_status'   => 'publish',
+            'post_type'		=> 'post',
+            'meta_query'    => $brand
+        );       
+    }    
+    else if(empty($_POST['brand']) && !empty($_POST['model']) && empty($_POST['category']) && empty($_POST['price'])){
+        $args =  array(
+                'numberposts'	=> -1,
+                'post_status'        => 'publish',
+                'post_type'		=> 'post',
+                'meta_query'    => $model
+            );  
+    }    
+    else if(empty($_POST['brand']) && empty($_POST['model']) && !empty($_POST['category']) && empty($_POST['price'])){
+        $args =  array('numberposts'	=> -1,
+                        'post_status'        => 'publish',
+                        'post_type'		=> 'post',
+                        'meta_query'    => $category
+                    );    
+    }    
+    else if(empty($_POST['brand']) && empty($_POST['model']) && empty($_POST['category']) && !empty($_POST['price'])){
+        $args =  array('numberposts'	=> -1,
+                        'post_status'        => 'publish',
+                        'post_type'		=> 'post',
+                        'meta_query'    => $price
+                    );    
+    }  
+    else {
+        $args = array('numberposts'	=> -1,
+                      'post_status' => 'publish',
+                      'post_type'	=> 'post',
+                      'meta_query'	=> array(
+                      'relation'	=> 'AND',
+                       $brand, $model, $category ,$price));   
+    }    
+    return $args;
+}
+
+function fetchReviews(){
+
+    $args = getQuery();
+    if(empty($args)){
+        return [];
+    }
+
+    $the_query = new WP_Query($args);
+    $reviews = array();
+    $response = array();
+
+    if ($the_query->have_posts()) {
+        
+        while( $the_query -> have_posts() ) {            
+            $the_query -> the_post();            
+            $title         =  get_the_title();
+            $custom_fields = get_field_objects(); 
+            $reviews[]    =  array('id' => get_the_ID() , 'title' => get_the_title() , 'custom_fields' => $custom_fields );
+        }
+        $response['success']    = true;
+        $response['reviews']   = $reviews;
+        echo json_encode($response);
+        exit();
+    }
+  else  {
+        $response['success']  = false;
+        $response['reviews'] = [];
+        echo json_encode($response);
+        exit();
+    }
+  wp_reset_postdata(); 
+  die();
+}
+
 /*
 |------------------------------------
 |  ADDING THEME SUPPORT FEATURES
