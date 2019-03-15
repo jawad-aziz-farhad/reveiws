@@ -56,54 +56,55 @@
             </div>
         
         <div class="col-9">
-        <div class="owl-carousel">
-            <?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
-                
-                <div class="item">
-                    <div class="top product">
+            <div class="owl-carousel">
+                <?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
+                    <a href="<?php the_permalink(); ?>">
+                        <div class="item">
+                            <div class="top product">
 
-                        <hr>
-                        <div class="prod-name"> 
-                            <span>
-                                <?php  echo ((strlen(get_the_title()) < 27) ? get_the_title() : substr(get_the_title(), 0, 24).'..'); ?>
-                            </span>
-                        </div> 
+                                <hr>
+                                <div class="prod-name"> 
+                                    <span>
+                                        <?php  echo ((strlen(get_the_title()) < 27) ? get_the_title() : substr(get_the_title(), 0, 24).'..'); ?>
+                                    </span>
+                                </div> 
 
-                        <hr>
+                                <hr>
 
-                        <div class="prod-img"> 
-                            <?php 
-                                $image = get_field('gears_image');
+                                <div class="prod-img"> 
+                                    <?php 
+                                        $image = get_field('gears_image');
 
-                            if( !empty($image) ): ?>
+                                    if( !empty($image) ): ?>
 
-                            <img src="<?php echo $image['url']; ?>" alt="<?php echo get_the_title(); ?>" />
+                                    <img src="<?php echo $image['url']; ?>" alt="<?php echo get_the_title(); ?>" />
 
-                            <?php endif; ?>
-                        </div>
+                                    <?php endif; ?>
+                                </div>
 
-                        <hr>
+                                <hr>
 
-                        <div class="row">
-                            <div class="col-sm">
+                                <div class="row">
+                                    <div class="col-sm">
+
+                                    </div>
+                                </div>
 
                             </div>
                         </div>
+                    </a><!-- .a -->
+                
 
+                <?php endwhile; else: ?>
+                    <p><?php _e('Sorry, this page does not exist.'); ?></p>
+                <?php endif; ?>
                     </div>
                 </div>
-            
-
-            <?php endwhile; else: ?>
-                <p><?php _e('Sorry, this page does not exist.'); ?></p>
-            <?php endif; ?>
-                </div>
             </div>
-          </div>
         </div>
     </div> 
-
 <?php
-    echo do_shortcode("[sc_sample_form]");
+    echo do_shortcode("[sc_sample_form]"); ?>
+<?php
     get_footer(); 
 ?>

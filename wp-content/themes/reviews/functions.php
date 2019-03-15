@@ -9,7 +9,13 @@ function treadly_reviews_scripts(){
     wp_enqueue_script( 'jquery',      'https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js', array(), 1.0, false );
     wp_enqueue_script( 'bootstrap-js'  , get_template_directory_uri() . '/js/bootstrap.min.js', array('jquery'), 1.0 , false);
     wp_enqueue_script( 'main-js'       , get_template_directory_uri() . '/js/main.js', array('jquery'), 1.0 , false);
-    wp_enqueue_script( 'owl-carousel', get_template_directory_uri() . '/js/owl.carousel.min.js', array('jquery'), '20120206', true );    
+    wp_enqueue_script( 'owl-carousel'  , get_template_directory_uri() . '/js/owl.carousel.min.js', array('jquery'), 1.0, false );    
+
+    global $wp_query;
+    wp_localize_script( 'main-js', 'commentForm', 
+                        array( 'comment_url' => admin_url( 'admin-ajax.php' ) ,
+                               'query_vars' => json_encode($wp_query -> $query)) 
+                       );
 }
 /*
 |----------------------
@@ -28,7 +34,8 @@ function treadly_reviews_styles() {
 add_action('wp_enqueue_scripts', 'treadly_reviews_scripts');
 add_action('wp_enqueue_scripts', 'treadly_reviews_styles');
 
-
+add_action( 'wp_ajax_insertComment', 'insertComment' );
+add_action( 'wp_ajax_nopriv_insertComment', 'insertComment' );
 /*
 |--------------------------
 |   Fetching Products
@@ -133,6 +140,26 @@ function fetchReviews(){
     }
   wp_reset_postdata(); 
   die();
+}
+
+function insertComment(){
+    $data = array(
+        'comment_post_ID' => $_POST['post_id'],
+        'comment_author' => $_POST['author_name'],
+        'comment_author_email' => $_POST['author_email'],
+        'comment_author_url' => '',
+        'comment_content' => $_POST['comment'],
+        'comment_author_IP' => '',
+        'comment_agent' => '',
+        'comment_date' => date('Y-m-d H:i:s'),
+        'comment_date_gmt' => date('Y-m-d H:i:s'),
+        'comment_approved' => 1,
+    );
+    
+    $comment_id = wp_insert_comment($data);
+    $success = $comment_id ? true : false;
+    echo json_encode(['comment_id' => $comment_id , 'success' => $success]);
+    exit();
 }
 
 /*
