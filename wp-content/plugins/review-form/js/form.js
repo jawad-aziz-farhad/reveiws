@@ -2,9 +2,19 @@
     window.page = window.page || {};
 
     $(document).ready(function(){      
-      enableDisableButton();  
-      bindEvents();
+    //   enableDisableButton();  
+    //   bindEvents();
+        jQuerySteps();
     }); 
+
+    function jQuerySteps(){
+        $("#example-vertical").steps({
+            headerTag: "h3",
+            bodyTag: "section",
+            transitionEffect: "slideLeft",
+            stepsOrientation: "vertical"
+        });
+    }
 
     page.variables = {
         ratings : { money_rating : '', frame_rating : '' , comfort_rating : '' , design_rating : '' , gears_rating : '' , 

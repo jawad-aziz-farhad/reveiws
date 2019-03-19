@@ -22,7 +22,7 @@
         
         wp_enqueue_script( 'jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js', array(), 1.0, false );      
         //wp_enqueue_script( 'jquery-validate', 'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.js', array('jquery'), 1.0, false );
-        //wp_enqueue_script( 'jquery-steps', plugins_url( '/js/jquery.steps.min.js', __FILE__ ), array('jquery'), 1.0, false);          
+        wp_enqueue_script( 'jquery-steps', plugins_url( '/js/jquery.steps.min.js', __FILE__ ), array('jquery'), 1.0, false);          
         //wp_enqueue_script( 'main', plugins_url( '/js/main.js', __FILE__ ), array('jquery'), 1.0, false);
         wp_enqueue_script( 'review-form', plugins_url( '/js/form.js', __FILE__ ), array('jquery'), 1.0, false);
         
@@ -321,7 +321,7 @@
 /*-------------- */
 function show_Form($data = [])
 {
-  include('templates/form2.html');
+  include('templates/form3.html');
 }
 
 function process_Form($data)

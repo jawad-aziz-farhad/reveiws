@@ -30,12 +30,16 @@ function treadly_reviews_styles() {
     wp_enqueue_style( 'component-css', get_stylesheet_directory_uri() . '/css/component.css',     array(), 20141119 );
     wp_enqueue_style( 'owl-carousel' , get_stylesheet_directory_uri() . '/css/owl.carousel.css',  array(), 20141119 );
     wp_enqueue_style( 'styles-css'   , get_stylesheet_directory_uri() . '/css/styles.css',        array(), 20141119 );
+    wp_enqueue_style( 'styles2-css'   , get_stylesheet_directory_uri() . '/css/style2.css',       array(), 20141119 );
 }
 add_action('wp_enqueue_scripts', 'treadly_reviews_scripts');
 add_action('wp_enqueue_scripts', 'treadly_reviews_styles');
 
 add_action( 'wp_ajax_insertComment', 'insertComment' );
 add_action( 'wp_ajax_nopriv_insertComment', 'insertComment' );
+
+add_action( 'wp_ajax_updateLikes', 'updateLikes');
+add_action( 'wp_ajax_nopriv_updateLikes', 'updateLikes' );
 /*
 |--------------------------
 |   Fetching Products
@@ -145,7 +149,7 @@ function fetchReviews(){
 function insertComment(){
     $data = array(
         'comment_post_ID' => $_POST['post_id'],
-        'comment_author' => $_POST['author_name'],
+        'comment_author'  => $_POST['author_name'],
         'comment_author_email' => $_POST['author_email'],
         'comment_author_url' => '',
         'comment_content' => $_POST['comment'],
@@ -154,14 +158,25 @@ function insertComment(){
         'comment_date' => date('Y-m-d H:i:s'),
         'comment_date_gmt' => date('Y-m-d H:i:s'),
         'comment_approved' => 1,
-    );
-    
+    );    
     $comment_id = wp_insert_comment($data);
     $success = $comment_id ? true : false;
     echo json_encode(['comment_id' => $comment_id , 'success' => $success]);
     exit();
 }
 
+function updateLikes() {
+    $response = '';
+    $field = get_field_object($_POST['field'] , $_POST['post_id']);
+    
+    $count = (int) $field['value'];
+    $count = ( $count == 0 ) ? 1 : $count++;
+
+    $response = update_field($field['key'], $count, (int) $_POST['post_id']);               
+    
+    echo json_encode(array('response' => $response, 'count'=> $count, 'key' => $field['key'] , 'value' => $field['value'] , 'post_id' => $_POST['post_id']));
+    exit();
+}
 /*
 |------------------------------------
 |  ADDING THEME SUPPORT FEATURES

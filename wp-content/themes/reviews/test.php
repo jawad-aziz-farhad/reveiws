@@ -1,190 +1,134 @@
 <?php get_header(); ?>
+<div class="wrapper">
+    <div class="container">
 
-<!-- Page Content -->
-<div class="container">
-
-<div class="row">
-
-  <!-- Post Content Column -->
-  <div class="col-lg-8">
-
-    <!-- Title -->
-    <h1 class="mt-4"><?php the_title(); ?></h1>
-
-    <!-- Author -->
-    <?php 
-        $author_id = get_post_field( 'post_author', get_the_ID() );
-        $author_name  = get_the_author_meta('user_nicename', $author_id);
-        $author_email = get_the_author_meta('user_email', $author_id);
-    ?>
-    <p class="lead">
-      by
-      <a href="#"><?php echo $author_email; ?></a>
-    </p>
-
-    
-
-    <hr>
-
-    <!-- Date/Time -->
-    <p>Posted on <?php the_time('F j, Y g:i A') ?> </p>
-
-    <hr>
-
-    <!-- Preview Image --
-    <img class="img-fluid rounded" src="http://placehold.it/900x300" alt="">
-    
-    -->
-
-    <?php 
-        $image = get_field('gears_image');
-        if( !empty($image) ): ?>
-        <img src="<?php echo $image['url']; ?>" alt="<?php echo get_the_title(); ?>" />
-        <?php else: ?>
-        <img class="img-fluid rounded" src="http://placehold.it/900x300" alt=""> 
-        <?php endif; ?>
-
-    <hr>
-
-    <!-- Post Content -->
-    <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus, vero, obcaecati, aut, error quam sapiente nemo saepe quibusdam sit excepturi nam quia corporis eligendi eos magni recusandae laborum minus inventore?</p>
-
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut, tenetur natus doloremque laborum quos iste ipsum rerum obcaecati impedit odit illo dolorum ab tempora nihil dicta earum fugiat. Temporibus, voluptatibus.</p>
-
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos, doloribus, dolorem iusto blanditiis unde eius illum consequuntur neque dicta incidunt ullam ea hic porro optio ratione repellat perspiciatis. Enim, iure!</p>
-
-    <blockquote class="blockquote">
-      <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-      <footer class="blockquote-footer">Someone famous in
-        <cite title="Source Title">Source Title</cite>
-      </footer>
-    </blockquote>
-
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error, nostrum, aliquid, animi, ut quas placeat totam sunt tempora commodi nihil ullam alias modi dicta saepe minima ab quo voluptatem obcaecati?</p>
-
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Harum, dolor quis. Sunt, ut, explicabo, aliquam tenetur ratione tempore quidem voluptates cupiditate voluptas illo saepe quaerat numquam recusandae? Qui, necessitatibus, est!</p>
-
-    <hr>
-
-    <!-- Comments Form -->
-    <div class="card my-4">
-      <h5 class="card-header">Leave a Comment:</h5>
-      <div class="card-body">
-        <form id="commentForm" role="form" method="post">
-          <div class="form-group">
-            <textarea class="form-control" rows="3" id="comment" name="comment"></textarea>
-          </div>
-          <input type="hidden" name="post_id" value="<?php echo get_the_ID(); ?>"/>
-          <input type="hidden" name="author_name" value="<?php echo $author_name; ?>"/>
-          <input type="hidden" name="author_email" value="<?php echo (int)$author_email; ?>"/>
-
-          <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-        <small id="comment-form-result"><small>
-    </div>
-
-   <!-- Single Comment -->
-   <div class="media mb-4">
-          <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-          <div class="media-body">
-            <h5 class="mt-0">Commenter Name</h5>
-            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-          </div>
-        </div>
-
-        <!-- Comment with nested comments -->
-        <div class="media mb-4">
-          <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-          <div class="media-body">
-            <h5 class="mt-0">Commenter Name</h5>
-            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-
-            <div class="media mt-4">
-              <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-              <div class="media-body">
-                <h5 class="mt-0">Commenter Name</h5>
-                Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-              </div>
-            </div>
-
-            <div class="media mt-4">
-              <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-              <div class="media-body">
-                <h5 class="mt-0">Commenter Name</h5>
-                Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-    </div>
-
-  <!-- Sidebar Widgets Column -->
-  <div class="col-md-4">
-
-    <!-- Search Widget -->
-    <div class="card my-4">
-      <h5 class="card-header">Search</h5>
-      <div class="card-body">
-        <div class="input-group">
-          <input type="text" class="form-control" placeholder="Search for...">
-          <span class="input-group-btn">
-            <button class="btn btn-secondary" type="button">Go!</button>
-          </span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Categories Widget -->
-    <div class="card my-4">
-      <h5 class="card-header">Categories</h5>
-      <div class="card-body">
         <div class="row">
-          <div class="col-lg-6">
-            <ul class="list-unstyled mb-0">
-              <li>
-                <a href="#">Web Design</a>
-              </li>
-              <li>
-                <a href="#">HTML</a>
-              </li>
-              <li>
-                <a href="#">Freebies</a>
-              </li>
-            </ul>
-          </div>
-          <div class="col-lg-6">
-            <ul class="list-unstyled mb-0">
-              <li>
-                <a href="#">JavaScript</a>
-              </li>
-              <li>
-                <a href="#">CSS</a>
-              </li>
-              <li>
-                <a href="#">Tutorials</a>
-              </li>
-            </ul>
+            <div class="col-3">
+                <div class="row">
+
+                 <form id="searchForm" method="post">
+
+                    <div class="col-sm">
+                        <label for="bikeBrand" class="float-left">Bike Brand</label>
+                        <input type="text" class="form-control is-invalid" id="bikeBrand" name="brand" placeholder="Enter bike brand" value="" required>
+                    </div>
+
+                    <div class="w-100"></div>
+                    
+                    <div class="col-sm mt-2">
+                        <label for="model"  class="float-left">Bike Model</label>
+                        <input type="text" class="form-control is-invalid" id="model" name="model" placeholder="Enter bike model" value="" required>
+                    </div>
+                    
+                    <div class="w-100"></div>
+                    
+                    <div class="col-sm mt-2">
+                        <label for="category" class="float-left">Bike Category</label>
+                        <input type="text" class="form-control is-invalid" id="category" name="category" placeholder="Enter bike category" value="" required>
+                    </div>
+
+                    <div class="w-100"></div>
+
+                    <div class="col-sm mt-2">
+                        <label for="minPrice" class="float-left">Price (Min)</label>
+                        <input type="text" class="form-control is-invalid" id="minPrice" name="minPrice" placeholder="Enter min price" value="" required>
+                    </div>
+
+                    <div class="w-100"></div>
+
+                    <div class="col-sm mt-2">
+                        <label for="maxPrice" class="float-left">Price (Max)</label>
+                        <input type="number" class="form-control is-invalid" id="maxPrice" name="maxPrice" placeholder="Enter max price" value="" required>
+                    </div>
+
+                    <div class="w-100"></div>
+
+                    <div class="col-sm mt-2">
+                        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                    </div>
+
+                 </form>
+
+                </div>
+            </div>
+        
+            <div class="col-9">
+                
+              <div class="owl-carousel">	
+                <?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
+                    <div class="item">
+                    
+                    <div class="cardbox shadow-lg bg-white">
+                        
+                        <div class="cardbox-heading">
+                        
+                        <?php
+                            $author_id = get_post_field( 'post_author', get_the_ID() );
+                            $author_name  = get_the_author_meta('user_nicename', $author_id);
+                            $author_email = get_the_author_meta('user_email', $author_id);
+                        ?>
+
+                        <div class="media m-0">
+                        <?php  $image = get_field('gears_image'); if ($image):?>
+                        <div class="d-flex mr-3">
+                          <a href=""><?php echo get_avatar( get_the_author_meta( 'ID' ), get_the_ID() ); ?></a>
+                        </div>
+                        <?php endif;?>
+                        <div class="media-body">
+                        <p class="m-0"><?php echo ((strlen(get_the_title()) < 27) ? get_the_title() : substr(get_the_title(), 0, 24).'..'); ?></p>
+                        <?php
+                            
+                            if( $author_name ):
+                        ?>
+                        <small><span><i class="icon ion-md-pin"></i> <?php echo $author_name; ?></span></small>
+
+                        <?php endif;?>
+                        <small><span><i class="icon ion-md-time"></i> <?php the_time('F j, Y g:i A') ?></span></small>
+                        </div>
+                        </div><!--/ media -->
+                        </div><!--/ cardbox-heading -->
+                        
+                        <div class="cardbox-item">
+                            <?php 
+                            $image = get_field('gears_image');
+                            if( !empty($image) ): ?>
+                            <img class="img-fluid" src="<?php echo $image['url']; ?>" alt="<?php echo get_the_title(); ?>" />
+                            <?php else: ?>
+                            <img class="img-fluid" src="http://placehold.it/900x300" alt=""> 
+                            <?php endif; ?>
+                        
+                        </div><!--/ cardbox-item -->
+
+                        <div class="cardbox-base"> 
+
+                            <ul class="float-right">
+                                <li><a><i class="fa fa-comments"></i></a></li>
+                                <?php $comments_count = wp_count_comments( get_the_ID() ); ?>
+                                <li><a><em class="mr-5"><?php echo $comments_count->approved; ?></em></a></li>
+                                <li><a><i class="fa fa-share-alt"></i></a></li>
+                                <li><a><span>242 Likes</span></a></li>
+                            </ul>
+
+                            	   
+                        </div><!--/ cardbox-base -->
+
+                          
+                            
+                        </div><!--/ cardbox -->
+
+                    </div><!--/ col-lg-6 -->
+
+                    <?php endwhile; else: ?>
+                        <p><?php _e('Sorry, this page does not exist.'); ?></p>
+                    <?php endif; ?>
+
+                </div><!--/ row -->
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-
-    <!-- Side Widget -->
-    <div class="card my-4">
-      <h5 class="card-header">Side Widget</h5>
-      <div class="card-body">
-        You can put anything you want inside of these side widgets. They are easy to use, and feature the new Bootstrap 4 card containers!
-      </div>
-    </div>
-
-  </div>
-
-</div>
-<!-- /.row -->
-
-</div>
-<!-- /.container -->
-
-<?php get_footer(); ?>
+    </div> 
+<?php
+    echo do_shortcode("[sc_sample_form]"); ?>
+<?php
+    get_footer(); 
+?>

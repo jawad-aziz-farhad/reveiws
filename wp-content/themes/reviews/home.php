@@ -7,7 +7,7 @@
 
         <div class="row">
             <div class="col-3">
-                <div class="row">
+                <div class="row" id="posts">
 
                  <form id="searchForm" method="post">
 
@@ -83,13 +83,7 @@
                                 </div>
 
                                 <hr>
-
-                                <div class="row">
-                                    <div class="col-sm">
-
-                                    </div>
-                                </div>
-
+                                
                             </div>
                         </div>
                     </a><!-- .a -->
@@ -104,7 +98,7 @@
         </div>
     </div> 
 <?php
-    echo do_shortcode("[sc_sample_form]"); ?>
+    echo do_shortcode("[review_form]"); ?>
 <?php
     get_footer(); 
 ?>

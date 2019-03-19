@@ -11,6 +11,7 @@
         $('input[type=text]').on('keyup blur', checkField);
         $('#searchForm').on('submit', submitForm);
         $('#commentForm').on('submit', submitComment);
+        $('.like_dislike_Btns').on('click', updateLikes);
     }
 
     function submitForm(e) {
@@ -28,8 +29,8 @@
       var type  = $(this).attr('type');
       /* FOR TEXT INPUT TYPE */
       if(type === 'text'){
-          $isValid = (value.length >= 4 ) ? true : false;
-          toggleClasses($(this), $isValid)
+        $isValid = (value.length >= 4 ) ? true : false;
+        toggleClasses($(this), $isValid)
       }
       /* FOR NUMBER INPUT TYPE */
       else if(type === 'number') {
@@ -95,13 +96,37 @@
     }
 
     function onCommentSubmission(response){
-        console.log('Response', response);
         var resultTag = $('#comment-form-result');
         resultTag.className = '';
         if(response.success)
             resultTag.text('Comment inserted successfully').addClass('color-success');
         else
             resultTag.text('Comment couldn\'t be inserted').addClass('color-danger');
+    }
+
+    function updateLikes(){
+        var form_data = new FormData();
+        form_data.append('action', 'updateLikes');  
+        form_data.append('query_vars', reviewForm.query_vars);  
+        form_data.append('post_id', $(this).attr('post_id'));
+        form_data.append('field', $(this).attr('field'));
+
+        console.log('Form', form_data);
+        $.ajax({
+            type: "POST",
+            url: reviewForm.review_url,
+            data: form_data,
+            processData: false,
+            contentType: false,
+            cache: false,
+            success: function(response){
+                console.log('Response', response);
+            },
+            error: function(error) {
+                console.error('Error', error);
+            }
+
+        });
     }
 
     

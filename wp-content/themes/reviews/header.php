@@ -56,7 +56,7 @@
             <?php endif;?>
             <div class="buttons-wrapper">
                 <a class="btn btn-info mr-2" href="#reviewForm" role="button">Review your bike</a>
-                <a class="btn btn-info ml-2" role="button">Find review</a>
+                <a class="btn btn-info ml-2" href="#posts" role="button">Find review</a>
             </div>
         </div>
     </div>
