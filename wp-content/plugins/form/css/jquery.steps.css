@@ -167,6 +167,7 @@
     width: 95%;
     height: 95%;
     padding: 2.5%;
+    overflow: auto;
 }
 
 .wizard > .content > .body ul
@@ -195,6 +196,11 @@
 .wizard > .content > .body input[type="checkbox"]
 {
     display: inline-block;
+}
+
+.wizard > .content > .body input[type="radio"]
+{
+    display: none;
 }
 
 .wizard > .content > .body input.error

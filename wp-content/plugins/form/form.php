@@ -16,13 +16,12 @@
 
     function plugin_scripts() {
 
-        //wp_enqueue_style('style-css', plugins_url( '/css/style.css', __FILE__ ), array(), 1.0);
-        //wp_enqueue_style('font-css',  plugins_url( '/css/opensans-font.css', __FILE__ ), array(), 1.0);
         wp_enqueue_style('jquery-steps-css',  plugins_url( '/css/jquery.steps.css', __FILE__ ), array(), 1.0);
         
         wp_enqueue_script( 'jquery', '/js/jquery-3.3.1.min.js', array(), 1.0, false );      
-        wp_enqueue_script( 'jquery-validate', 'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.js', array('jquery'), 1.0, false );
         wp_enqueue_script( 'jquery-steps', plugins_url( '/js/jquery.steps.js', __FILE__ ), array('jquery'), 1.0, false);          
+        wp_enqueue_script( 'jquery-validate', 'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.js', array('jquery'), 1.0, false );
+        wp_enqueue_script( 'jquery-validate-methods', '/js/validate-methods.min.js', array('jquery'), 1.0, false );
         wp_enqueue_script( 'main', plugins_url( '/js/main.js', __FILE__ ), array('jquery'), 1.0, false);
         
         global $wp_query;
@@ -223,109 +222,15 @@
         return $attach_id;
     }
 
-
-    function showForm($data){
-        include('templates/form1.html');
-    }
-
-    function processForm($data){
-        include('templates/success-submission.html');
-    }
-
-    function checkValues($data){
-        foreach( $data as $key => $val ) {
-            if( is_array( $key ) ) {
-                foreach( $key as $val) {
-                    $data['errors'][$key] = validation($data, $key);
-                }
-            } else {
-                $data['errors'][$key] = validation($data, $key);
-            }
-        }       
-        return $data;
-    }
-
-    function validation($data, $key){
-        $error = array();
-        if (empty($data[$key])){
-            $error['message'] = '<small class="invalid-feedback">' . $key . ' is required.</small>';
-            $error['class']   = 'is-invalid';
-        } 
-        else {
-            if($key === 'name' && !preg_match("/^[a-zA-Z ]*$/", $data[$key])){
-               $error['message'] = "Only letters and white space allowed."; 
-               $error['class']   = 'is-invalid';
-            }
-            else if($key === 'email' && !filter_var( $data[$key] , FILTER_VALIDATE_EMAIL)){
-               $error['message'] = "Email is invalid."; 
-               $error['class']   = 'is-invalid';
-            }            
-            else{
-                $error['message'] = '';
-                $error['class']   = 'is-valid';
-            }
-        }
-        return $error;
-
-    }
-
-    function validateForm($data) {
-        $data['errors'] = array();
-        if (empty($_POST["name"])) {
-            $data['errors']['name'] = "Name is required";
-            $data['errors']['name']['class'] = 'is-invalid';
-        } else {
-            $name = test_input($_POST["name"]);
-            // check if name only contains letters and whitespace
-            if (!preg_match("/^[a-zA-Z ]*$/",$name)) {
-              $data['errors']['name'] = "Only letters and white space allowed"; 
-            }
-
-            else if (!strlen($_POST["name"] > 5))
-             $data['errors']['name'] = "Name must have 5 characters.";
-
-            $data['errors']['name']['class']= 'is-invalid'; 
-
-        }
-        if (empty($_POST["email"])) {
-            $data['errors']['email'] = "Email is required";
-            $data['errors']['email']['class']= 'is-invalid';
-        }
-        else if(!filter_var( $data['email'] , FILTER_VALIDATE_EMAIL)){
-         $data['errors']['email'] = 'Invalid Email';
-         $data['errors']['email']['class']= 'is-invalid';   
-        }
-
-        return $data;
-    }
-    
-    function reviewForm(){
-        $data = isset($_POST['data']) ? $_POST['data'] : false;
-        if($data){
-            $data = validateForm($data);
-            if(!empty($data['errors']))
-                showForm($data);
-            else
-                processForm($data);
-        }
-        else{
-            $data = ['name' => ''];
-            showForm($data);
-        }
-    }
-    
-    add_shortcode('review-form', 'showForm');
-
-
 /*-------------- */
 function show_Form($data = [])
 {
-  include('templates/form2.html');
+  include('templates/form.html');
 }
 
 function process_Form($data)
 {
-  include('templates/form2.html');
+  include('templates/form.html');
 }
 
 function validate_Form($data)

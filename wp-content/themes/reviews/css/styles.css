@@ -1029,7 +1029,7 @@ element.style {
 }
 
 
-/* RANGE INPUT CSS */
+/* RANGE INPUT CSS *
 input[type='range'] {
   width: 210px;
   height: 30px;
@@ -1037,6 +1037,7 @@ input[type='range'] {
   cursor: pointer;
     outline: none;
 }
+
 input[type='range'],
 input[type='range']::-webkit-slider-runnable-track,
 input[type='range']::-webkit-slider-thumb {
@@ -1096,7 +1097,7 @@ input[type='range']:nth-child(1)::-webkit-slider-thumb{
    margin-right: -5px;
 }
 
-
+*/
 
 
 /* Rating Star Widgets Style */

@@ -18,7 +18,7 @@
 
         wp_enqueue_style('style-css', plugins_url( '/css/style.css', __FILE__ ), array(), 1.0);
         //wp_enqueue_style('font-css',  plugins_url( '/css/opensans-font.css', __FILE__ ), array(), 1.0);
-        wp_enqueue_style('slider-css', plugins_url('/css/slider.css', __FILE__ ), array(), 1.0);
+        //wp_enqueue_style('slider-css', plugins_url('/css/slider.css', __FILE__ ), array(), 1.0);
         
         wp_enqueue_script( 'jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js', array(), 1.0, false );      
         //wp_enqueue_script( 'jquery-validate', 'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.js', array('jquery'), 1.0, false );
