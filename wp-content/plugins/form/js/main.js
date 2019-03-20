@@ -82,8 +82,8 @@
 
         var form = $("#review_form").show();
         $.validator.addMethod('filesize', function (value, element, arg) {
-            var minsize = 1000000; // 1000 1kb 10,000 1MB , 100,000 10MB
-            if((value <= arg)){
+            if((element.files[0].size <= arg)){
+                $("span[for="+$(this).attr("id")+"]").remove();
                 return true;
             }else{
                 return false;
@@ -127,6 +127,7 @@
             {}
         }).validate({            
             highlight: function(element) {
+                
                 jQuery(element).closest('.form-control').addClass('is-invalid');
             },
             unhighlight: function(element) {
@@ -135,8 +136,8 @@
             errorElement: 'span',
             errorClass: 'label label-danger invalid-feedback',
             success: function(label,element) {
-                console.log('Label', label[0]);
                 
+                label.remove();
             },
             errorPlacement: function(error, element) {
                 if(error[0].innerHTML == 'Please enter a value between NaN and NaN.') return;
@@ -152,7 +153,8 @@
                     required:true,
                     accept:"mp4",
                     filesize: 8388608   //max size 8
-                }
+                },
+                
             },messages: {
                 review_video:{
                     filesize: "File size must be less than 8 MB.",

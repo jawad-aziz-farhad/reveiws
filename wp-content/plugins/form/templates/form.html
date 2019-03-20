@@ -47,13 +47,13 @@ echo <<< FORM
                 <div class="col-sm">
                     <div class="form-group">
                         <label for="name">Name *</label>
-                        <input id="name" name="name" type="text" class="form-control required" placeholder="Enter user name" value="">
+                        <input id="name" name="name" type="text" class="form-control required" placeholder="Enter user name" value="jawad">
                     </div>
                 </div>
                 <div class="col-sm">
                     <div class="form-group">
                         <label for="email">Email *</label>
-                        <input id="email" name="email" type="email" class="form-control required" aria-describedby="emailHelp" placeholder="Enter email" value="">
+                        <input id="email" name="email" type="email" class="form-control required" aria-describedby="emailHelp" placeholder="Enter email" value="jawad@yahoo.com">
                         <small id="emailHelp" class="text-muted">
                            Your email will remain confidentail.
                         </small>
@@ -67,13 +67,13 @@ echo <<< FORM
                 <div class="col-sm">
                     <div class="form-group">
                         <label for="brand">Bike Brand *</label>
-                        <input id="brand" name="brand" type="text" class="form-control required" placeholder="Enter brand" value="">
+                        <input id="brand" name="brand" type="text" class="form-control required" placeholder="Enter brand" value="Brand">
                     </div>
                 </div>
                 <div class="col-sm">
                     <div class="form-group">
                         <label for="model">Bike Model *</label>
-                        <input id="model" name="model" type="text" class="form-control required" placeholder="Enter model"  value="">
+                        <input id="model" name="model" type="text" class="form-control required" placeholder="Enter model"  value="Model">
                     </div>
                 </div>
             </div>
@@ -84,7 +84,7 @@ echo <<< FORM
                 <div class="col-sm">
                     <div class="form-group">
                         <label for="price">Price*</label>
-                        <input id="price" name="price" type="number" class="form-control required" placeholder="Enter price"  value="">
+                        <input id="price" name="price" type="number" class="form-control required" placeholder="Enter price"  value="2340">
                     </div>
                 </div>                
             </div>
@@ -387,8 +387,8 @@ echo <<< FORM
             <div class="row">
 
                 <div class="form-group col-sm mr-1">
-                    <label class="custom-file-label" for="Image1">Bike Image</label>
-                    <input type="file" class="custom-file-input" id="Image1" imageNum="1" name="bike">
+                    <label class="custom-file-label" for="bike">Bike Image</label>
+                    <input type="file" class="custom-file-input" id="bike" imageNum="1" name="bike">
                     <figure class="figure mt-1 text-center">
                         <img src="{$placeholder}" id='image-1' class="figure-img img-fluid rounded" alt="Suspension">
                         <figcaption class="figure-caption" id="caption-1">Upload bike image here.</figcaption>
@@ -397,8 +397,8 @@ echo <<< FORM
                 
                         
                 <div class="form-group col-sm ml-1">
-                    <label class="custom-file-label" for="Image2">Tyres Image</label>
-                    <input type="file" class="custom-file-input" id="Image2" imageNum="2" name="tyres">
+                    <label class="custom-file-label" for="tyres">Tyres Image</label>
+                    <input type="file" class="custom-file-input" id="tyres" imageNum="2" name="tyres">
                     <figure class="figure mt-1">
                         <img src="{$placeholder}" id='image-2' class="figure-img img-fluid rounded" alt="Tyres">
                         <figcaption class="figure-caption" id="caption-5">Upload tyres image here.</figcaption>
@@ -411,8 +411,8 @@ echo <<< FORM
             <div class="row">
 
                 <div class="form-group col-sm mr-1">
-                    <label class="custom-file-label" for="Image3">Gears Image</label>
-                    <input type="file" class="custom-file-input" id="Image3" imageNum="3" name="gears">
+                    <label class="custom-file-label" for="gears">Gears Image</label>
+                    <input type="file" class="custom-file-input" id="gears" imageNum="3" name="gears">
                     <figure class="figure mt-1">
                         <img src="{$placeholder}" id='image-3' class="figure-img img-fluid rounded" alt="Suspension">
                         <figcaption class="figure-caption" id="caption-3">Upload gears image here.</figcaption>
@@ -420,8 +420,8 @@ echo <<< FORM
                 </div>    
                 
                 <div class="form-group col-sm mr-1">
-                    <label class="custom-file-label" for="Image4">Handlebar Image</label>
-                    <input type="file" class="custom-file-input" id="Image4" imageNum="4" name="handlebar">
+                    <label class="custom-file-label" for="handlebar">Handlebar Image</label>
+                    <input type="file" class="custom-file-input" id="handlebar" imageNum="4" name="handlebar">
                     <figure class="figure mt-1">
                         <img src="{$placeholder}" id='image-4' class="figure-img img-fluid rounded" alt="Suspension">
                         <figcaption class="figure-caption" id="caption-4">Upload handlebar image here.</figcaption>
@@ -429,8 +429,8 @@ echo <<< FORM
                 </div>
                 
                 <div class="form-group col-sm ml-1">
-                    <label class="custom-file-label" for="Image5">Suspension Image</label>
-                    <input type="file" class="custom-file-input" id="Image5" imageNum="5" name="suspension">
+                    <label class="custom-file-label" for="suspension">Suspension Image</label>
+                    <input type="file" class="custom-file-input" id="suspension" imageNum="5" name="suspension">
         
                     <figure class="figure mt-1">
                         <img src="{$placeholder}" id='image-5' class="figure-img img-fluid rounded" alt="Suspension">
