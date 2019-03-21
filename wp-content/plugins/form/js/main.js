@@ -1,18 +1,24 @@
 (function($) {    
     window.page = window.page || {};
-
     $(document).ready(function(){      
         console.log('Steps Js is ready.')
         init_steps();
-        $('label').on('click', giveRating);
-        $('input[type="range"]').on('change', handleRangeSlide);
-        $('input[type="file"]').on('change', fileSelection);
-    }); 
-    
+        bindEvents();        
+    });     
     page.variables = {
         ratings : { money_rating : '', frame_rating : '' , comfort_rating : '' , design_rating : '' , gears_rating : '' , 
                     brakes_rating : '' , steering_rating : '' , wheels_rating : '' , saddle_rating : '' } ,
         form : $('#review_form')
+    }
+    /*
+    |-------------------
+    |  BINDING EVENTS
+    |-------------------
+    */
+    function bindEvents(){
+        $('label').on('click', giveRating);
+        $('input[type="range"]').on('change', handleRangeSlide);
+        $('input[type="file"]').on('change', fileSelection);
     }
     /*
     |-----------------------------
@@ -21,22 +27,19 @@
     */
     function handleRangeSlide(){
         $("label[for='"+$(this).attr('id')+"'] span").text($(this).val());
-     }
-
+    }
     /*
     |-----------------------
     | GIVING STAR RATING
     |-----------------------
     */
    function giveRating(){
-        console.log('Ratings' , page.variables.ratings);
         $(this).parent().find("label").css({"color": "#cc"});
         $(this).css({"color": "#FF912C"});
         $(this).nextAll().css({"color": "#FF912C"}); 
         var name = $(this).parent().find("input").attr('name');
         page.variables.ratings[name] = $(this).text();
     }
-
     /*
     |------------------------------------------
     |       FILE SELECTION EVENT HANDLER
@@ -50,7 +53,6 @@
                 window.alert('Please select an image file.');
                 return;
             }
-
             if (e.target.files && e.target.files[0]) {
                 var reader = new FileReader();		        
                 reader.onload = function (e) {
@@ -58,8 +60,7 @@
                 }
                 reader.readAsDataURL(e.target.files[0]);                
             }
-        }
-        
+        }        
         else {            
             if(!fileName.match(/.(mp4|ogg|h264|hls|vp9)$/i)){
                 window.alert('Please select a video.');
@@ -82,7 +83,7 @@
 
         var form = $("#review_form").show();
         $.validator.addMethod('filesize', function (value, element, arg) {
-            if((element.files[0].size <= arg)){
+            if(this.optional(element) || (element.files[0].size <= arg)){
                 $("span[for="+$(this).attr("id")+"]").remove();
                 return true;
             }else{
@@ -94,6 +95,7 @@
             headerTag: "h3",
             bodyTag: "section",
             transitionEffect: "slideLeft",
+            transitionEffectSpeed: 500,
             stepsOrientation: "vertical",
             onStepChanging: function (event, currentIndex, newIndex)
             {
@@ -117,17 +119,14 @@
             onFinishing: function (event, currentIndex)
             {
                 form.validate().settings.ignore = ":disabled";
-                if(form.valid()){
-                    submitForm(event);
-                    return;
-                }
-                return false;
+                return form.valid();
             },
             onFinished: function (event, currentIndex)
-            {}
+            {
+                submitForm();
+            }
         }).validate({            
-            highlight: function(element) {
-                
+            highlight: function(element) {                
                 jQuery(element).closest('.form-control').addClass('is-invalid');
             },
             unhighlight: function(element) {
@@ -135,9 +134,9 @@
             },
             errorElement: 'span',
             errorClass: 'label label-danger invalid-feedback',
-            success: function(label,element) {
-                
-                label.remove();
+            success: function(label) {                
+                label.closest('.form-group').children('.is-invalid').removeClass('is-invalid').addClass('is-valid');
+                label.remove();                
             },
             errorPlacement: function(error, element) {
                 if(error[0].innerHTML == 'Please enter a value between NaN and NaN.') return;
@@ -152,15 +151,46 @@
                 review_video:{
                     required:true,
                     accept:"mp4",
-                    filesize: 8388608   //max size 8
+                    filesize: 5388608   //max size 5MB
                 },
+                bike :  {
+                    required: false,
+                    accept: 'jpeg|jpg|gif|png',
+                    filesize: 2388608
+                },
+                tyres:  {
+                    required: false,
+                    accept: 'jpeg|jpg|gif|png',
+                    filesize: 2388608
+                },
+                gears :  {
+                    required: false,
+                    accept: 'jpeg|jpg|gif|png',
+                    filesize: 2388608
+                },
+                handlebar :  {
+                    required: false,
+                    accept: 'jpeg|jpg|gif|png',
+                    filesize: 2388608
+                },
+                suspension : {
+                    required: false,
+                    accept: 'jpeg|jpg|gif|png',
+                    filesize: 2388608
+                }
                 
             },messages: {
                 review_video:{
-                    filesize: "File size must be less than 8 MB.",
+                    filesize: "File size must be less than 5 MB.",
                     accept  : "Please upload .mp4 file.",
-                    required: "Please upload file."
-                }
+                    required: "Please upload a review video."
+                },
+                bike : { filesize: 'File size must be less than 2 MB.', accept  : "Please upload image file."},
+                tyres: { filesize: 'File size must be less than 2 MB.', accept  : "Please upload image file."},
+                gears: { filesize: 'File size must be less than 2 MB.', accept  : "Please upload image file."},
+                handlebar : { filesize: 'File size must be less than 2 MB.', accept  : "Please upload image file."},
+                suspension: { filesize: 'File size must be less than 2 MB.', accept  : "Please upload image file."},
+
             },
         });
     }
@@ -169,16 +199,13 @@
     |  SUBMITTING FORM
     |-------------------
     */
-   function submitForm(e){
-
-        e.preventDefault();
-
-        $form = $(this);
+   function submitForm(){
 
         var form_data = new FormData();
 
-        var form = $form.serializeArray();
+        var form = $('#review_form').serializeArray();
         $.each(form , function (index, input) {
+            console.log(input.name, input.value);
             form_data.append(`${input.name}`, `${input.value}`);
         });
         
@@ -209,9 +236,33 @@
     |  HANDLING RESPONSE AFTER FORM SUBMISSION
     |------------------------------------------
     */
-   function onFormSubmission(data){
-       $('#review_form').get(0).reset();
-       $('#review_form').steps('reset');
+   function onFormSubmission(response) {
+       response = jQuery.parseJSON(response);
+       if(response['post']['success']){
+            $('#success-message').show();
+            resetForm();
+       }
+       else
+         $('#error-message').show();
     }
+
+    /*
+    |---------------------------------------
+    |  RESETTING FORM TO DEFAULT CONDITION
+    |---------------------------------------
+    */
+    function resetForm() {
+       $('#review_form').steps('reset');
+       $('#review_form').get(0).reset();
+    
+        for(var i=1; i<6; i++) {
+           $('#image-'+i+'').attr('src','http://localhost:8888/treadly_reviews/wp-content/uploads/2019/03/placeholder-image.png');        
+        }
+        var video = $('#videoDiv video')[0];
+        video.src = '';
+        video.load();
+        $('div.starrating').children('label').css("color", "rgb(204, 204, 204)");
+    }
+
 
 })(jQuery);

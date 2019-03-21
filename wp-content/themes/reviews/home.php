@@ -1,102 +1,78 @@
-<?php get_header(); 
-    //get_template_part('review-form'); 
-    //echo do_shortcode("[review-form]");
-?>
-<div class="wrapper">
+<?php get_header(); ?>
+<div class="wrapper">    
     <div class="container">
-
         <div class="row">
-            <div class="col-3">
-                <div class="row" id="posts">
-
-                 <form id="searchForm" method="post">
-
-                    <div class="col-sm">
-                        <label for="bikeBrand" class="float-left">Bike Brand</label>
-                        <input type="text" class="form-control is-invalid" id="bikeBrand" name="brand" placeholder="Enter bike brand" value="" required>
-                    </div>
-
-                    <div class="w-100"></div>
-                    
-                    <div class="col-sm mt-2">
-                        <label for="model"  class="float-left">Bike Model</label>
-                        <input type="text" class="form-control is-invalid" id="model" name="model" placeholder="Enter bike model" value="" required>
-                    </div>
-                    
-                    <div class="w-100"></div>
-                    
-                    <div class="col-sm mt-2">
-                        <label for="category" class="float-left">Bike Category</label>
-                        <input type="text" class="form-control is-invalid" id="category" name="category" placeholder="Enter bike category" value="" required>
-                    </div>
-
-                    <div class="w-100"></div>
-
-                    <div class="col-sm mt-2">
-                        <label for="minPrice" class="float-left">Price (Min)</label>
-                        <input type="text" class="form-control is-invalid" id="minPrice" name="minPrice" placeholder="Enter min price" value="" required>
-                    </div>
-
-                    <div class="w-100"></div>
-
-                    <div class="col-sm mt-2">
-                        <label for="maxPrice" class="float-left">Price (Max)</label>
-                        <input type="number" class="form-control is-invalid" id="maxPrice" name="maxPrice" placeholder="Enter max price" value="" required>
-                    </div>
-
-                    <div class="w-100"></div>
-
-                    <div class="col-sm mt-2">
-                        <button type="submit" class="btn btn-primary btn-block">Submit</button>
-                    </div>
-
-                 </form>
-
-                </div>
-            </div>
-        
-        <div class="col-9">
-            <div class="owl-carousel">
                 <?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
-                    <a href="<?php the_permalink(); ?>">
-                        <div class="item">
-                            <div class="top product">
+                    
+                    <div class="col-lg-4 col-md-6 col-sm-1 mb-3">
+                        <a href="<?php the_permalink(); ?>" >
+                            <div class="card">
 
-                                <hr>
-                                <div class="prod-name"> 
-                                    <span>
-                                        <?php  echo ((strlen(get_the_title()) < 27) ? get_the_title() : substr(get_the_title(), 0, 24).'..'); ?>
-                                    </span>
-                                </div> 
-
-                                <hr>
-
-                                <div class="prod-img"> 
-                                    <?php 
-                                        $image = get_field('gears_image');
-
-                                    if( !empty($image) ): ?>
-
-                                    <img src="<?php echo $image['url']; ?>" alt="<?php echo get_the_title(); ?>" />
-
-                                    <?php endif; ?>
+                                <div class="card-header">
+                                    <div class="row align-items-center">
+                                        <div class="col-sm">
+                                            <img class="img-fluid float-left rounded-circle" width="40"  height="40" src="https://image.shutterstock.com/image-vector/avatar-man-icon-profile-placeholder-260nw-1229859850.jpg" alt="">
+                                            <?php
+                                                $author_id = get_post_field( 'post_author', get_the_ID() );
+                                                $author_name  = get_the_author_meta('user_nicename', $author_id);
+                                            ?>
+                                            <label class="text-muted"><?php echo $author_name; ?> </label>
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <hr>
+                                <?php $video = get_field('review_video');?>
+                                <video class="img-fluid card-img-top" id="videoTag" playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop" controls="controls">
+                                    <source src="<?php echo $video['url']; ?>" type="video/mp4">
+                                </video>
+
+                                <div class="card-body">
+                                   
+                                </div>
+
+                                <div class="card-footer text-muted">
+
                                 
+                                    <div class="float-right">
+                                        <?php $comments_count = wp_count_comments( get_the_ID() ); ?>
+                                        <small>
+                                            <?php echo $comments_count->approved; ?>
+                                            <i class="fa fa-comments"></i>                                            
+                                        </small>        
+                                        
+                                        <small class="ml-1">
+                                            <?php $likes = get_field('review_likes');
+                                                 $likes  = $likes ? $likes : 0;
+                                                 echo $likes;
+                                            ?>
+
+                                            <i class="fa fa-thumbs-up"></i>
+                                        </small>
+                                        
+                                    </div>
+
+                                    
+                                </div>
                             </div>
-                        </div>
-                    </a><!-- .a -->
+                            <!--./ card -->
+                        </a>
+                        <!--./ a -->
+                    </div>
+                    <!--./ column -->
+                    
                 
 
                 <?php endwhile; else: ?>
-                    <p><?php _e('Sorry, this page does not exist.'); ?></p>
-                <?php endif; ?>
+                    <div class="col-sm">
+                        <p><?php _e('Sorry, this page does not exist.'); ?></p>
                     </div>
-                </div>
+                <?php endif; ?>
             </div>
+            <!-- .row -->    
         </div>
+         <!-- .container -->  
     </div> 
+     <!-- .wrapper -->  
 <?php
     echo do_shortcode("[review_form]"); ?>
 <?php

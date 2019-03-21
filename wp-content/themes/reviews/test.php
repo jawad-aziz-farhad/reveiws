@@ -102,9 +102,11 @@
                         <div class="cardbox-base"> 
 
                             <ul class="float-right">
+                                
                                 <li><a><i class="fa fa-comments"></i></a></li>
                                 <?php $comments_count = wp_count_comments( get_the_ID() ); ?>
                                 <li><a><em class="mr-5"><?php echo $comments_count->approved; ?></em></a></li>
+                                
                                 <li><a><i class="fa fa-share-alt"></i></a></li>
                                 <li><a><span>242 Likes</span></a></li>
                             </ul>

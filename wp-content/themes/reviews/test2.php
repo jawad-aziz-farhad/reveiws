@@ -1,10 +1,13 @@
-<?php get_header(); ?>
+<?php get_header(); 
+    //get_template_part('review-form'); 
+    //echo do_shortcode("[review-form]");
+?>
 <div class="wrapper">
     <div class="container">
 
         <div class="row">
             <div class="col-3">
-                <div class="row">
+                <div class="row" id="posts">
 
                  <form id="searchForm" method="post">
 
@@ -71,7 +74,6 @@
                                 <div class="prod-img"> 
                                     <?php 
                                         $image = get_field('gears_image');
-
                                     if( !empty($image) ): ?>
 
                                     <img src="<?php echo $image['url']; ?>" alt="<?php echo get_the_title(); ?>" />
@@ -95,7 +97,7 @@
         </div>
     </div> 
 <?php
-    echo do_shortcode("[sc_sample_form]"); ?>
+    echo do_shortcode("[review_form]"); ?>
 <?php
     get_footer(); 
 ?>

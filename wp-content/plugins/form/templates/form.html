@@ -19,7 +19,7 @@ $countries = ["Afghanistan","Albania","Algeria","Andorra","Angola","Anguilla","A
 $categories = array("Round Bike", "Mountain Bike" , "Cruiser", "Hybrid/Comfort Bike" , "Triathlon/Time Trial Bike",
                     "BMX/Trick Bike", "Commuting Bike" , "Cyclocross Bike", "Track Bike / Fixed Gear", "Tandem",
                     "Folding Bike", "Kids Bike", "Recumbent", "I'm not sure, help me!");
-$options = '<option value="" disabled>select category</option>'; 
+$options = '<option value="">select category</option>'; 
 $index = 0;
 foreach($categories as $_category){
     $selected = ($index === 0) ? 'selected' : '';
@@ -27,7 +27,7 @@ foreach($categories as $_category){
     $index++;
 }
 $index = 0;
-$country_options = '<option value="" disabled>select country</option>'; 
+$country_options = '<option value="">select country</option>'; 
 foreach($countries as $country){
     $selected = ($index === 0) ? 'selected' : '';
     $country_options .= '<option value="' . $country . '" $selected>' . $country . '</option>';
@@ -38,6 +38,40 @@ $url = esc_url( $_SERVER['REQUEST_URI']);
 $placeholder = 'http://localhost:8888/treadly_reviews/wp-content/uploads/2019/03/placeholder-image.png';
 echo <<< FORM
 <div class="container">
+
+    <!-- SUCCESS MESSAGE -->
+    <div class="row" id="success-message" style="display: none;">        
+        <div class="col-sm">
+            <div class="alert alert-success">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <span class="glyphicon glyphicon-ok"></span> <strong>Success Message</strong>
+                <hr class="message-inner-separator">
+                <p>Thank you for your review. <br />
+                   Our entire team is currently out riding, but they have been notified of your very important contribution. <br />
+                   But fear not, I can see from their GPS tracking they have started to turn around, and what’s this? 
+                   A race has broken out back to the office. I guess they all want to be the first to review your contribution and get it live on our site as soon as possible. 
+                   We care about safety here, so a few red lights (and a few crazy drivers) may contribute to a slight delay, but we will let you know once it’s approved. <br />
+                   Thanks. Happy Riding</p>
+            </div>
+        </div>
+    </div>
+    <!--./ SUCCESS MESSAGE -->
+
+    <!-- ERROR MESSAGE -->
+    <div class="row" id="error-message" style="display: none;">        
+        <div class="col-sm" >
+            <div class="alert alert-danger">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                    ×</button>
+                <span class="glyphicon glyphicon-hand-right"></span> <strong>Failure Message</strong>
+                <hr class="message-inner-separator">
+                <p>
+                    Sorry! Something went wrong. Please try again. Thanks</p>
+            </div>
+        </div>            
+    </div>
+    <!--./ ERROR MESSAGE -->
+
     <form id="review_form" action="#">
         <h3>Basic Information</h3>
         <section>
@@ -47,13 +81,13 @@ echo <<< FORM
                 <div class="col-sm">
                     <div class="form-group">
                         <label for="name">Name *</label>
-                        <input id="name" name="name" type="text" class="form-control required" placeholder="Enter user name" value="jawad">
+                        <input id="name" name="name" type="text" class="form-control required" placeholder="Enter user name" value="">
                     </div>
                 </div>
                 <div class="col-sm">
                     <div class="form-group">
                         <label for="email">Email *</label>
-                        <input id="email" name="email" type="email" class="form-control required" aria-describedby="emailHelp" placeholder="Enter email" value="jawad@yahoo.com">
+                        <input id="email" name="email" type="email" class="form-control required" aria-describedby="emailHelp" placeholder="Enter email" value="">
                         <small id="emailHelp" class="text-muted">
                            Your email will remain confidentail.
                         </small>
@@ -67,13 +101,13 @@ echo <<< FORM
                 <div class="col-sm">
                     <div class="form-group">
                         <label for="brand">Bike Brand *</label>
-                        <input id="brand" name="brand" type="text" class="form-control required" placeholder="Enter brand" value="Brand">
+                        <input id="brand" name="brand" type="text" class="form-control required" placeholder="Enter brand" value="">
                     </div>
                 </div>
                 <div class="col-sm">
                     <div class="form-group">
                         <label for="model">Bike Model *</label>
-                        <input id="model" name="model" type="text" class="form-control required" placeholder="Enter model"  value="Model">
+                        <input id="model" name="model" type="text" class="form-control required" placeholder="Enter model"  value="">
                     </div>
                 </div>
             </div>
@@ -84,7 +118,7 @@ echo <<< FORM
                 <div class="col-sm">
                     <div class="form-group">
                         <label for="price">Price*</label>
-                        <input id="price" name="price" type="number" class="form-control required" placeholder="Enter price"  value="2340">
+                        <input id="price" name="price" type="number" class="form-control required" placeholder="Enter price"  value="">
                     </div>
                 </div>                
             </div>
@@ -388,7 +422,7 @@ echo <<< FORM
 
                 <div class="form-group col-sm mr-1">
                     <label class="custom-file-label" for="bike">Bike Image</label>
-                    <input type="file" class="custom-file-input" id="bike" imageNum="1" name="bike">
+                    <input type="file" class="custom-file-input" id="bike" imageNum="1" name="bike" accept='image/*'>
                     <figure class="figure mt-1 text-center">
                         <img src="{$placeholder}" id='image-1' class="figure-img img-fluid rounded" alt="Suspension">
                         <figcaption class="figure-caption" id="caption-1">Upload bike image here.</figcaption>
@@ -398,7 +432,7 @@ echo <<< FORM
                         
                 <div class="form-group col-sm ml-1">
                     <label class="custom-file-label" for="tyres">Tyres Image</label>
-                    <input type="file" class="custom-file-input" id="tyres" imageNum="2" name="tyres">
+                    <input type="file" class="custom-file-input" id="tyres" imageNum="2" name="tyres" accept='image/*'>
                     <figure class="figure mt-1">
                         <img src="{$placeholder}" id='image-2' class="figure-img img-fluid rounded" alt="Tyres">
                         <figcaption class="figure-caption" id="caption-5">Upload tyres image here.</figcaption>
@@ -412,16 +446,16 @@ echo <<< FORM
 
                 <div class="form-group col-sm mr-1">
                     <label class="custom-file-label" for="gears">Gears Image</label>
-                    <input type="file" class="custom-file-input" id="gears" imageNum="3" name="gears">
+                    <input type="file" class="custom-file-input" id="gears" imageNum="3" name="gears" accept='image/*'>
                     <figure class="figure mt-1">
-                        <img src="{$placeholder}" id='image-3' class="figure-img img-fluid rounded" alt="Suspension">
+                        <img src="{$placeholder}" id='image-3' class="figure-img img-fluid rounded" alt="Suspension" >
                         <figcaption class="figure-caption" id="caption-3">Upload gears image here.</figcaption>
                     </figure>
                 </div>    
                 
                 <div class="form-group col-sm mr-1">
                     <label class="custom-file-label" for="handlebar">Handlebar Image</label>
-                    <input type="file" class="custom-file-input" id="handlebar" imageNum="4" name="handlebar">
+                    <input type="file" class="custom-file-input" id="handlebar" imageNum="4" name="handlebar" accept='image/*'>
                     <figure class="figure mt-1">
                         <img src="{$placeholder}" id='image-4' class="figure-img img-fluid rounded" alt="Suspension">
                         <figcaption class="figure-caption" id="caption-4">Upload handlebar image here.</figcaption>
@@ -430,7 +464,7 @@ echo <<< FORM
                 
                 <div class="form-group col-sm ml-1">
                     <label class="custom-file-label" for="suspension">Suspension Image</label>
-                    <input type="file" class="custom-file-input" id="suspension" imageNum="5" name="suspension">
+                    <input type="file" class="custom-file-input" id="suspension" imageNum="5" name="suspension" accept='image/*'>
         
                     <figure class="figure mt-1">
                         <img src="{$placeholder}" id='image-5' class="figure-img img-fluid rounded" alt="Suspension">

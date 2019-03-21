@@ -11,8 +11,12 @@
     */
 
     add_action('wp_enqueue_scripts','plugin_scripts');
+
     add_action( 'wp_ajax_submitReviewForm', 'submitReviewForm' );
     add_action( 'wp_ajax_nopriv_submitReviewForm', 'submitReviewForm' );
+
+    add_action( 'wp_ajax_updateFileField', 'updateFileField' );
+    add_action( 'wp_ajax_nopriv_updateFileField', 'updateFileField' );
 
     function plugin_scripts() {
 
@@ -31,28 +35,12 @@
                        );
     }
 
-    function insertpost(){
-        $my_post = array(
-            'post_title'	=> 'My post',
-            'post_type'		=> 'post',
-            'post_status'	=> 'publish'
-        );
-        // insert the post into the database
-        $post_id = wp_insert_post( $my_post );
-        // save a basic text value
-        $field_key = "field_5c88a1a194203";
-        $result = update_field( $field_key, 281, 280 );
-
-        echo json_encode(['result' => $result]);
-        exit();
-    }
-
     function submitReviewForm() {
 
         $post = createPost();
 
         if($post['success'] === false)
-            handleError();
+            handleError($post);
         else{            
             $fields = acf_get_fields_by_id($post->post_id);
             $allFields = array();
@@ -70,8 +58,7 @@
             $files = uploadFiles($post);
             echo json_encode(['files' => $files, 'post' => $post , 'all' => $allFields]);
             wp_die();
-        }
-       
+        }       
     }
 
     function handleError($error){
@@ -81,7 +68,6 @@
 
     function createPost() {
 
-        
         $data = $_POST;
 
         // Set the post ID to -1. This sets to no action at moment
@@ -89,7 +75,7 @@
         // Set the Author, Slug, title and content of the new post
         $author_id = 1;
         $slug = makeSlug($data['brand'] . ' ' . $data['model']);
-        $title = $data['brand'] . ' , ' . $data['model'] . ' Review ';
+        $title = ' Review at ' . current_time( 'mysql' )  ;
         $content = '';
 
         // Cheks if doen't exists a post with slug "wordpress-post-created-with-code".
@@ -133,7 +119,7 @@
         $string = preg_replace("/[\s-]+/", " ", $string);
         //Convert whitespaces and underscore to dash
         $string = preg_replace("/[\s_]/", "-", $string);
-        return $string;
+        return $string . current_time( 'timestamp', 1 );
     }    
 
     function post_exists_by_slug( $post_slug ) {
@@ -158,7 +144,7 @@
         foreach($files as $file) {
             if(isset($_FILES[$file]) && !empty($_FILES[$file])){                
                 $filesResponse[$file] = uploadFile($file , $post->post_id);
-                $key = ( $key === 'review_video' ) ? $key : ($file . '_image');
+                $key = ( $file === 'review_video' ) ? $file : ($file . '_image');
                 update_field($key, $filesResponse[$file]['response']['attachment_id'], $post['post_id']);
             }
         }
