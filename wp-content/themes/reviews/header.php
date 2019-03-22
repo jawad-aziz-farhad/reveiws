@@ -49,15 +49,32 @@
     </nav>
     -- Navigation Menu Ends  -->
 
-    <div class="row h-100 align-items-center">
-        <div class="col-12 text-center">
+    <div class="row w-100 h-100 align-items-center">
+        <div class="col-sm text-center">
             <?php if(get_background_image()) :  ?>
              <img class="bg" src="<?php background_image(); ?>" alt="<?php bloginfo('name'); ?>"/> 
             <?php endif;?>
-            <div class="buttons-wrapper">
-                <a class="btn btn-info mr-2" href="#reviewForm" role="button">Review your bike</a>
-                <a class="btn btn-info ml-2" href="#posts" role="button">Find review</a>
+            <?php if(is_home()) : ?>
+            <div class="row buttons-wrapper mb-2">                
+                <div class="col-sm">
+                    <span class="header-text">
+                        Real Bike Reviews From Real People
+                    </span>
+                </div>
+                <div class="w-100"></div>
+
+                <div class="col-sm">
+                    <div class="row align-items-center">
+                        <a class="col-sm btn header-btn mr-2 mb-2" href="#reviewForm" role="button">
+                            <i class="fa fa-pencil pull-left"></i>Review your bike
+                        </a>
+                        <a class="col-sm btn header-btn ml-2 mb-2" href="#posts" role="button">
+                            <i class="fa fa-flask pull-left"></i> <span>Find review</span>
+                        </a>
+                    </div>
+                </div>
             </div>
+            <?php endif; ?>
         </div>
     </div>
 </header>

@@ -1,10 +1,78 @@
 <?php get_header(); ?>
 <div class="wrapper">    
     <div class="container">
-        <div class="row">
-                <?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
+        <div class="row" id="posts">
+                
+            <div class="col-sm mb-2">
+                <form id="searchForm">    
+                    <div class="row">
+
+                        <div class="col-sm">
+                            <div class="form-group">
+                                <input id="brand" name="brand" type="text" class="form-control" placeholder="Enter bike brand" value="">
+                            </div>
+                        </div>
+
+                        <div class="col-sm">
+                            <div class="form-group">
+                                <input id="model" name="model" type="text" class="form-control" placeholder="Enter bike model" value="">
+                            </div>
+                        </div>
+
+                        <div class="w-100"></div>
+
+                        <div class="col-sm">
+                            <div class="form-group">
+                                <?php
+
+                                    $categories = array("Round Bike", "Mountain Bike" , "Cruiser", "Hybrid/Comfort Bike" , "Triathlon/Time Trial Bike",
+                                                        "BMX/Trick Bike", "Commuting Bike" , "Cyclocross Bike", "Track Bike / Fixed Gear", "Tandem",
+                                                        "Folding Bike", "Kids Bike", "Recumbent", "I'm not sure, help me!");
+                                    $options = '<option value="">select category</option>'; 
+                                    $index = 0;
+                                    foreach($categories as $_category){
+                                        $selected = ($index === 0) ? 'selected' : '';
+                                        $options .= '<option value="' . $_category . '" $selected>' . $_category . '</option>';
+                                        $index++;
+                                    }
+                                    ?>
+
+                                    <select class="form-control" id="category" name="category"> <?php echo $options ?> </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm">
+                            <div class="form-group">
+                                <input id="price_min" name="price_min" type="number" class="form-control" placeholder="Enter price (min)" value="">
+                            </div>
+                        </div>
+
+                        <div class="col-sm">
+                            <div class="form-group">
+                                <input id="price_max" name="price_max" type="number" class="form-control" placeholder="Enter price (max)" value="">
+                            </div>
+                        </div>
+
+                        <div class="w-100"></div>
+
+                        <div class="col-sm">
+                            <button id="search_btn" class="btn btn-success btn-block"> Search </button>
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </div>
+           
+        </div>
+        <!-- .row -->  
+        <div class="w-100"></div>
+            
+        <div class="row" id="reviews">    
+            <?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
                     
-                    <div class="col-lg-4 col-md-6 col-sm-1 mb-3">
+                    <div class="col-lg-4 col-md-6 col-sm-12 mb-3">
                         <a href="<?php the_permalink(); ?>" >
                             <div class="card">
 
@@ -50,8 +118,6 @@
                                         </small>
                                         
                                     </div>
-
-                                    
                                 </div>
                             </div>
                             <!--./ card -->
@@ -59,13 +125,12 @@
                         <!--./ a -->
                     </div>
                     <!--./ column -->
-                    
-                
 
                 <?php endwhile; else: ?>
                     <div class="col-sm">
-                        <p><?php _e('Sorry, this page does not exist.'); ?></p>
+                        <div class="img-fluid"> <img src="'+page.variables.base_url+'/images/empty_product.svg" alt="No_Product"></div>
                     </div>
+                    <hr>
                 <?php endif; ?>
             </div>
             <!-- .row -->    

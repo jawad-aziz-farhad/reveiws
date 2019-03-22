@@ -37,8 +37,7 @@ foreach($countries as $country){
 $url = esc_url( $_SERVER['REQUEST_URI']);
 $placeholder = 'http://localhost:8888/treadly_reviews/wp-content/uploads/2019/03/placeholder-image.png';
 echo <<< FORM
-<div class="container">
-
+<div class="container" id="reviewForm">
     <!-- SUCCESS MESSAGE -->
     <div class="row" id="success-message" style="display: none;">        
         <div class="col-sm">
@@ -117,7 +116,7 @@ echo <<< FORM
             <div class="form-row">
                 <div class="col-sm">
                     <div class="form-group">
-                        <label for="price">Price*</label>
+                        <label for="price">Price *</label>
                         <input id="price" name="price" type="number" class="form-control required" placeholder="Enter price"  value="">
                     </div>
                 </div>                

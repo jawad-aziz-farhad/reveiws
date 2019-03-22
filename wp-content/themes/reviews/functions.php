@@ -40,6 +40,9 @@ add_action( 'wp_ajax_nopriv_insertComment', 'insertComment' );
 
 add_action( 'wp_ajax_updateLikes', 'updateLikes');
 add_action( 'wp_ajax_nopriv_updateLikes', 'updateLikes' );
+
+add_action( 'wp_ajax_searchReview', 'searchReview');
+add_action( 'wp_ajax_nopriv_searchReview', 'searchReview' );
 /*
 |--------------------------
 |   Fetching Products
@@ -60,43 +63,48 @@ function make_Query($key) {
 
 
 function getQuery() {
+    $brand     =  $_POST['brand'] ? array( 'key' => 'brand' ,'value' => $_POST['brand'] , 'compare'=> 'LIKE' ) : []  ;
+    $model     =  $_POST['model'] ? array( 'key' => 'model' ,'value' => $_POST['model'] , 'compare'=> 'LIKE' ) : []  ; 
+    $category  =  $_POST['category'] ? array( 'key' => 'category' ,'value' => $_POST['category'] , 'compare'=> '=' ) : [] ; 
+    $price     =  array(
+	    'relation'  => 'AND',
+        $_POST['price_min'] ? array('key'	=> 'price','compare' => '>=','value' => $_POST['price_min'] ,'type' => 'NUMERIC') : [],
+        $_POST['price_max'] ? array('key'	=> 'price','compare' => '<=','value' => $_POST['price_max'] ,'type' => 'NUMERIC') : []
+	);
+    
+    $args =  '';
 
-    $brand     =  make_Query('brand')  ;
-    $model     =  make_Query('model')  ;
-    $category  =  make_Query('category');
-    $minPrice  =  make_Query('price') ;
-    
-    $args =  '';    
-    
-    if(empty($_POST['brand']) && empty($_POST['model']) && empty($_POST['category']) && empty($_POST['price'])){
+    if(empty($_POST['brand']) && empty($_POST['model']) && empty($_POST['category']) && empty($_POST['price_min']) && empty($_POST['price_max']) ){
        $args = []; 
     } 
-    if(!empty($_POST['brand']) && empty($_POST['model']) && empty($_POST['category']) && empty($_POST['price'])){
+    if(!empty($_POST['brand']) && empty($_POST['model']) && empty($_POST['category']) && empty($_POST['price_min']) && empty($_POST['price_max']) ){
         $args =  array(
-            'numberposts'	=> -1,
+            'numberposts'	=>  -1,
             'post_status'   => 'publish',
-            'post_type'		=> 'post',
-            'meta_query'    => $brand
+            'meta_key'		=> 'brand',
+            'meta_value'    => $_POST['brand']
         );       
     }    
-    else if(empty($_POST['brand']) && !empty($_POST['model']) && empty($_POST['category']) && empty($_POST['price'])){
+    else if(empty($_POST['brand']) && !empty($_POST['model']) && empty($_POST['category']) && empty($_POST['price_min']) && empty($_POST['price_max'])){
         $args =  array(
                 'numberposts'	=> -1,
-                'post_status'        => 'publish',
+                'post_status'   => 'publish',
                 'post_type'		=> 'post',
-                'meta_query'    => $model
+                'meta_key'		=> 'model',
+                'meta_value'    => $_POST['model']
             );  
     }    
-    else if(empty($_POST['brand']) && empty($_POST['model']) && !empty($_POST['category']) && empty($_POST['price'])){
+    else if(empty($_POST['brand']) && empty($_POST['model']) && !empty($_POST['category']) && empty($_POST['price_min']) && empty($_POST['price_max'])){
         $args =  array('numberposts'	=> -1,
-                        'post_status'        => 'publish',
+                        'post_status'   => 'publish',
                         'post_type'		=> 'post',
-                        'meta_query'    => $category
+                        'meta_key'		=> 'category',
+                        'meta_value'    => $_POST['category']
                     );    
     }    
-    else if(empty($_POST['brand']) && empty($_POST['model']) && empty($_POST['category']) && !empty($_POST['price'])){
+    else if(empty($_POST['brand']) && empty($_POST['model']) && empty($_POST['category']) && (!empty($_POST['price_min']) || !empty($_POST['price_max']))){
         $args =  array('numberposts'	=> -1,
-                        'post_status'        => 'publish',
+                        'post_status'   => 'publish',
                         'post_type'		=> 'post',
                         'meta_query'    => $price
                     );    
@@ -112,9 +120,9 @@ function getQuery() {
     return $args;
 }
 
-function fetchReviews(){
-
+function searchReview(){
     $args = getQuery();
+    
     if(empty($args)){
         return [];
     }
@@ -129,9 +137,12 @@ function fetchReviews(){
             $the_query -> the_post();            
             $title         =  get_the_title();
             $custom_fields = get_field_objects(); 
-            $reviews[]    =  array('id' => get_the_ID() , 'title' => get_the_title() , 'custom_fields' => $custom_fields );
+            $author_id = get_post_field( 'post_author', get_the_ID() );
+            $author_name  = get_the_author_meta('user_nicename', $author_id);
+            $comments_count = wp_count_comments( get_the_ID() )->approved;
+            $reviews[]     =  array('id' => get_the_ID() , 'author' => $author_name , 'comments'=> $comments_count ,'custom_fields' => $custom_fields );
         }
-        $response['success']    = true;
+        $response['success']   = true;
         $response['reviews']   = $reviews;
         echo json_encode($response);
         exit();

@@ -2,7 +2,7 @@
     window.page = window.page || {};
     $(document).ready(function(){      
         console.log('Steps Js is ready.')
-        init_steps();
+        init_jQuery_steps();
         bindEvents();        
     });     
     page.variables = {
@@ -74,12 +74,14 @@
                 }
                 reader.readAsDataURL(e.target.files[0]);                
             }
-
-        }
-    
+        }    
     }
-
-    function init_steps() {
+    /*
+    |--------------------------
+    | Initialzing JQUERY Steps
+    |--------------------------
+    */
+    function init_jQuery_steps() {
 
         var form = $("#review_form").show();
         $.validator.addMethod('filesize', function (value, element, arg) {
@@ -194,11 +196,11 @@
             },
         });
     }
-    /*
-    |-------------------
-    |  SUBMITTING FORM
-    |-------------------
-    */
+   /*
+   |-------------------
+   |  SUBMITTING FORM
+   |-------------------
+   */
    function submitForm(){
 
         var form_data = new FormData();

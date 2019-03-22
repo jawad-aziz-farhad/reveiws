@@ -11,12 +11,30 @@
 .buttons-wrapper {
     position: absolute;
     top: 40%;
-    left: 0;
-    right: 0;    
+    left: 15%;
+    right: 15%;    
 }
-.buttons-wrapper button {
-    width: 150px;
+
+.header-btn {
+  background-color: #085561;
+  color: white;
 }
+
+.header-text {
+  color: white;
+  font-size: 40px;
+  font-family: fantasy;
+}
+@media (max-width: 480px)
+{
+  .header-text {
+    font-size: 20px;
+  }
+  .header-btn { margin-left: 0 !important; margin-right: 0 !important;  }
+}
+
+.header-btn:hover { color:rgb(228, 180, 180) !important;}
+
 .bg {
     top: 0;
     width: 100%;
