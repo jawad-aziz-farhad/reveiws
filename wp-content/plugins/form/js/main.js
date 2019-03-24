@@ -1,9 +1,10 @@
 (function($) {    
     window.page = window.page || {};
     $(document).ready(function(){      
-        console.log('Steps Js is ready.')
+        console.log('Steps JS ready.')
         init_jQuery_steps();
         bindEvents();        
+        page.variables.ratings = {};
     });     
     page.variables = {
         ratings : { money_rating : '', frame_rating : '' , comfort_rating : '' , design_rating : '' , gears_rating : '' , 
@@ -38,7 +39,7 @@
         $(this).css({"color": "#FF912C"});
         $(this).nextAll().css({"color": "#FF912C"}); 
         var name = $(this).parent().find("input").attr('name');
-        page.variables.ratings[name] = $(this).text();
+        page.variables.ratings[`${name}`] = $(this).text();
     }
     /*
     |------------------------------------------
@@ -230,8 +231,27 @@
             processData: false,
             contentType: false,
             cache: false,
+            beforeSend: showLoader,
             success: onFormSubmission
         });
+    }
+
+    /*
+    |-----------------
+    |  SHOW LOADER
+    |-----------------
+    */
+    function showLoader() { $('.loading').show(); }
+    /*
+    |----------------------
+    |  MAKING LOADER
+    |---------------------
+    */
+    function getLoader(){
+        var loaderMarkUp = '<div id="loader">';
+        loaderMarkUp     += '<div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>';
+        loaderMarkUp     += '<div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="lading"></div></div>';
+        return loaderMarkUp;
     }
     /*
     |------------------------------------------
@@ -239,7 +259,9 @@
     |------------------------------------------
     */
    function onFormSubmission(response) {
+    $('.loading').hide();
        response = jQuery.parseJSON(response);
+       console.log('Response', response);
        if(response['post']['success']){
             $('#success-message').show();
             resetForm();
@@ -258,7 +280,7 @@
        $('#review_form').get(0).reset();
     
         for(var i=1; i<6; i++) {
-           $('#image-'+i+'').attr('src','http://localhost:8888/treadly_reviews/wp-content/uploads/2019/03/placeholder-image.png');        
+           $('#image-'+i+'').attr('src','http://getwebsite.com.pk/jawad/treadly_reviews/wp-content/uploads/2019/03/placeholder-image.png');        
         }
         var video = $('#videoDiv video')[0];
         video.src = '';

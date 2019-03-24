@@ -13,7 +13,7 @@
         $author_email = get_the_author_meta('user_email', $author_id);
         if( $author_name ): ?>
         <!-- Author -->
-        <h1 class="mt-4"><?php echo $author_name; ?></h1>
+        <h1 class="mt-4"><?php echo get_field('name'); ?></h1>
         <?php endif; ?>
 
         <hr>

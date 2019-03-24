@@ -21,11 +21,11 @@
     function plugin_scripts() {
 
         wp_enqueue_style('jquery-steps-css',  plugins_url( '/css/jquery.steps.css', __FILE__ ), array(), 1.0);
+        wp_enqueue_style('loader-css',  plugins_url( '/css/loader.css', __FILE__ ), array(), 1.0);
         
         wp_enqueue_script( 'jquery', '/js/jquery-3.3.1.min.js', array(), 1.0, false );      
         wp_enqueue_script( 'jquery-steps', plugins_url( '/js/jquery.steps.js', __FILE__ ), array('jquery'), 1.0, false);          
         wp_enqueue_script( 'jquery-validate', 'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.js', array('jquery'), 1.0, false );
-        wp_enqueue_script( 'jquery-validate-methods', '/js/validate-methods.min.js', array('jquery'), 1.0, false );
         wp_enqueue_script( 'main', plugins_url( '/js/main.js', __FILE__ ), array('jquery'), 1.0, false);
         
         global $wp_query;
@@ -38,12 +38,14 @@
     function submitReviewForm() {
 
         $post = createPost();
-
+        
         if($post['success'] === false)
             handleError($post);
         else{            
             $fields = acf_get_fields_by_id($post->post_id);
+            
             $allFields = array();
+
             foreach ($fields as $field) {
                 $value = $_POST[$field['name']];
                 if(isset( $value )) {

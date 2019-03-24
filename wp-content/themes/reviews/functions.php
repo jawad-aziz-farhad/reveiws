@@ -1,5 +1,6 @@
-
 <?php
+// Register Custom Navigation Walker
+require_once 'class-wp-bootstrap-navwalker.php';
 /*
 |----------------------
 | ENQUEUING SCRIPTS
@@ -9,8 +10,6 @@ function treadly_reviews_scripts(){
     wp_enqueue_script( 'jquery',      'https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js', array(), 1.0, false );
     wp_enqueue_script( 'bootstrap-js'  , get_template_directory_uri() . '/js/bootstrap.min.js', array('jquery'), 1.0 , false);
     wp_enqueue_script( 'main-js'       , get_template_directory_uri() . '/js/main.js', array('jquery'), 1.0 , false);
-    wp_enqueue_script( 'owl-carousel'  , get_template_directory_uri() . '/js/owl.carousel.min.js', array('jquery'), 1.0, false );    
-
     global $wp_query;
     wp_localize_script( 'main-js', 'commentForm', 
                         array( 'comment_url' => admin_url( 'admin-ajax.php' ) ,
@@ -26,9 +25,6 @@ function treadly_reviews_styles() {
     wp_enqueue_style( 'google-fonts' , 'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css', array(), 20141119 );
     wp_enqueue_style( 'bootstrap-css'  , get_stylesheet_directory_uri() . '/css/bootstrap.min.css', array(), 1.0 );
     wp_enqueue_style( 'styles-css_1'     , get_stylesheet_directory_uri() . '/css/style_1.css', array(), 1.0 );
-
-    wp_enqueue_style( 'component-css', get_stylesheet_directory_uri() . '/css/component.css',     array(), 20141119 );
-    wp_enqueue_style( 'owl-carousel' , get_stylesheet_directory_uri() . '/css/owl.carousel.css',  array(), 20141119 );
     wp_enqueue_style( 'styles-css'   , get_stylesheet_directory_uri() . '/css/styles.css',        array(), 20141119 );
     wp_enqueue_style( 'styles2-css'   , get_stylesheet_directory_uri() . '/css/style2.css',       array(), 20141119 );
 }
@@ -60,8 +56,6 @@ function make_Query($key) {
     }
     return array('relation' => 'OR', $values);
 }
-
-
 function getQuery() {
     $brand     =  $_POST['brand'] ? array( 'key' => 'brand' ,'value' => $_POST['brand'] , 'compare'=> 'LIKE' ) : []  ;
     $model     =  $_POST['model'] ? array( 'key' => 'model' ,'value' => $_POST['model'] , 'compare'=> 'LIKE' ) : []  ; 
@@ -73,7 +67,6 @@ function getQuery() {
 	);
     
     $args =  '';
-
     if(empty($_POST['brand']) && empty($_POST['model']) && empty($_POST['category']) && empty($_POST['price_min']) && empty($_POST['price_max']) ){
        $args = []; 
     } 
@@ -119,18 +112,15 @@ function getQuery() {
     }    
     return $args;
 }
-
 function searchReview(){
     $args = getQuery();
     
     if(empty($args)){
         return [];
     }
-
     $the_query = new WP_Query($args);
     $reviews = array();
     $response = array();
-
     if ($the_query->have_posts()) {
         
         while( $the_query -> have_posts() ) {            
@@ -156,7 +146,6 @@ function searchReview(){
   wp_reset_postdata(); 
   die();
 }
-
 function insertComment(){
     $data = array(
         'comment_post_ID' => $_POST['post_id'],
@@ -175,14 +164,12 @@ function insertComment(){
     echo json_encode(['comment_id' => $comment_id , 'success' => $success]);
     exit();
 }
-
 function updateLikes() {
     $response = '';
     $field = get_field_object($_POST['field'] , $_POST['post_id']);
     
     $count = (int) $field['value'];
     $count = ( $count == 0 ) ? 1 : $count++;
-
     $response = update_field($field['key'], $count, (int) $_POST['post_id']);               
     
     echo json_encode(array('response' => $response, 'count'=> $count, 'key' => $field['key'] , 'value' => $field['value'] , 'post_id' => $_POST['post_id']));
@@ -202,7 +189,6 @@ function custom_func_setup(){
         'header-text' => array( 'site-title', 'site-description' )
     );    
     add_theme_support('custom-logo', $logoData);
-
     $headerData = array(
         'width' => 1460,
         'flex-width'    => true,
@@ -225,7 +211,6 @@ function custom_func_setup(){
     )
     );    
     register_default_headers($headerImages);
-
     $backgroundData = array(
         'default-color'          => '',
         'default-image'          => '%1$s/images/cycle-bg-1.jpg',
@@ -240,18 +225,14 @@ function custom_func_setup(){
     );
     add_theme_support( 'custom-background', $backgroundData );
 }
-
 add_action( 'after_setup_theme', 'custom_func_setup' );
-
 add_theme_support( 'custom-background' );
 add_theme_support( 'post-formats', array('aside', 'image', 'video'));
-
 add_theme_support( 'post-thumbnails', array( 'post', 'page' , 'movie' ) );   
-
 function initTheme(){
     add_theme_support( 'menus' ); 
-    register_nav_menu( 'primary', 'Primary Header Navigation');
-    register_nav_menu( 'secondary', 'Footer Navigation Menu');
+    register_nav_menu( 'primary', 'Header Menu');
+    register_nav_menu( 'secondary', 'Footer Menu');
 }
 add_action('init', 'initTheme'); 
 

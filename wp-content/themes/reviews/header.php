@@ -9,54 +9,40 @@
 </head>
 
 <header>
+    <!-- Navigation Menu Starts  -->
+    <div id="main_navbar" class="navbar navbar-expand-md navbar-light bg-light">
+    <!-- you can remove this container wrapper if you want things full width -->
+    <div class="container">
+        <a class="navbar-brand" href="#"><?php esc_html_e( bloginfo( 'name' ), 'themeslug' ); ?></a>
 
-    <!-- Navigation Menu Start --
-    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow fixed-top mt-4">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-            <?/*php
-                $custom_logo_id = get_theme_mod( 'custom_logo' );
-                $logo = wp_get_attachment_image_src( $custom_logo_id , 'full' );
-                if ( has_custom_logo() ) {
-                    echo '<img src="'. esc_url( $logo[0] ) .'">';
-                } else {
-                    echo '<h1>'. get_bloginfo( 'name' ) .'</h1>';
-                }
-            */?>  
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-                </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
-                <a class="nav-link" href="#">Home
-                        <span class="sr-only">(current)</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="#">About</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="#">Services</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="#">Contact</a>
-                </li>
-            </ul>
-            </div>
-        </div>
-    </nav>
-    -- Navigation Menu Ends  -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#headerNav" aria-controls="headerNav" aria-expanded="false" aria-label="<?php esc_attr_e( 'Toggle navigation', 'best-reloaded' ); ?>">
+            <span class="navbar-toggler-icon"></span><span class="sr-only"><?php esc_html_e( 'Toggle Navigation', 'themeslug' ); ?></span>
+        </button>
+        <nav class="collapse navbar-collapse" id="headerNav" role="navigation" aria-label="Main Menu">
+            <span class="sr-only"><?php esc_html_e( 'Main Menu', 'themeslug' ); ?></span>
+            <?php
+            wp_nav_menu( array(
+                'theme_location' => 'primary',
+                'depth' => 2,
+                'container' => false,
+                'menu_class' => 'navbar-nav mr-auto',
+                'fallback_cb' => 'WP_Bootstrap_Navwalker::fallback',
+                'walker' => new WP_Bootstrap_Navwalker(),
+            ) );
+        ?>
+        </nav>
+    </div>
+</div>
+    <!-- Navigation Menu Ends  -->
 
-    <div class="row w-100 h-100 align-items-center">
-        <div class="col-sm text-center">
+    <div class="row w-100 m-0">
+        <div class="col-sm w-100 p-0">
             <?php if(get_background_image()) :  ?>
              <img class="bg" src="<?php background_image(); ?>" alt="<?php bloginfo('name'); ?>"/> 
             <?php endif;?>
-            <?php if(is_home()) : ?>
+            <?php if(is_home() || $pagename === 'home') : ?>
             <div class="row buttons-wrapper mb-2">                
-                <div class="col-sm">
+                <div class="col-sm text-center">
                     <span class="header-text">
                         Real Bike Reviews From Real People
                     </span>

@@ -361,7 +361,7 @@ ul.contact li p {
 	background:#34d1c6;
 }
 header {
-    padding:20px 0;
+  /*  padding:20px 0; */
 }
 header .navbar-default{
 	background:none;

@@ -3,13 +3,12 @@
     window.page = window.page || {};
     $(document).ready(function(){
         console.log('Main-JS is Ready.');
-        $('.owl-carousel').owlCarousel({loop:true, margin:10, nav:true,responsive:{ 0:{items:1 }, 600:{items:3 }, 1000:{items:3 }} });
         bindEvents();
         enableDisableButton();
     });
     
     page.variables = {
-        base_url : 'http://localhost:8888/treadly_reviews/wp-content/themes/reviews/'
+        base_url : 'http://localhost/reviews/wp-content/themes/reviews/'
     }
 
     function bindEvents(){
@@ -49,7 +48,7 @@
 
     function onSearchSuccess(response) {
         response = JSON.parse(response);
-        
+        console.log('Response', response);
         var reviews = '';
         if(response.success){
             $(response.reviews).each((index ,review) => {
@@ -145,8 +144,6 @@
         $.each(form , function (index, input) {
             form_data.append(`${input.name}`, `${input.value}`);
         });
-        // var category = $('#cateogries option:selected').val();
-        // form_data.append('category', category);
         form_data.append('action', 'insertComment');  
         form_data.append('query_vars', reviewForm.query_vars);  
         

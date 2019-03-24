@@ -1,21 +1,22 @@
-<?php get_header(); ?>
+<?php /* Template Name: Home */  
+    get_header(); 
+?>
 <div class="wrapper">    
     <div class="container">
-        <div class="row" id="posts">
-                
+        <div class="row mt-4" id="posts">                
             <div class="col-sm mb-2">
                 <form id="searchForm">    
                     <div class="row">
 
                         <div class="col-sm">
                             <div class="form-group">
-                                <input id="brand" name="brand" type="text" class="form-control" placeholder="Enter bike brand" value="">
+                                <input id="brand" name="brand" type="text" class="form-control" placeholder="Enter brand" value="">
                             </div>
                         </div>
 
                         <div class="col-sm">
                             <div class="form-group">
-                                <input id="model" name="model" type="text" class="form-control" placeholder="Enter bike model" value="">
+                                <input id="model" name="model" type="text" class="form-control" placeholder="Enter model" value="">
                             </div>
                         </div>
 
@@ -84,7 +85,7 @@
                                                 $author_id = get_post_field( 'post_author', get_the_ID() );
                                                 $author_name  = get_the_author_meta('user_nicename', $author_id);
                                             ?>
-                                            <label class="text-muted"><?php echo $author_name; ?> </label>
+                                            <label class="text-muted"><?php echo get_field('name'); ?> </label>
                                         </div>
                                     </div>
                                 </div>
@@ -127,8 +128,8 @@
                     <!--./ column -->
 
                 <?php endwhile; else: ?>
-                    <div class="col-sm">
-                        <div class="img-fluid"> <img src="'+page.variables.base_url+'/images/empty_product.svg" alt="No_Product"></div>
+                    <div class="col-sm text-center">
+                        <div class="img-fluid"> <img src="http://localhost/reviews/wp-content/themes/reviews/images/empty_product.svg" alt="No_Product"></div>
                     </div>
                     <hr>
                 <?php endif; ?>

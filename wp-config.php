@@ -23,7 +23,7 @@
 define( 'DB_NAME', 'treadly_reviews' );
 
 /** MySQL database username */
-define( 'DB_USER', '_root' );
+define( 'DB_USER', 'Farhad' );
 
 /** MySQL database password */
 define( 'DB_PASSWORD', '' );
