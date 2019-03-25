@@ -1,6 +1,6 @@
 <?php
 // Register Custom Navigation Walker
-require_once 'class-wp-bootstrap-navwalker.php';
+//require_once 'class-wp-bootstrap-navwalker.php';
 /*
 |----------------------
 | ENQUEUING SCRIPTS
@@ -22,11 +22,9 @@ function treadly_reviews_scripts(){
 |----------------------
 */
 function treadly_reviews_styles() {
-    wp_enqueue_style( 'google-fonts' , 'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css', array(), 20141119 );
+    wp_enqueue_style( 'google-fonts' , 'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css', array(), 1.0 );
     wp_enqueue_style( 'bootstrap-css'  , get_stylesheet_directory_uri() . '/css/bootstrap.min.css', array(), 1.0 );
-    wp_enqueue_style( 'styles-css_1'     , get_stylesheet_directory_uri() . '/css/style_1.css', array(), 1.0 );
-    wp_enqueue_style( 'styles-css'   , get_stylesheet_directory_uri() . '/css/styles.css',        array(), 20141119 );
-    wp_enqueue_style( 'styles2-css'   , get_stylesheet_directory_uri() . '/css/style2.css',       array(), 20141119 );
+    wp_enqueue_style( 'styles-css'     , get_stylesheet_directory_uri() . '/css/style.css', array(), 1.0 );
 }
 add_action('wp_enqueue_scripts', 'treadly_reviews_scripts');
 add_action('wp_enqueue_scripts', 'treadly_reviews_styles');
@@ -130,7 +128,7 @@ function searchReview(){
             $author_id = get_post_field( 'post_author', get_the_ID() );
             $author_name  = get_the_author_meta('user_nicename', $author_id);
             $comments_count = wp_count_comments( get_the_ID() )->approved;
-            $reviews[]     =  array('id' => get_the_ID() , 'author' => $author_name , 'comments'=> $comments_count ,'custom_fields' => $custom_fields );
+            $reviews[]     =  array('id' => get_the_ID() , 'author' => get_field('name') , 'comments'=> $comments_count ,'custom_fields' => $custom_fields );
         }
         $response['success']   = true;
         $response['reviews']   = $reviews;
@@ -229,6 +227,8 @@ add_action( 'after_setup_theme', 'custom_func_setup' );
 add_theme_support( 'custom-background' );
 add_theme_support( 'post-formats', array('aside', 'image', 'video'));
 add_theme_support( 'post-thumbnails', array( 'post', 'page' , 'movie' ) );   
+
+
 function initTheme(){
     add_theme_support( 'menus' ); 
     register_nav_menu( 'primary', 'Header Menu');

@@ -63,15 +63,18 @@
             }
         }        
         else {            
-            if(!fileName.match(/.(mp4|ogg|h264|hls|vp9)$/i)){
+            if(!fileName.match(/.(mp4|mov)$/i)){
                 window.alert('Please select a video.');
                 return;
             }
             if (e.target.files && e.target.files[0]) {
                 var reader = new FileReader();		        
                 reader.onload = function (e) {
+                    $('#videoDiv').show();
+                    $('#demoVideo').hide();
                     $('#videoTag').attr('src', e.target.result);
                     $('#videoDiv video')[0].load();
+                    
                 }
                 reader.readAsDataURL(e.target.files[0]);                
             }
@@ -153,33 +156,33 @@
             rules: {
                 review_video:{
                     required:true,
-                    accept:"mp4",
-                    filesize: 5388608   //max size 5MB
+                    accept:"mp4|mov",
+                    filesize: 50000000   //max size 50 MB 
                 },
                 bike :  {
-                    required: false,
+                    required: true,
                     accept: 'jpeg|jpg|gif|png',
-                    filesize: 2388608
+                    filesize: 5388608
                 },
                 tyres:  {
-                    required: false,
+                    required: true,
                     accept: 'jpeg|jpg|gif|png',
-                    filesize: 2388608
+                    filesize: 5388608
                 },
                 gears :  {
-                    required: false,
+                    required: true,
                     accept: 'jpeg|jpg|gif|png',
-                    filesize: 2388608
+                    filesize: 5388608
                 },
                 handlebar :  {
-                    required: false,
+                    required: true,
                     accept: 'jpeg|jpg|gif|png',
-                    filesize: 2388608
+                    filesize: 5388608
                 },
                 suspension : {
-                    required: false,
+                    required: true,
                     accept: 'jpeg|jpg|gif|png',
-                    filesize: 2388608
+                    filesize: 5388608
                 }
                 
             },messages: {
@@ -208,7 +211,7 @@
 
         var form = $('#review_form').serializeArray();
         $.each(form , function (index, input) {
-            console.log(input.name, input.value);
+            //console.log(input.name, input.value);
             form_data.append(`${input.name}`, `${input.value}`);
         });
         
@@ -232,7 +235,8 @@
             contentType: false,
             cache: false,
             beforeSend: showLoader,
-            success: onFormSubmission
+            success: onReviewSuccess,
+            error: onReviewError
         });
     }
 
@@ -258,8 +262,8 @@
     |  HANDLING RESPONSE AFTER FORM SUBMISSION
     |------------------------------------------
     */
-   function onFormSubmission(response) {
-    $('.loading').hide();
+   function onReviewSuccess(response) {
+        $('.loading').hide();
        response = jQuery.parseJSON(response);
        console.log('Response', response);
        if(response['post']['success']){
@@ -268,6 +272,12 @@
        }
        else
          $('#error-message').show();
+    }
+
+    function onReviewError(error){
+        $('.loading').hide();
+        $('#error-message').show();
+        console.error('Error', error);
     }
 
     /*

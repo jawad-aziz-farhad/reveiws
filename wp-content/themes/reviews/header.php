@@ -9,35 +9,34 @@
 </head>
 
 <header>
-    <!-- Navigation Menu Starts  -->
-    <div id="main_navbar" class="navbar navbar-expand-md navbar-light bg-light">
-    <!-- you can remove this container wrapper if you want things full width -->
-    <div class="container">
+ 
+    <!-- Navbar Starts -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
         <a class="navbar-brand" href="#"><?php esc_html_e( bloginfo( 'name' ), 'themeslug' ); ?></a>
-
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#headerNav" aria-controls="headerNav" aria-expanded="false" aria-label="<?php esc_attr_e( 'Toggle navigation', 'best-reloaded' ); ?>">
-            <span class="navbar-toggler-icon"></span><span class="sr-only"><?php esc_html_e( 'Toggle Navigation', 'themeslug' ); ?></span>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
         </button>
-        <nav class="collapse navbar-collapse" id="headerNav" role="navigation" aria-label="Main Menu">
-            <span class="sr-only"><?php esc_html_e( 'Main Menu', 'themeslug' ); ?></span>
-            <?php
-            wp_nav_menu( array(
-                'theme_location' => 'primary',
-                'depth' => 2,
-                'container' => false,
-                'menu_class' => 'navbar-nav mr-auto',
-                'fallback_cb' => 'WP_Bootstrap_Navwalker::fallback',
-                'walker' => new WP_Bootstrap_Navwalker(),
-            ) );
-        ?>
-        </nav>
-    </div>
-</div>
-    <!-- Navigation Menu Ends  -->
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item <?php if(is_home()):?> active <?php endif;?>">
+                    <a class="nav-link" href="<?php echo get_home_url(); ?>">Home</a>
+                </li>
+                <li class="nav-item <?php if($pagename == 'about'):?> active <?php endif;?>"">
+                    <a class="nav-link" href="http://localhost:8888/treadly_reviews/about">About</a>
+                </li>
+                <li class="nav-item<?php if($pagename == 'subscribe'):?> active <?php endif;?>"">
+                    <a class="nav-link" href="http://localhost:8888/treadly_reviews/subscribe">Subscribe</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- Navbar Ends -->
 
     <div class="row w-100 m-0">
         <div class="col-sm w-100 p-0">
-            <?php if(get_background_image()) :  ?>
+            <?php if(get_background_image() && !is_singular( 'post' ) ) :  ?>
              <img class="bg" src="<?php background_image(); ?>" alt="<?php bloginfo('name'); ?>"/> 
             <?php endif;?>
             <?php if(is_home() || $pagename === 'home') : ?>

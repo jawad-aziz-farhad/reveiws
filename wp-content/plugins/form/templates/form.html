@@ -16,7 +16,7 @@ $countries = ["Afghanistan","Albania","Algeria","Andorra","Angola","Anguilla","A
 		,"Turkey","Turkmenistan","Turks &amp; Caicos","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States of America","Uruguay","Uzbekistan","Venezuela","Vietnam","Virgin Islands (US)"
         ,"Yemen","Zambia","Zimbabwe"];
         
-$categories = array("Round Bike", "Mountain Bike" , "Cruiser", "Hybrid/Comfort Bike" , "Triathlon/Time Trial Bike",
+$categories = array("Road Bike", "Mountain Bike" , "Cruiser", "Hybrid/Comfort Bike" , "Triathlon/Time Trial Bike",
                     "BMX/Trick Bike", "Commuting Bike" , "Cyclocross Bike", "Track Bike / Fixed Gear", "Tandem",
                     "Folding Bike", "Kids Bike", "Recumbent", "I'm not sure, help me!");
 $options = '<option value="">select category</option>'; 
@@ -76,39 +76,18 @@ echo <<< FORM
     <form id="review_form" action="#">
         <h3>Basic Information</h3>
         <section>
-
-             <!-- Name and Email -->
-             <div class="form-row">
-                <div class="col-sm">
-                    <div class="form-group">
-                        <label for="name">Name *</label>
-                        <input id="name" name="name" type="text" class="form-control required" placeholder="Enter user name" value="">
-                    </div>
-                </div>
-                <div class="col-sm">
-                    <div class="form-group">
-                        <label for="email">Email *</label>
-                        <input id="email" name="email" type="email" class="form-control required" aria-describedby="emailHelp" placeholder="Enter email" value="">
-                        <small id="emailHelp" class="text-muted">
-                           Your email will remain confidentail.
-                        </small>
-                    </div>
-                </div>
-            </div>
-            <!--./ Name and Email -->
-
             <!-- Brand and Model -->
             <div class="form-row">
                 <div class="col-sm">
                     <div class="form-group">
                         <label for="brand">Bike Brand *</label>
-                        <input id="brand" name="brand" type="text" class="form-control required" placeholder="Enter brand" value="">
+                        <input id="brand" name="brand" type="text" class="form-control required" placeholder="Enter brand" value="Honda">
                     </div>
                 </div>
                 <div class="col-sm">
                     <div class="form-group">
                         <label for="model">Bike Model *</label>
-                        <input id="model" name="model" type="text" class="form-control required" placeholder="Enter model"  value="">
+                        <input id="model" name="model" type="text" class="form-control required" placeholder="Enter model"  value="2019">
                     </div>
                 </div>
             </div>
@@ -118,14 +97,14 @@ echo <<< FORM
             <div class="form-row">
                 <div class="col-sm">
                     <div class="form-group">
-                        <label for="price">Price *</label>
-                        <input id="price" name="price" type="number" class="form-control required" placeholder="Enter price"  value="">
+                        <label for="price">Price (AUD) *</label>
+                        <input id="price" name="price" type="number" class="form-control required" placeholder="Enter price you paid new"  value="2500">
                     </div>
                 </div>                
             </div>
             <!--./ Brand and Model -->
 
-            <!-- Category and Country -->
+            <!-- Category  -->
             <div class="form-row">
                 <div class="col-sm">
                     <div class="form-group">
@@ -135,6 +114,11 @@ echo <<< FORM
                         </select>
                     </div>
                 </div>
+            </div>
+            <!--./ Category  -->
+
+            <!-- Country -->
+            <div class="form-row">
                 <div class="col-sm">
                     <div class="form-group">
                         <label for="country">Country *</label>
@@ -143,9 +127,19 @@ echo <<< FORM
                         </select>
                     </div>
                 </div>
-
             </div>
-            <!--./ Category and Country -->
+            <!--./ Country -->
+
+            <!-- PostCode -->
+            <div class="form-row">
+                <div class="col-sm">
+                    <div class="form-group">
+                        <label for="post_code">Post Code *</label>
+                        <input id="post_code" name="post_code" type="text" class="form-control required" placeholder="Enter post code"  value="1234">
+                    </div>
+                </div>
+            </div>
+            <!--./PostCode -->
         </section>
         
         <!-- Rating section -->
@@ -321,6 +315,7 @@ echo <<< FORM
                             <input type="radio" id="saddle_star2" name="saddle_rating" value="2" /><label for="star2" title="2 star">2</label>
                             <input type="radio" id="saddle_star1" name="saddle_rating" value="1" /><label for="star1" title="1 star">1</label>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -328,12 +323,17 @@ echo <<< FORM
             <hr>   
 
             <!-- Like Slider starts -->
-            <div class="row w-100">
+            <div class="row w-100 mt-2 p-1">
                 <div class="col-sm">
                     <div class="form-group">
-                        <label for="like_level">Was it right bike for you ?</label>
+                        <label for="like_level">Overall rating ?</label>
                         <input type="range" class="form-control-range w-100" id="like_level" min="1" max="10" value="1">
                     </div>
+                </div>
+                <div class="w-100"></div>
+                <div class="col-sm w-100">
+                    <span class="pull-left">Hate It</span>
+                    <span class="pull-right">Loved It</span>
                 </div>
             </div>
             <!-- Like Slider ends -->
@@ -350,7 +350,7 @@ echo <<< FORM
                     <div class="form-group">
                         <label for="positiveFeedback1">1st Positive</label>
                         <textarea type="text" class="form-control" id="positiveFeedback1" name="1st_positive_feedback" aria-describedby="feedback1" placeholder="Enter 1st positive feedback"></textarea>
-                        <small id="feedback1" class="form-text text-muted">tell us what you have found positive in this bike.</small>
+                        <small id="feedback1" class="form-text text-muted">tell us what you have found positive about this bike.</small>
                     </div>
                 </div>
             </div>
@@ -363,7 +363,7 @@ echo <<< FORM
                     <div class="form-group">
                         <label for="positiveFeedback2">2nd Positive</label>
                         <textarea type="text" class="form-control" id="positiveFeedback2" name="2nd_positive_feedback" aria-describedby="feedback2" placeholder="Enter 2nd positive feedback"></textarea>
-                        <small id="feedback2" class="form-text text-muted">tell us what you have found positive in this bike.</small>
+                        <small id="feedback2" class="form-text text-muted">tell us what you have found positive about this bike.</small>
                     </div>
                 </div>
         
@@ -371,7 +371,7 @@ echo <<< FORM
                     <div class="form-group">
                         <label for="positiveFeedback3">3rd Positive</label>
                         <textarea type="text" class="form-control" id="positiveFeedback3" name="3rd_positive_feedback" aria-describedby="feedback3" placeholder="Enter 3rd positive feedback"></textarea>
-                        <small id="feedback3" class="form-text text-muted">tell us what you have found positive in this bike.</small>
+                        <small id="feedback3" class="form-text text-muted">tell us what you have found positive about this bike.</small>
                     </div>
                 </div>
                 
@@ -384,7 +384,7 @@ echo <<< FORM
                     <div class="form-group">
                         <label for="positiveFeedback1">1st Negative</label>
                         <textarea type="text" class="form-control" id="positiveFeedback1" name="1st_negative_feedback" aria-describedby="feedback1" placeholder="Enter 1st negative feedback"></textarea>
-                        <small id="feedback1" class="form-text text-muted">tell us what you have found negative in this bike.</small>
+                        <small id="feedback1" class="form-text text-muted">tell us what you have found negative about this bike.</small>
                     </div>
                 </div>
             </div>
@@ -397,7 +397,7 @@ echo <<< FORM
                     <div class="form-group">
                         <label for="positiveFeedback2">2nd Negative</label>
                         <textarea type="text" class="form-control" id="positiveFeedback2" name="2nd_negative_feedback" aria-describedby="feedback2" placeholder="Enter 2nd negative feedback"></textarea>
-                        <small id="feedback2" class="form-text text-muted">tell us what you have found negative in this bike.</small>
+                        <small id="feedback2" class="form-text text-muted">tell us what you have found negative about this bike.</small>
                     </div>
                 </div>
         
@@ -405,7 +405,7 @@ echo <<< FORM
                     <div class="form-group">
                         <label for="positiveFeedback3">3rd Negative</label>
                         <textarea type="text" class="form-control" id="positiveFeedback3" name="3rd_negative_feedback" aria-describedby="feedback3" placeholder="Enter 3rd negative feedback"></textarea>
-                        <small id="feedback3" class="form-text text-muted">tell us what you have found negative in this bike.</small>
+                        <small id="feedback3" class="form-text text-muted">tell us what you have found negative about this bike.</small>
                     </div>
                 </div>
 
@@ -418,15 +418,23 @@ echo <<< FORM
         <h3>Images</h3>
         <section>
 
+            <!-- Description of this Section -->
+            <div class="row d-flex text-center">
+                <div class="col-sm">
+                    <h4>Review Images</h4>
+                    <p class="text-muted">Please attach 5 photos of your bike using the following sections as a guide. </p>
+                </div>
+            </div>
+
             <!-- Bike , Tyres Images -->
             <div class="row">
 
                 <div class="form-group col-sm mr-1">
-                    <label class="custom-file-label" for="bike">Bike Image</label>
+                    <label class="custom-file-label" for="bike">Full Bike Image</label>
                     <input type="file" class="custom-file-input" id="bike" imageNum="1" name="bike" accept='image/*'>
                     <figure class="figure mt-1 text-center">
                         <img src="{$placeholder}" id='image-1' class="figure-img img-fluid rounded" alt="Suspension">
-                        <figcaption class="figure-caption" id="caption-1">Upload bike image here.</figcaption>
+                        <figcaption class="figure-caption" id="caption-1">Upload full bike image here.</figcaption>
                     </figure>
                 </div>
                 
@@ -482,22 +490,30 @@ echo <<< FORM
         <h3>Video</h3>
         <section>
             <div class="row w-100 m-2">
-                <div class="form-group col-sm" id="videoDiv">
-                    <label class="custom-file-label" for="review_video">Upload video</label>
+                <div class="form-group col-sm">
+                    <label class="custom-file-label" for="review_video">Upload video </label>
+                    
                     <input type="file" class="custom-file-input" id="review_video" name="review_video" aria-describedby="videoHelp" placeholder="Enter bike brand">
-                    <div class="text-center">
+                    
+                    <div class="text-center" id="demoVideo">
+                        <iframe class="text-center" src="https://www.youtube.com/embed/tgbNymZ7vqY?controls=1"></iframe>
+                        <br>
+                        <small>Not sure what to do? Watch an example here</small>
+                    </div>
+
+                    <div class="text-center" id="videoDiv" style="display: none">
                         <video class="img-fluid mt-1" id="videoTag" playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop" controls="controls">
-                            <source src="" type="video/mp4">
+                            <source src="" type="video/*">
                         </video>
                     </div>
+                    
                     <small id="videoHelp" class="form-text text-muted">Your review must not be longer than 90 seconds. You must cover the following points in this order:
                         <span>
                             <ul>
-                                <li>What I like</li>
+                                <li>Start your video with the make and model of your bike (“This is my review of the (Brand) (Model)</li>
                                 <li>What I don't like</li>
-                                <li>Standouts</li>
-                                <li>Who should buy it</li>
-                                <li>Who should avoid it</li>
+                                <li>What I like</li>
+                                <li>Who would this bike be perfect for</li>
                             </ul>
                         </span>
                     </small>
@@ -505,6 +521,33 @@ echo <<< FORM
             </div>
         </section>
         <!-- ./Video section ends -->
+
+        <!-- User's Info starts -->
+        <h3>User's Info</h3>
+        <section>
+
+             <!-- Name and Email -->
+             <div class="form-row">
+                <div class="col-sm">
+                    <div class="form-group">
+                        <label for="name">Name *</label>
+                        <input id="name" name="name" type="text" class="form-control required" placeholder="Enter your display name" value="">
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input id="email" name="email" type="email" class="form-control required" aria-describedby="emailHelp" placeholder="Enter email" value="">
+                        <small id="emailHelp" class="text-muted">
+                           Your email will remain confidentail.
+                        </small>
+                    </div>
+                </div>
+            </div>
+            <!--./ Name and Email -->
+        </section>
+        <!-- ./User's Info ends -->
+
     </form>
 </div>
 

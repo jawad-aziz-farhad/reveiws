@@ -85,7 +85,7 @@
                                                 $author_id = get_post_field( 'post_author', get_the_ID() );
                                                 $author_name  = get_the_author_meta('user_nicename', $author_id);
                                             ?>
-                                            <label class="text-muted"><?php echo get_field('name'); ?> </label>
+                                            <label class="text-muted m-2"><?php echo get_field('name'); ?> </label>
                                         </div>
                                     </div>
                                 </div>
@@ -96,7 +96,22 @@
                                 </video>
 
                                 <div class="card-body">
-                                   
+                                    <div class="row w-100 mt-2">
+                                        <div class="col-6">
+                                            <div class="card border-sdark mx-sm-1 p-3 text-center">
+                                                <div class="card border-sdark shadow text-dark p-1 my-card" ><span class="fa fa-bicycle" aria-hidden="true"></span></div>
+                                                <div class="text-dark text-center mt-3"><h4>Brand</h4></div>
+                                                <small class="text-muted text-center"><?php echo get_field('brand');?></small>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="card border-sdark mx-sm-1 p-3">
+                                                <div class="card border-sdark shadow text-dark p-1 my-card" ><span class="fa fa-bicycle" aria-hidden="true"></span></div>
+                                                <div class="text-dark text-center mt-3"><h4>Model</h4></div>
+                                                <small class="text-muted text-center"><?php echo get_field('model');?></small>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="card-footer text-muted">
@@ -129,7 +144,7 @@
 
                 <?php endwhile; else: ?>
                     <div class="col-sm text-center">
-                        <div class="img-fluid"> <img src="http://localhost/reviews/wp-content/themes/reviews/images/empty_product.svg" alt="No_Product"></div>
+                        <div class="img-fluid"> <img src="<?php echo get_site_url() ?>/wp-content/themes/reviews/images/empty_product.svg" alt="No_Product"></div>
                     </div>
                     <hr>
                 <?php endif; ?>

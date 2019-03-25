@@ -1,0 +1,108 @@
+@charset "utf-8";
+
+@font-face {
+	font-family: 'feather';
+	font-weight: normal;
+	font-style: normal;
+	src: url('../fonts/feather/feather.eot?1gafuo');
+	src: url('../fonts/feather/feather.eot?1gafuo#iefix') format('embedded-opentype'), url('../fonts/feather/feather.woff2?1gafuo') format('woff2'), url('../fonts/feather/feather.ttf?1gafuo') format('truetype'), url('../fonts/feather/feather.woff?1gafuo') format('woff'), url('../fonts/feather/feather.svg?1gafuo#feather') format('svg');
+}
+
+.buttons-wrapper {
+    position: absolute;
+    top: 40%;
+    left: 15%;
+    right: 15%;    
+}
+
+.header-btn {
+  background-color: #085561;
+  color: white;
+}
+
+.header-text {
+  color: white;
+  font-size: 40px;
+  font-family: fantasy;
+}
+@media (max-width: 480px)
+{
+  .header-text {
+    font-size: 20px;
+  }
+  .header-btn { margin-left: 0 !important; margin-right: 0 !important;  }
+}
+
+.header-btn:hover { color:rgb(228, 180, 180) !important;}
+
+.bg {
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+}
+
+  #videoHelp {
+      display: none;
+  }
+  .form-group:hover #videoHelp {
+      display: block;
+  }
+
+  .btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
+
+#img-upload{
+    width: 100%;
+}
+
+.starrating > input {display: none;}  /* Remove radio buttons */
+
+.starrating > label:before { 
+  content: "\f005"; /* Star */
+  font-size: 1.5em;
+  font-family: FontAwesome;
+  display: inline-block; 
+}
+
+.starrating > label
+{
+  color: #ccc; /* Start color when not clicked */
+}
+.starrating:not(:checked) > label:hover, /* hover current star */
+.starrating:not(:checked) > label:hover ~ label { 
+	color:#ffca08 !important;
+  cursor:pointer;
+} /* hover previous stars in list */
+
+.starrating > input:checked + label:hover, /* hover current star when changing rating */
+.starrating > label:hover ~ input:checked ~ label, /* lighten current selection */
+.starrating > input:checked ~ label:hover ~ label { 
+	color: #ffca08 !important;
+  cursor:pointer;
+} 
+
+.my-card
+{
+    position:absolute;
+    left:40%;
+    top:-20px;
+    border-radius:50%;
+}

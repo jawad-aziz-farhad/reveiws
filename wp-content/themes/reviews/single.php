@@ -13,7 +13,8 @@
         $author_email = get_the_author_meta('user_email', $author_id);
         if( $author_name ): ?>
         <!-- Author -->
-        <h1 class="mt-4"><?php echo get_field('name'); ?></h1>
+        <h6 class="mt-4 mb-0"><?php echo get_field('name'); ?></h6><hr>
+        <h1><?php echo get_field('brand'); ?> - <?php echo get_field('model'); ?></h1>
         <?php endif; ?>
 
         <hr>
@@ -95,7 +96,7 @@
     <div class="w-100"></div>
 
     <!-- Bike Liking/ Disliking Starts -->
-    <div class="col-sm mb-1">
+    <div class="col-sm mb-1 mt-1">
       <label for="like_level">Like Level: <?php echo get_field('like_level');?></label>                
     </div>
 
@@ -115,14 +116,8 @@
         <div class="col-sm">
            <?php for( $i = 1; $i < 4; $i++ ) { $index = $i == 1 ? '1st' : ($i == 2 ? '2nd' : '3rd'); ?>
               <div class="form-group">
-                <label for="comment"><?php echo $index .' Positive Feedback:'?></label>
-                <textarea class="form-control text-sm-left" rows="4" id="<?php echo 'positive_'. $i ?>" placeholder="<?php echo 'Enter positive feedback '. $i ?>" disabled>
-                  <?php 
-                    $positive_feedback = get_field($index .'_positive_feedback'); 
-                    $positive_feedback = ($positive_feedback != '') ? $positive_feedback : 'No feedback given.';
-                    echo get_field($index .'_positive_feedback');
-                  ?>
-                </textarea>
+              <label for="comment"><?php echo $index .' Positive Feedback:'?></label>
+                <textarea class="form-control text-sm-left" rows="4" id="<?php echo 'positive_'. $i ?>"  disabled><?php echo get_field($index .'_positive_feedback'); ?></textarea>
               </div>            
           <?php }; ?>       
         </div>
@@ -141,7 +136,7 @@
       </div>
     </div>
     <!-- /. Feedbacks ends -->
-
+    
     <div class="w-100"></div>
 
     <div class="col-sm">

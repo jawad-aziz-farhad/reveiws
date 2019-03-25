@@ -5,10 +5,13 @@
         console.log('Main-JS is Ready.');
         bindEvents();
         enableDisableButton();
+
+        validateSubscribeForm();
     });
     
     page.variables = {
-        base_url : 'http://localhost/reviews/wp-content/themes/reviews/'
+        base_url : 'http://localhost:8888/treadly_reviews/wp-content/themes/reviews/'
+        //base_url : 'http://getwebsite.com.pk/jawad/treadly_reviews/wp-content/themes/reviews/'
     }
 
     function bindEvents(){
@@ -17,6 +20,23 @@
         $('#searchForm').on('submit', submitForm);
         $('#commentForm').on('submit', submitComment);
         $('.like_dislike_Btns').on('click', updateLikes);
+        $('li a').click(function(e) {
+            var $this = $(this);
+            $this.closest('ul').find('.active').removeClass('active');
+            $this.parent().addClass('active');
+    
+        });
+    }
+
+    function validateSubscribeForm(){
+       $('#subscForm').validate({ 
+        rules: { name: {required: true } , email : { requied : true , email: true}}
+       });
+    }
+
+    function handlMenuItemClick(){
+        $('.nav-item').removeClass('active');
+        $(this).addClass('active');
     }
 
     function submitForm(e) {
@@ -110,22 +130,27 @@
     function onSearchError(error){ alert('Something went wrong.');}
 
     function enableDisableButton(){
-        let invValid = true;
+        let inValid = true;
+        
         $form = $('#searchForm').val();
+        // $formID = $(this).closest('form').attr('id');
+        // $form  = ($formID == 'searchForm') ? $('#searchForm').val() : $('#subscForm').val();
+        // $btn   = ($formID == 'searchForm') ? $( '#search_btn') : $( '#subscribeBtn');
+
         $( '.form-control' , $form).each( function() {
             const type = $(this).attr('type');
             const val  = $(this).val();
             if(type == 'text' && val.length >= 2)
-                invValid = false;
+            inValid = false;
             else if(type == 'number' && val > 0 )
-                invValid = false;
+            inValid = false;
             
         });
-        if(invValid){
+        if(inValid) {
             var category = $('#category option:selected').val();
-            invValid = (category && category.indexOf('select category')) == -1 ? false : true; 
+            inValid = (category && category.indexOf('select category')) == -1 ? false : true; 
         }
-        $( '#search_btn').attr( 'disabled', invValid );
+        $( '#search_btn').attr( 'disabled', inValid );
     }
 
     function submitComment(e){
