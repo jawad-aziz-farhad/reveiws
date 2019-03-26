@@ -9,8 +9,7 @@
  * @since 1.0.0
  */
 
-get_header();
-?>
+get_header();?>
 
 	<section id="primary" class="content-area">
 		<main id="main" class="site-main">

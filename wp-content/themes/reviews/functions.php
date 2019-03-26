@@ -236,4 +236,11 @@ function initTheme(){
 }
 add_action('init', 'initTheme'); 
 
+
+add_action( 'um_user_login', 'my_user_login', 10, 1 );
+function my_user_login( $args ) {
+    // your code here
+    wp_redirect('/');
+}
+
 ?>

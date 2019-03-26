@@ -30,6 +30,23 @@
                     <a class="nav-link" href="http://localhost:8888/treadly_reviews/subscribe">Subscribe</a>
                 </li>
             </ul>
+            
+            
+                <ul class="navbar-nav my-2 my-lg-0">
+                    <?php if(is_user_logged_in()):?>
+                    <li class="nav-item">                    
+                        <a class="nav-link" href="javascript(0);"><?php echo um_user('display_name');?></a>
+                    </li>
+                    <li class="nav-item">                    
+                        <a class="nav-link" href="http://localhost:8888/treadly_reviews/logout">Logout</a>
+                    </li>
+                    <?php else:?>
+                    <li class="nav-item">                    
+                        <a class="nav-link" href="http://localhost:8888/treadly_reviews/login">Login</a>
+                    </li>
+                    <?php endif;?>
+                </ul>
+            
         </div>
     </nav>
     <!-- Navbar Ends -->

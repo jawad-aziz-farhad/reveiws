@@ -100,15 +100,16 @@
                                         <div class="col-6">
                                             <div class="card border-sdark mx-sm-1 p-3 text-center">
                                                 <div class="card border-sdark shadow text-dark p-1 my-card" ><span class="fa fa-bicycle" aria-hidden="true"></span></div>
-                                                <div class="text-dark text-center mt-3"><h4>Brand</h4></div>
-                                                <small class="text-muted text-center"><?php echo get_field('brand');?></small>
+                                                <small class="text-muted text-center">Brand</small>
+                                                <div class="text-dark text-center mt-3"><h5><?php echo get_field('brand');?></h5></div>
                                             </div>
                                         </div>
                                         <div class="col-6">
                                             <div class="card border-sdark mx-sm-1 p-3">
                                                 <div class="card border-sdark shadow text-dark p-1 my-card" ><span class="fa fa-bicycle" aria-hidden="true"></span></div>
-                                                <div class="text-dark text-center mt-3"><h4>Model</h4></div>
-                                                <small class="text-muted text-center"><?php echo get_field('model');?></small>
+                                                <small class="text-muted text-center">Model</small>
+                                                <div class="text-dark text-center mt-3"><h5><?php echo get_field('model');?></h5></div>
+                                               
                                             </div>
                                         </div>
                                     </div>
@@ -154,8 +155,14 @@
          <!-- .container -->  
     </div> 
      <!-- .wrapper -->  
-<?php
-    echo do_shortcode("[review_form]"); ?>
+
+   
+    <?php
+    if(!is_user_logged_in())
+        echo do_shortcode("[ultimatemember form_id='529']");
+   
+    echo do_shortcode("[review_form]"); 
+?>
 <?php
     get_footer(); 
 ?>
