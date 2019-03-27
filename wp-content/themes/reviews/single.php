@@ -359,14 +359,30 @@
         <!-- Like Starts -->          
         <div class="col-sm text-center mb-2">
 
-          <button class="btn btn-lg btn-success btn-twitter btn-sm like_dislike_Btns" id="like_Btn" post_id="<?php echo get_the_ID(); ?>" field="review_likes">
+          <?php 
+            /* GETTING THIS POST's LIKE AND DISLIKE OF LOGGED IN USER */
+            $userId = get_current_user_id();
+
+            $userLike    = ($userId != 1) ? (get_post_meta( get_the_ID(),  get_current_user_id() . '_like' ,   true) ) : 0;
+            $userDislike = ($userId != 1) ? (get_post_meta( get_the_ID(),  get_current_user_id() . '_dislike', true) ) : 0;
+            $totalLikes    =  get_field('review_likes', get_the_ID());
+            $totalDisLikes =  get_field('review_dislikes', get_the_ID());
+          ?>
+
+          <button class="btn btn-lg btn-success btn-twitter btn-sm like_dislike_Btns" id="like_Btn" post_id="<?php echo get_the_ID(); ?>" field="review_likes" 
+            <?php if(!is_user_logged_in() || $userLike == 1 || $userId == 1): ?>disabled <?php endif; ?>>
             <i class="fa fa-thumbs-up"></i>
-            <?php echo get_field('review_likes', get_the_ID()) ; ?> Likes 
+            Likes
+            <?php $totalLikes = $totalLikes ? $totalLikes : 0; ?><span>| <?php echo $totalLikes ; ?> </span>  
+            
           </button>
 
-          <button class="btn btn-lg btn-danger btn-twitter btn-sm like_dislike_Btns" id="dislike_Btn" post_id="<?php echo get_the_ID(); ?>" field="review_dislikes">
+          <button class="btn btn-lg btn-danger btn-twitter btn-sm like_dislike_Btns" id="dislike_Btn" post_id="<?php echo get_the_ID(); ?>" field="review_dislikes"
+          <?php 
+            if(!is_user_logged_in() || $userDislike == 1): ?>disabled<?php endif; ?> >
             <i class="fa fa-thumbs-down"></i>
-            <?php echo get_field('review_dislikes', get_the_ID() ) ?> Dislikes
+            Dislikes
+            <?php $likes = get_field('review_dislikes', get_the_ID()); $likes = $likes ? $likes : 0; ?><span>| <?php echo $likes ; ?> </span>
           </button>
           
         </div>
@@ -383,6 +399,54 @@
       <!--/.row -->
     </div>
     <!-- Like, Share ends -->
+
+    
+    <div class="w-100"></div>
+
+    <div class="col-sm"><hr></div>
+
+    <div class="w-100"></div>
+
+    <div class="col-sm">
+      <!-- Comments Form -->
+      <div class="card my-4">
+        <h5 class="card-header">Join the Conversation:</h5>
+        <div class="card-body">
+          <form id="commentForm" method="post">
+            <div class="form-group" >
+              <textarea class="form-control" rows="4" placeholder="Enter comment" id="comment" name="comment" <?php if(!is_user_logged_in()) : ?> disabled <?php endif; ?> >
+              </textarea>
+            </div>
+            <input type="hidden" name="post_id" value="<?php echo get_the_ID(); ?>"/>
+            <input type="hidden" name="author_name" value="<?php echo um_user('display_name'); ?>"/>
+            <input type="hidden" name="author_email" value="<?php echo um_user('email'); ?>"/>
+
+            <button type="submit" class="btn btn-primary btn-block" <?php if(!is_user_logged_in()) : ?> disabled <?php endif; ?> >Submit</button>
+            <?php if(!is_user_logged_in()) : ?><small> Please <a href="<?php echo site_url()?>/login">Login</a> to join the conversation. </small>  <?php endif; ?>
+          </form>
+        </div>
+      </div>
+      <!-- /. Comments Form Ends-->
+    </div>
+
+    <div class="w-100"></div>
+
+    <div class="col-sm"><hr></div>
+
+    <div class="w-100"></div>
+
+    <div class="col-sm">
+      <?php 
+        echo '<ol class="commentlist">';
+        //Gather comments for a specific page/post 
+        $comments = get_comments(array('post_id' => get_the_ID(),'status' => 'approve'));
+        wp_list_comments(array(
+          'per_page' => 10, // Allow comment pagination
+           'reverse_top_level' => false, //Show the latest comments at the top of the list
+           'callback'=> 'my_custom_comments'), $comments);
+        echo '</ol>';?>
+    </div>
+
 
   </div>
   <!-- /.row -->

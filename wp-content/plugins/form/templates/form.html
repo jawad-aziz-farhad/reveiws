@@ -39,7 +39,13 @@ echo <<< FORM
 <div class="container" id="reviewForm">
     
     <div class="loading">Loading&#8230;</div>
-
+    <div class="row">
+        <div class="col-sm text-center">
+            <legend>Review Form</legend>
+            <small>Share your experience about any bike you have used.</small>
+        </div>
+    </div>
+    <hr>
     <!-- SUCCESS MESSAGE -->
     <div class="row" id="success-message" style="display: none;">        
         <div class="col-sm">
@@ -81,13 +87,13 @@ echo <<< FORM
                 <div class="col-sm">
                     <div class="form-group">
                         <label for="brand">Bike Brand *</label>
-                        <input id="brand" name="brand" type="text" class="form-control required" placeholder="Enter brand" value="Honda">
+                        <input id="brand" name="brand" type="text" class="form-control required" placeholder="Enter brand" value="">
                     </div>
                 </div>
                 <div class="col-sm">
                     <div class="form-group">
                         <label for="model">Bike Model *</label>
-                        <input id="model" name="model" type="text" class="form-control required" placeholder="Enter model"  value="2019">
+                        <input id="model" name="model" type="text" class="form-control required" placeholder="Enter model"  value="">
                     </div>
                 </div>
             </div>
@@ -98,7 +104,7 @@ echo <<< FORM
                 <div class="col-sm">
                     <div class="form-group">
                         <label for="price">Price (AUD) *</label>
-                        <input id="price" name="price" type="number" class="form-control required" placeholder="Enter price you paid new"  value="2500">
+                        <input id="price" name="price" type="number" class="form-control required" placeholder="Enter price you paid new"  value="">
                     </div>
                 </div>                
             </div>
@@ -135,7 +141,7 @@ echo <<< FORM
                 <div class="col-sm">
                     <div class="form-group">
                         <label for="post_code">Post Code *</label>
-                        <input id="post_code" name="post_code" type="text" class="form-control required" placeholder="Enter post code"  value="1234">
+                        <input id="post_code" name="post_code" type="text" class="form-control required" placeholder="Enter post code"  value="">
                     </div>
                 </div>
             </div>

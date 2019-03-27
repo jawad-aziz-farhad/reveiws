@@ -17,15 +17,25 @@
     function bindEvents(){
         $('.form-control').on('input', enableDisableButton);
         $('select').on('change', enableDisableButton);
-        $('#searchForm').on('submit', submitForm);
+        $('#searchForm').on('submit', submitSearchForm);
         $('#commentForm').on('submit', submitComment);
         $('.like_dislike_Btns').on('click', updateLikes);
-        $('li a').click(function(e) {
-            var $this = $(this);
-            $this.closest('ul').find('.active').removeClass('active');
-            $this.parent().addClass('active');
-    
-        });
+        $('body').on('mouseenter mouseleave','.dropdown',toggleDropdown).on('click', '.dropdown-menu a', toggleDropdown);
+    }
+    /*
+    |---------------------------------
+    | SHOWING DROP DOWN MENU ON HOVER
+    |---------------------------------
+    */
+    function toggleDropdown(e) {        
+        const _d = $(e.target).closest('.dropdown'),
+        _m = $('.dropdown-menu', _d);
+        setTimeout(function(){
+            const shouldOpen = e.type !== 'click' && _d.is(':hover');
+            _m.toggleClass('show', shouldOpen);
+            _d.toggleClass('show', shouldOpen);
+            $('[data-toggle="dropdown"]', _d).attr('aria-expanded', shouldOpen);
+        }, e.type === 'mouseleave' ? 300 : 0);
     }
 
     function validateSubscribeForm(){
@@ -34,12 +44,13 @@
        });
     }
 
-    function handlMenuItemClick(){
-        $('.nav-item').removeClass('active');
-        $(this).addClass('active');
-    }
 
-    function submitForm(e) {
+    /*
+    |-------------------------
+    | SUBMITTING SEARCH FORM
+    |-------------------------
+    */
+    function submitSearchForm(e) {
         e.preventDefault();
         
         $form = $(this);
@@ -164,9 +175,11 @@
             alert('Please enter some comment.');
             return;
         }
+        
         var form_data = new FormData();
-        var form = $form.serializeArray();
+        var form = $('#commentForm').serializeArray();
         $.each(form , function (index, input) {
+            console.log(input.name, input.value);
             form_data.append(`${input.name}`, `${input.value}`);
         });
         form_data.append('action', 'insertComment');  
@@ -179,19 +192,31 @@
             processData: false,
             contentType: false,
             cache: false,
-            success: onCommentSubmission
+            success: onCommentSubmission,
+            error: onCommentSubmission({success: false})
         });
     }
 
     function onCommentSubmission(response){
+        console.log('comment submission response ', response);
         var resultTag = $('#comment-form-result');
         resultTag.className = '';
-        if(response.success)
+        if(response.success){
             resultTag.text('Comment inserted successfully').addClass('color-success');
+            $('#commentForm')[0].reset();
+        }
         else
             resultTag.text('Comment couldn\'t be inserted').addClass('color-danger');
+        
+        resultTag.show();   
+        setTimeout(() => { resultTag.hide(); } , 500);  
     }
 
+    /*
+    |------------------------------------
+    |   UPDATING LIKES AND DISLIKES
+    |------------------------------------
+    */
     function updateLikes(){
         var form_data = new FormData();
         form_data.append('action', 'updateLikes');  
@@ -199,7 +224,6 @@
         form_data.append('post_id', $(this).attr('post_id'));
         form_data.append('field', $(this).attr('field'));
 
-        console.log('Form', form_data);
         $.ajax({
             type: "POST",
             url: reviewForm.review_url,
@@ -207,13 +231,29 @@
             processData: false,
             contentType: false,
             cache: false,
-            success: function(response){
-                console.log('Response', response);
-            },
+            success: function(result){
+                result = JSON.parse(result);
+                if(result && result.response){
+                    switch(form_data.get('field')){
+                        case 'review_likes':
+                            $('#like_Btn').attr("disabled", true);
+                            $('#dislike_Btn').attr("disabled", false); 
+                        break;
+                        case 'review_dislikes':
+                            $('#dislike_Btn').attr("disabled", true);
+                            $('#like_Btn').attr("disabled", false);    
+                        break;
+
+                        default:
+                            break;
+                    }
+                    $('#like_Btn span').text('| '+ result.likes);
+                    $('#dislike_Btn span').text('| '+ result.dislikes);
+                }
+            }, 
             error: function(error) {
                 console.error('Error', error);
             }
-
         });
     }
 

@@ -19,38 +19,44 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
+            <ul class="navbar-nav mr-auto"></ul>
+            <ul class="navbar-nav my-2 my-lg-0">
                 <li class="nav-item <?php if(is_home()):?> active <?php endif;?>">
                     <a class="nav-link" href="<?php echo get_home_url(); ?>">Home</a>
                 </li>
-                <li class="nav-item <?php if($pagename == 'about'):?> active <?php endif;?>"">
+                <li class="nav-item <?php if($pagename == 'about'):?> active <?php endif;?>">
                     <a class="nav-link" href="http://localhost:8888/treadly_reviews/about">About</a>
                 </li>
-                <li class="nav-item<?php if($pagename == 'subscribe'):?> active <?php endif;?>"">
+                <?php if(!is_user_logged_in()):?>
+                <li class="nav-item<?php if($pagename == 'subscribe'):?> active <?php endif;?>">
                     <a class="nav-link" href="http://localhost:8888/treadly_reviews/subscribe">Subscribe</a>
                 </li>
+                <?php endif; ?>
+                <?php if(is_user_logged_in()):?>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="profileMenuItem" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <?php echo um_user('display_name');?>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="profileMenuItem">
+                    <!--<a class="dropdown-item" href="http://localhost:8888/treadly_reviews/user">Profile</a> -->
+                    <a class="dropdown-item" href="http://localhost:8888/treadly_reviews/logout">Logout</a>
+                    </div>
+                </li>
+
+                <?php else:?>
+                <li class="nav-item">                    
+                    <a class="nav-link" href="http://localhost:8888/treadly_reviews/login">Login</a>
+                </li>
+                <?php endif;?>
             </ul>
-            
-            
-                <ul class="navbar-nav my-2 my-lg-0">
-                    <?php if(is_user_logged_in()):?>
-                    <li class="nav-item">                    
-                        <a class="nav-link" href="javascript(0);"><?php echo um_user('display_name');?></a>
-                    </li>
-                    <li class="nav-item">                    
-                        <a class="nav-link" href="http://localhost:8888/treadly_reviews/logout">Logout</a>
-                    </li>
-                    <?php else:?>
-                    <li class="nav-item">                    
-                        <a class="nav-link" href="http://localhost:8888/treadly_reviews/login">Login</a>
-                    </li>
-                    <?php endif;?>
-                </ul>
             
         </div>
     </nav>
     <!-- Navbar Ends -->
 
+    <!-- Banner Starts-->
+    <?php if(is_home()):?>
     <div class="row w-100 m-0">
         <div class="col-sm w-100 p-0">
             <?php if(get_background_image() && !is_singular( 'post' ) ) :  ?>
@@ -79,6 +85,8 @@
             <?php endif; ?>
         </div>
     </div>
+    <?php endif; ?>
+    <!-- Banner Ends -->
 </header>
     
 <body>

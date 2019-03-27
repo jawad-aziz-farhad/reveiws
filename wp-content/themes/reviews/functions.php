@@ -16,6 +16,20 @@ function treadly_reviews_scripts(){
                                'query_vars' => json_encode($wp_query -> $query)) 
                        );
 }
+
+/*
+|----------------------------
+| ENABLING THREADED COMMENTS
+|----------------------------
+*/
+function enable_threaded_comments(){
+    if (!is_admin()) {
+         if (is_singular() && comments_open() && (get_option('thread_comments') == 1))
+              wp_enqueue_script('comment-reply');
+         }
+    }
+    
+add_action('get_header', 'enable_threaded_comments');
 /*
 |----------------------
 | ENQUEUING STYLES
@@ -162,15 +176,40 @@ function insertComment(){
     echo json_encode(['comment_id' => $comment_id , 'success' => $success]);
     exit();
 }
+
+function updateCustomField($field , $increment = true) {
+    $field = get_field_object($field , $_POST['post_id']);    
+    $count = (int) $field['value'];    
+    $count = $increment ? ($count + 1 ) : ($count - 1);
+    $response = update_field($field['key'], $count, $_POST['post_id']);
+    return $response;
+}
+
+function updatePostMeta($field){
+    $metaKey   = $field == 'review_likes' ? get_current_user_id() . '_like' : get_current_user_id() . '_dislike';
+    update_post_meta($_POST['post_id'] , $metaKey , true);
+
+    $postMetaLike    = get_post_meta($_POST['post_id'] , get_current_user_id() . '_like'    , true);
+    $postMetaDisLike = get_post_meta($_POST['post_id'] , get_current_user_id() . '_dislike' , true);
+
+    if($field == 'review_likes' && $postMetaDisLike == 1){
+        delete_post_meta($_POST['post_id'] , get_current_user_id() . '_dislike');    
+        updateCustomField('review_dislikes', false);
+    }
+    else if($field == 'review_dislikes' && $postMetaLike == 1){
+        delete_post_meta($_POST['post_id'] , get_current_user_id() . '_like');
+        updateCustomField('review_likes', false);
+    }
+}
+
 function updateLikes() {
-    $response = '';
-    $field = get_field_object($_POST['field'] , $_POST['post_id']);
     
-    $count = (int) $field['value'];
-    $count = ( $count == 0 ) ? 1 : $count++;
-    $response = update_field($field['key'], $count, (int) $_POST['post_id']);               
+    updatePostMeta($_POST['field']);
+    $response = updateCustomField($_POST['field'] , true);
     
-    echo json_encode(array('response' => $response, 'count'=> $count, 'key' => $field['key'] , 'value' => $field['value'] , 'post_id' => $_POST['post_id']));
+    echo json_encode(array('response' => $response, 
+                           'likes'=> get_field('review_likes', $_POST['post_id']) , 
+                           'dislikes' => get_field('review_dislikes', $_POST['post_id'])));
     exit();
 }
 /*
@@ -228,6 +267,20 @@ add_theme_support( 'custom-background' );
 add_theme_support( 'post-formats', array('aside', 'image', 'video'));
 add_theme_support( 'post-thumbnails', array( 'post', 'page' , 'movie' ) );   
 
+function my_custom_comments($comment, $args, $depth) {
+    $GLOBALS['comment'] = $comment; ?>
+   <div class="media mb-4">
+        <img class="d-flex mr-3 rounded-circle" src="<?php echo um_get_user_avatar_url();?>" width="40" height="40" alt="">
+        <div class="media-body">
+        <h5 class="mt-0"><?php echo $comment->comment_author; ?></h5>
+        <?php echo $comment->comment_content; ?>
+        </div>
+    </div>
+
+   <?php if ($comment->comment_approved == '0') : ?>
+      <em><?php _e('Your comment is awaiting moderation.') ?></em>
+   <?php endif; 
+ }
 
 function initTheme(){
     add_theme_support( 'menus' ); 
@@ -236,11 +289,5 @@ function initTheme(){
 }
 add_action('init', 'initTheme'); 
 
-
-add_action( 'um_user_login', 'my_user_login', 10, 1 );
-function my_user_login( $args ) {
-    // your code here
-    wp_redirect('/');
-}
 
 ?>

@@ -26,7 +26,7 @@
                             <div class="form-group">
                                 <?php
 
-                                    $categories = array("Round Bike", "Mountain Bike" , "Cruiser", "Hybrid/Comfort Bike" , "Triathlon/Time Trial Bike",
+                                    $categories = array("Road Bike", "Mountain Bike" , "Cruiser", "Hybrid/Comfort Bike" , "Triathlon/Time Trial Bike",
                                                         "BMX/Trick Bike", "Commuting Bike" , "Cyclocross Bike", "Track Bike / Fixed Gear", "Tandem",
                                                         "Folding Bike", "Kids Bike", "Recumbent", "I'm not sure, help me!");
                                     $options = '<option value="">select category</option>'; 
@@ -81,11 +81,8 @@
                                     <div class="row align-items-center">
                                         <div class="col-sm">
                                             <img class="img-fluid float-left rounded-circle" width="40"  height="40" src="https://image.shutterstock.com/image-vector/avatar-man-icon-profile-placeholder-260nw-1229859850.jpg" alt="">
-                                            <?php
-                                                $author_id = get_post_field( 'post_author', get_the_ID() );
-                                                $author_name  = get_the_author_meta('user_nicename', $author_id);
-                                            ?>
-                                            <label class="text-muted m-2"><?php echo get_field('name'); ?> </label>
+                                            <label class="text-muted m-2"><?php echo get_field('name'); ?> </label><br/>
+                                            <small class="text-muted m-2"><?php the_time('F j, Y g:i A') ?> </small>
                                         </div>
                                     </div>
                                 </div>
@@ -151,18 +148,16 @@
                 <?php endif; ?>
             </div>
             <!-- .row -->    
+            <hr> 
         </div>
          <!-- .container -->  
+         
     </div> 
      <!-- .wrapper -->  
 
+                                  
    
-    <?php
-    if(!is_user_logged_in())
-        echo do_shortcode("[ultimatemember form_id='529']");
-   
-    echo do_shortcode("[review_form]"); 
-?>
 <?php
+    echo do_shortcode("[review_form]"); 
     get_footer(); 
 ?>
