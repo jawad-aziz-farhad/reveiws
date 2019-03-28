@@ -492,7 +492,13 @@ if ( ! class_exists( 'um\admin\core\Admin_Settings' ) ) {
 									'id'       		=> 'account_email',
 									'type'     		=> 'checkbox',
 									'label'   		=> __( 'Allow users to change e-mail','ultimate-member' ),
-									'tooltip' 	=> __('Whether to allow users changing their email in account page.','ultimate-member'),
+									'tooltip' 	=> __( 'Whether to allow users changing their email in account page.', 'ultimate-member' ),
+								),
+								array(
+									'id'        => 'account_general_password',
+									'type'      => 'checkbox',
+									'label'     => __( 'Password is required?','ultimate-member' ),
+									'tooltip'   => __( 'Password is required to save account data.', 'ultimate-member' ),
 								),
 								array(
 									'id'       		=> 'account_hide_in_directory',
@@ -2286,7 +2292,6 @@ Use Gravatars: 				<?php echo $this->info_value( UM()->options()->get('use_grava
 <?php if( UM()->options()->get('use_gravatars') ): ?>Gravatar builtin image:		<?php  echo UM()->options()->get('use_um_gravatar_default_builtin_image') . "\n"; ?>
     UM Avatar as blank Gravatar: 	<?php echo $this->info_value( UM()->options()->get('use_um_gravatar_default_image'), 'yesno', true ); ?><?php endif; ?>
 Require a strong password: 	<?php echo $this->info_value( UM()->options()->get('reset_require_strongpass'), 'onoff', true ); ?>
-Editable primary email field in profile view:	<?php echo $this->info_value( UM()->options()->get('editable_primary_email_in_profile'), 'onoff', true ); ?>
 
 
 --- UM Access Configuration ---

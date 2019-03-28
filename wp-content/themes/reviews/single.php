@@ -408,25 +408,25 @@
     <div class="w-100"></div>
 
     <div class="col-sm">
-      <!-- Comments Form -->
+      <!-- Comments Form --
       <div class="card my-4">
         <h5 class="card-header">Join the Conversation:</h5>
         <div class="card-body">
           <form id="commentForm" method="post">
             <div class="form-group" >
-              <textarea class="form-control" rows="4" placeholder="Enter comment" id="comment" name="comment" <?php if(!is_user_logged_in()) : ?> disabled <?php endif; ?> >
+              <textarea class="form-control" rows="4" placeholder="Enter comment" id="comment" name="comment" <?//php if(!is_user_logged_in()) : ?> disabled <?php //endif; ?> >
               </textarea>
             </div>
-            <input type="hidden" name="post_id" value="<?php echo get_the_ID(); ?>"/>
-            <input type="hidden" name="author_name" value="<?php echo um_user('display_name'); ?>"/>
-            <input type="hidden" name="author_email" value="<?php echo um_user('email'); ?>"/>
+            <input type="hidden" name="post_id" value="<? //php echo get_the_ID(); ?>"/>
+            <input type="hidden" name="author_name" value="<?//php echo um_user('display_name'); ?>"/>
+            <input type="hidden" name="author_email" value="<?//php echo um_user('email'); ?>"/>
 
-            <button type="submit" class="btn btn-primary btn-block" <?php if(!is_user_logged_in()) : ?> disabled <?php endif; ?> >Submit</button>
-            <?php if(!is_user_logged_in()) : ?><small> Please <a href="<?php echo site_url()?>/login">Login</a> to join the conversation. </small>  <?php endif; ?>
+            <button type="submit" class="btn btn-primary btn-block" <?php //if(!is_user_logged_in()) : ?> disabled <?php //endif; ?> >Submit</button>
+            <?php //if(!is_user_logged_in()) : ?><small> Please <a href="<?php //echo site_url()?>/login">Login</a> to join the conversation. </small>  <?php //endif; ?>
           </form>
         </div>
       </div>
-      <!-- /. Comments Form Ends-->
+      -- /. Comments Form Ends--
     </div>
 
     <div class="w-100"></div>
@@ -434,19 +434,13 @@
     <div class="col-sm"><hr></div>
 
     <div class="w-100"></div>
-
-    <div class="col-sm">
-      <?php 
-        echo '<ol class="commentlist">';
-        //Gather comments for a specific page/post 
-        $comments = get_comments(array('post_id' => get_the_ID(),'status' => 'approve'));
-        wp_list_comments(array(
-          'per_page' => 10, // Allow comment pagination
-           'reverse_top_level' => false, //Show the latest comments at the top of the list
-           'callback'=> 'my_custom_comments'), $comments);
-        echo '</ol>';?>
-    </div>
-
+    -->
+    <?php 
+      if ( comments_open() || get_comments_number() ) {
+        comments_template();
+      }
+      ?>
+    
 
   </div>
   <!-- /.row -->

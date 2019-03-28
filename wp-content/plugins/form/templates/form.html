@@ -35,6 +35,12 @@ foreach($countries as $country){
 }
 $url = esc_url( $_SERVER['REQUEST_URI']);
 $placeholder = 'http://getwebsite.com.pk/jawad/treadly_reviews/wp-content/uploads/2019/03/placeholder-image.png';
+
+$userName  = is_user_logged_in() ? um_user('display_name') : '';
+$userEmail = is_user_logged_in() ? um_user('email') : '';
+
+$disabled  = ($userName && $userEmail) ? 'readonly' : '';
+
 echo <<< FORM
 <div class="container" id="reviewForm">
     
@@ -537,13 +543,13 @@ echo <<< FORM
                 <div class="col-sm">
                     <div class="form-group">
                         <label for="name">Name *</label>
-                        <input id="name" name="name" type="text" class="form-control required" placeholder="Enter your display name" value="">
+                        <input id="name" name="name" type="text" class="form-control required" placeholder="Enter your display name" value="{$userName}" {$disabled}>
                     </div>
                 </div>
                 <div class="col-sm">
                     <div class="form-group">
                         <label for="email">Email *</label>
-                        <input id="email" name="email" type="email" class="form-control required" aria-describedby="emailHelp" placeholder="Enter email" value="">
+                        <input id="email" name="email" type="email" class="form-control required" aria-describedby="emailHelp" placeholder="Enter email" value="{$userEmail}">
                         <small id="emailHelp" class="text-muted">
                            Your email will remain confidentail.
                         </small>

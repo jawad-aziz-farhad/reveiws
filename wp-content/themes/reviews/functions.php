@@ -56,18 +56,7 @@ add_action( 'wp_ajax_nopriv_searchReview', 'searchReview' );
 |   Fetching Products
 |--------------------------
 */
-function make_Query($key) {
-    if(empty($_POST[$key]))
-        return [];
-    $values = array();
-    $index = 0;
-    foreach($_POST[$key] as $val){
-        $compare = ($key == 'price') ? ($index == 0 ? '>=' : '<='): 'LIKE';        
-        array_push($values,  array( 'key' => $key ,'value' => $val , 'compare'=> $compare , 'type' => ($key == 'price') ? 'NUMERIC' : ''));
-        $index++;
-    }
-    return array('relation' => 'OR', $values);
-}
+
 function getQuery() {
     $brand     =  $_POST['brand'] ? array( 'key' => 'brand' ,'value' => $_POST['brand'] , 'compare'=> 'LIKE' ) : []  ;
     $model     =  $_POST['model'] ? array( 'key' => 'model' ,'value' => $_POST['model'] , 'compare'=> 'LIKE' ) : []  ; 
